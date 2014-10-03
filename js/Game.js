@@ -1,16 +1,19 @@
 var canvas, ctx;
-
+var imgBack = new Image();
+imgBack.src = "images/Back.png"
 
 function Game (){
 	var player;
 	var enemy;
 	var collisionManager;
+	var backgroundOffset;
 }
 
 Game.prototype.initWorld = function(){
 	player = new Player();
 	enemy = [];
 	collisionManager = new CollisionManager();
+	backgroundOffset = player.x;
 }
 
 Game.prototype.initCanvas=function () { 
@@ -44,14 +47,30 @@ Game.prototype.update = function(){
     				var index = enemy.indexOf(j);
     				enemy.splice(j, 1);
     				j--;
+    				bullets[i].kill();
    				}
-				//bullets[i].kill();
 			}
 		}
 	}
+	calculateFps(Date.now());
 }
 
+var lastAnimationFrameTime = 0,
+    lastFpsUpdateTime = 0;
+    //fpsElement = document.getElementById('fps');
+var fps = 0;
+function calculateFps(now) {
+    fps = 1000 / (now - lastAnimationFrameTime);
+   lastAnimationFrameTime = now;
+  // console.log(now - lastAnimationFrameTime);
 
+   if (now - lastFpsUpdateTime > 1000) {
+      lastFpsUpdateTime = now;
+      //fpsElement.innerHTML = fps.toFixed(0) + ' fps';
+   }
+   //console.log(fps);
+   return fps; 
+}
 
 Game.prototype.gameLoop = function (){
    var GAME_RUNNING=0;
@@ -63,6 +82,9 @@ Game.prototype.gameLoop = function (){
 
 Game.prototype.draw =function (){
 	ctx.clearRect(0,0,canvas.width,canvas.height);
+	//setBackgroundOffset();
+	//ctx.translate(player.x,player.y);
+	//drawBackground();
 	player.draw();
 	for (var i = 0; i < enemy.length; ++i) {
 		enemy[i].draw();
@@ -71,4 +93,29 @@ Game.prototype.draw =function (){
 
 
 }
+function drawBackground() {
+   ctx.translate(-backgroundOffset, 0);
 
+   // Initially onscreen:
+   ctx.drawImage(imgBack, 0, 0);
+
+   // Initially offscreen:
+   ctx.drawImage(imgBack, imgBack.width, 0);
+
+   ctx.translate(backgroundOffset, 0);
+}
+
+
+var BACKGROUND_VELOCITY = 42, // pixels / second
+    bgVelocity = BACKGROUND_VELOCITY;
+
+function setBackgroundOffset() {
+   var offset = backgroundOffset + bgVelocity/fps; // Time-based motion
+
+   if (offset > 0 && offset < imgBack.width) {
+      backgroundOffset = offset;
+   }
+   else {
+      backgroundOffset = 0;
+   }
+}
