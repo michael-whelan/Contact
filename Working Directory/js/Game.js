@@ -31,6 +31,7 @@ function mouseDown(e){
 	var enemySingle = new Enemy();
 	enemySingle.spawnEnemy(this.xDirect,this.yDirect,this.x,this.y);
 	enemy.push(enemySingle);
+	console.log(enemySingle.x,enemySingle.y);
 }
 
 
@@ -87,10 +88,10 @@ Game.prototype.draw =function (){
 	//setBackgroundOffset();
 	//ctx.translate(player.x,player.y);
 	//drawBackground();
-	var camX = clamp(-player.x + canvas.width/2, 0, 1000 - canvas.width);
-    var camY = clamp(-player.y + canvas.height/2, 0, 600 - canvas.height);
+	var camX = clamp(-player.x + canvas.width/2, 0, 1100 - canvas.width);
+    var camY = clamp(-player.y + canvas.height/2, 0, 800 - canvas.height);
     ctx.translate( camX, camY ); 
-    ctx.drawImage(imgBack, 0,0,imgBack.width*2, imgBack.height*2);
+    ctx.drawImage(imgBack, -300,-200,1000, 600);
 	player.draw();
 	for (var i = 0; i < enemy.length; ++i) {
 		enemy[i].draw();
@@ -98,7 +99,11 @@ Game.prototype.draw =function (){
 }
 
 function clamp(value, min, max){
-    if(value < min) return min;
-    else if(value > max) return max;
+    if(value < min){
+    	return min;
+    }
+    else if(value > max){
+    	return max;
+	}
     return value;
 }

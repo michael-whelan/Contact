@@ -14,6 +14,7 @@ var Player=function (){
 	this.yVel = 0;
 	this.xDirect = 0;
 	this.yDirect = 0;
+	this.speed = 2;
 	bullets = [];
 	//bullet = new Bullet();
 	this.numBullets = 10;
@@ -114,12 +115,12 @@ Player.prototype.draw = function(){
 
 Player.prototype.move= function(dir){
 	if(dir == "forward"){
-		this.xVel = this.xDirect;
-		this.yVel = this.yDirect;
+		this.xVel = this.xDirect*this.speed;
+		this.yVel = this.yDirect*this.speed;
 	}
 	else{
-		this.xVel = -this.xDirect;
-		this.yVel = -this.yDirect;
+		this.xVel = -this.xDirect*this.speed;
+		this.yVel = -this.yDirect*this.speed;
 	}
 }
 
