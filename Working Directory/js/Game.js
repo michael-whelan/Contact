@@ -81,41 +81,24 @@ Game.prototype.gameLoop = function (){
 }
 
 Game.prototype.draw =function (){
+	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative
+
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 	//setBackgroundOffset();
 	//ctx.translate(player.x,player.y);
 	//drawBackground();
+	var camX = clamp(-player.x + canvas.width/2, 0, 1000 - canvas.width);
+    var camY = clamp(-player.y + canvas.height/2, 0, 600 - canvas.height);
+    ctx.translate( camX, camY ); 
+    ctx.drawImage(imgBack, 0,0,imgBack.width*2, imgBack.height*2);
 	player.draw();
 	for (var i = 0; i < enemy.length; ++i) {
 		enemy[i].draw();
 	}
-
-
-
-}
-function drawBackground() {
-   ctx.translate(-backgroundOffset, 0);
-
-   // Initially onscreen:
-   ctx.drawImage(imgBack, 0, 0);
-
-   // Initially offscreen:
-   ctx.drawImage(imgBack, imgBack.width, 0);
-
-   ctx.translate(backgroundOffset, 0);
 }
 
-
-var BACKGROUND_VELOCITY = 42, // pixels / second
-    bgVelocity = BACKGROUND_VELOCITY;
-
-function setBackgroundOffset() {
-   var offset = backgroundOffset + bgVelocity/fps; // Time-based motion
-
-   if (offset > 0 && offset < imgBack.width) {
-      backgroundOffset = offset;
-   }
-   else {
-      backgroundOffset = 0;
-   }
+function clamp(value, min, max){
+    if(value < min) return min;
+    else if(value > max) return max;
+    return value;
 }
