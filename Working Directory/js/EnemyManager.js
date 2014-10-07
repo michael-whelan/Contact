@@ -20,7 +20,7 @@ EnemyManager.prototype.draw = function()
 EnemyManager.prototype.setUp = function(){
 	if(this.currentLvl == 1){
 		this.totalEnemies = 10;
-		this.enemySwarms = 0;
+		this.enemySwarms = 2;
 	}
 }
 

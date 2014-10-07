@@ -15,6 +15,9 @@ var Enemy=function ()
 	this.yDirect = 0;
 	this.speed = 5;
 	//this.timeOfBirth = 0;
+	this.moveDirection;
+	//AI States
+	this.state = 0;
 };
 
 
@@ -32,8 +35,18 @@ Enemy.prototype.spawnEnemy = function(){
 
 
 Enemy.prototype.update = function(){
+ 	if(this.alive){
+ 		this.moveDirection = "forward";
+ 		this.xDirect = Math.cos(this.angle);
+		this.yDirect = Math.sin(this.angle);
 
- 	
+		this.move("forward");
+
+		this.x+= this.xVel;
+		this.y+= this.yVel;
+		this.xVel = 0;
+		this.yVel = 0;
+	}
 }
 
 
@@ -42,15 +55,14 @@ Enemy.prototype.kill = function(){
 }
 
 
-Enemy.prototype.moveForward = function(){
-
-	
-}
 
 
-Enemy.prototype.move = function(x,y)
+Enemy.prototype.move = function(dir)
 {
-
+	if(dir == "forward"){
+		this.xVel = this.xDirect*this.speed;
+		this.yVel = this.yDirect*this.speed;
+	}
 	
 };
 
