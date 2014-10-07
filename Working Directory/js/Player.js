@@ -1,8 +1,10 @@
 var imgPlayer= new Image();
 imgPlayer.src = "images/Player.png"
 
-var bullets;
 
+
+var bullets;
+var numBullets;
 
 var Player=function (){
 	this.x = 100;
@@ -17,7 +19,7 @@ var Player=function (){
 	this.speed = 2;
 	bullets = [];
 	//bullet = new Bullet();
-	this.numBullets = 10;
+	numBullets = 30;
 	this.bulletsAlive = 0;
 	this.lastShotTime = 0;
 	this.reloadTimer = 50;
@@ -30,9 +32,8 @@ Player.prototype.reload = function(){
 	this.reloadTimer--;
 
 	if(this.reloadTimer<=0){
-		console.log("Shoot!");
 		this.reloadTimer = 50;
-		this.numBullets = 30;
+		numBullets = 30;
 		this.startReload = false;
 	}
 }
@@ -41,16 +42,16 @@ Player.prototype.reload = function(){
 Player.prototype.shoot = function(){
 	if(KeyController.isKeyDown(Key.SPACE)){
 		console.log(this.x, this.y);
-		if(this.numBullets>0){
+		if(numBullets>0){
 			var bullet = new Bullet();
 			bullet.spawnBullet(this.xDirect,this.yDirect,this.x,this.y);
 			bullets.push(bullet);
-			this.numBullets--;
+			numBullets--;
 		}
 	}//end Space
-		if(this.numBullets<=0){
+		/*if(this.numBullets<=0){
 			console.log("Press R To Reload");
-		}
+		}*/
 	for (var i = 0; i < bullets.length; ++i) {
     	if (!bullets[i].alive) {
     		var index = bullets.indexOf(i);
@@ -65,8 +66,8 @@ Player.prototype.update = function(){
 		this.angle += 0.1;
 	}
 
-	if(KeyController.isKeyDown(Key.R)){ 
-		console.log("Reloading...");
+	if(KeyController.isKeyDown(Key.R)){
+		//console.log("Reloading...");
 		this.startReload = true;
 	}
 
