@@ -41,7 +41,6 @@ Player.prototype.reload = function(){
 
 Player.prototype.shoot = function(){
 	if(KeyController.isKeyDown(Key.SPACE)){
-		console.log(this.x, this.y);
 		if(numBullets>0){
 			var bullet = new Bullet();
 			bullet.spawnBullet(this.xDirect,this.yDirect,this.x,this.y);
@@ -62,7 +61,7 @@ Player.prototype.shoot = function(){
 }
 
 Player.prototype.update = function(){
-	if(KeyController.isKeyDown(Key.D) ||KeyController.isKeyDown(Key.RIGHT)){
+	if(KeyController.isKeyDown(Key.RIGHT)){
 		this.angle += 0.1;
 	}
 
@@ -74,7 +73,7 @@ Player.prototype.update = function(){
 	if(this.startReload){
 		this.reload();
 	}
-	if(KeyController.isKeyDown(Key.A)||KeyController.isKeyDown(Key.LEFT)){
+	if(KeyController.isKeyDown(Key.LEFT)){
 		this.angle -= 0.1;
 	}
 	this.xDirect = Math.cos(this.angle);
