@@ -6,19 +6,21 @@ function Game (){
 	var player;
 	var enemy;
 	var collisionManager;
-	var backgroundOffset;
+	var textManager;
 }
 
 Game.prototype.initWorld = function(){
 	player = new Player();
 	enemy = [];
 	collisionManager = new CollisionManager();
-	backgroundOffset = player.x;
+	textManager = new TextManager();
+	textManager.init();
 }
 
 Game.prototype.initCanvas=function () { 
 	canvas = document.createElement('canvas'); 
 	ctx = canvas.getContext('2d'); 
+	
 
 	document.body.appendChild(canvas);
 	//set canvas to size of the screen.
@@ -56,10 +58,10 @@ Game.prototype.update = function(){
 	calculateFps(Date.now());
 }
 
-var lastAnimationFrameTime = 0,
-    lastFpsUpdateTime = 0;
-    //fpsElement = document.getElementById('fps');
-var fps = 0;
+var fps = 0,
+    lastFpsUpdateTime = 0,
+    lastAnimationFrameTime = 0;
+
 function calculateFps(now) {
     fps = 1000 / (now - lastAnimationFrameTime);
    lastAnimationFrameTime = now;
@@ -96,6 +98,8 @@ Game.prototype.draw =function (){
 	for (var i = 0; i < enemy.length; ++i) {
 		enemy[i].draw();
 	}
+	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative
+	textManager.controller();
 }
 
 function clamp(value, min, max){

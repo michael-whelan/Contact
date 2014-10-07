@@ -91,6 +91,7 @@ TextDrawer.prototype.init = function(){
         fontStyle: "normal",
         textShadow: "0px -2px 0px #003366"
     });
+
      CT.defineClass("instructions",{
         fontSize: "25px",
         fontColor: "#fff",
