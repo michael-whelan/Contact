@@ -2,7 +2,7 @@ var TextManager=function(){
 	//put each piece of text here. rename all you want it will need to be mentioned in the index too.
 	var txtAmmo;
     var ammoInt;
-
+    this.lowestFps = 100;
 };
 
 
@@ -32,7 +32,11 @@ TextManager.prototype.controller = function(){
         ctx.font = '40px san-serif';
         ctx.textBaseline = 'bottom';
         //txtAmmo = txtAmmo + numBullets.toString();
-        ctx.strokeText("fps: "+fps.toFixed(), 680, 50);
+       // ctx.strokeText("fps: "+fps.toFixed(), 680, 150);
+        if(fps<30){
+            this.lowestFps = fps;
+        }
+        ctx.strokeText("fps: "+this.lowestFps.toFixed(), 680, 50);
 
 }
 
