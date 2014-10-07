@@ -39,10 +39,13 @@ function mouseDown(e){
 
 Game.prototype.update = function(){
 	player.update();
-
+	for (var j = 0; j < enemy.length; ++j) {
+		enemy[j].update();
+	}
 	for(var i = 0;i< bullets.length;++i){
 		if(bullets[i].alive){
 			for (var j = 0; j < enemy.length; ++j) {
+
 				if(collisionManager.boxOnBox(bullets[i],enemy[j])){
 					enemy[j].kill();
 				}
