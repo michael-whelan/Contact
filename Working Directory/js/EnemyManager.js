@@ -41,6 +41,7 @@ EnemyManager.prototype.setUp = function(){
 
 EnemyManager.prototype.update = function(){
 	this.spawnTimer++;
+	//controls the number of swarms and the size of each and when they are spawned.
 	if(this.spawnTimer> 150 && this.enemySwarms>0&&this.enemy.length == 0){
 		this.spawnSwarm();
 		this.enemySwarms--;
@@ -54,7 +55,7 @@ EnemyManager.prototype.update = function(){
 }
 
 EnemyManager.prototype.moveControl = function(j,b,px,py){
-
+		//checks if the collision with the vision radius is true and decides which movement is appropriate.
 		if(b){
 			this.enemy[j].moveTowardPlayer(px,py);
 		}
@@ -65,6 +66,7 @@ EnemyManager.prototype.moveControl = function(j,b,px,py){
 
 
 EnemyManager.prototype.spawnSwarm = function(){
+	//spawns a group of enemies.
 	for(var i = 0; i< this.totalEnemies/this.totalSwarms; i++){
 		var enemySingle = new Enemy();
 		enemySingle.spawnEnemy(this.xDirect,this.yDirect,this.x,this.y);

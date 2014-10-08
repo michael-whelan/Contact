@@ -61,7 +61,6 @@ Enemy.prototype.update = function(){
 		this.yVel = 0;
 		this.timeSinceDirectChange++;
 	}
-	
 }
 
 
@@ -71,7 +70,7 @@ Enemy.prototype.moveTowardPlayer = function(playerPosX, playerPosY){
 		var posDifferenceY = playerPosY - this.y;
 		var rotation = Math.atan2(posDifferenceY, posDifferenceX);
 
-		//
+		//checks which direction of rotation is the correct one
 		if(((this.angle* (180/Math.PI))-(rotation* (180/Math.PI))+360)%360>180){
 			this.angle += 0.03;
 		}
@@ -94,6 +93,7 @@ Enemy.prototype.kill = function(){
 
 
 Enemy.prototype.moveBasic = function(dir){
+	//causes regular changes in direction
 	if(this.timeSinceDirectChange>40){
 		this.angle = Math.random()*(8-1) +1;
 		this.timeSinceDirectChange = 0;

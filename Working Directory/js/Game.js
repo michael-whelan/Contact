@@ -116,7 +116,7 @@ Game.prototype.draw =function (){
 	textManager.controller();
 }
 
-function clamp(value, min, max){
+function clamp(value, min, max){//used to clamp the cam if the player gets near the edge of the world
     if(value < min){
     	return min;
     }
