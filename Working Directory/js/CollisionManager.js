@@ -22,6 +22,56 @@ CollisionManager.prototype.update = function(){
  	
 }
 
+CollisionManager.prototype.circleOnCircle = function(c1,c2){
+	var radius1 = c1.width/2;
+	var radius2 = c2.viewRadius/2;
+
+	var dx = c1.x - c2.x;
+	var dy = c1.y - c2.y;
+	var radii = radius1 + radius2;
+	if ((dx * dx) + (dy * dy) < radii * radii){
+		return true;
+	}
+	return false;
+    
+}
+
+
+CollisionManager.prototype.circleOnBox = function(cir,box){
+
+  	var dx = box.x - cir.x;
+	var dy = box.y - cir.y;
+	var dist = Math.sqrt(dx * dx + dy * dy);
+
+	if (dist < cir.viewRadius/2) {
+  		return true;
+	}
+
+
+  	dx = box.x+box.width - cir.x;
+	dy = box.y - cir.y;
+	dist = Math.sqrt(dx * dx + dy * dy);
+
+	if (dist < cir.viewRadius/2) {
+  		return true;
+	}
+
+	dx = box.x - cir.x;
+	dy = box.y+box.height - cir.y;
+	dist = Math.sqrt(dx * dx + dy * dy);
+
+	if (dist < cir.viewRadius/2) {
+  		return true;
+	}
+	dx = box.x+box.width - cir.x;
+	dy = box.y+box.height  - cir.y;
+	dist = Math.sqrt(dx * dx + dy * dy);
+
+	if (dist < cir.viewRadius/2) {
+  		return true;
+	}
+	return false
+};
 
 
 CollisionManager.prototype.boxOnBox = function(b1,b2){

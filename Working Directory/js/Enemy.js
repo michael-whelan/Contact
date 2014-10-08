@@ -1,6 +1,9 @@
 var imgEnemy= new Image();
 imgEnemy.src = "images/Enemy.png"
 
+var imgViewRad= new Image();
+imgViewRad.src = "images/ViewRange.png"
+
 var Enemy=function ()
 {
 	this.x = 200;
@@ -13,17 +16,19 @@ var Enemy=function ()
 	this.alive = false;
 	this.xDirect = 0;
 	this.yDirect = 0;
-	this.speed = 5;
-	//this.timeOfBirth = 0;
+	this.speed = 2;
+	this.timeSinceDirectChange = 0;
 	this.moveDirection;
+
+	this.viewRadius = 200;
 	//AI States
 	this.state = 0;
 };
 
 
-Enemy.prototype.draw = function()
-{
+Enemy.prototype.draw = function(){
 	if(this.alive){
+		ctx.drawImage(imgViewRad,this.x- this.viewRadius/2, this.y - this.viewRadius/2, this.viewRadius, this.viewRadius);
 		ctx.save();//save the state of canvas before rotation wrecks the place.
 		ctx.translate(this.x, this.y); //let's translate
 		ctx.rotate(this.angle); //increment the angle and rotate the image 
@@ -36,6 +41,8 @@ Enemy.prototype.draw = function()
 
 Enemy.prototype.spawnEnemy = function(){
 	this.alive = true;
+	this.angle = Math.random()*(8-1) +1;
+	//Math.floor(Math.random()*(this.max-this.min) +this.min);
 }
 
 
@@ -45,12 +52,36 @@ Enemy.prototype.update = function(){
  		this.xDirect = Math.cos(this.angle);
 		this.yDirect = Math.sin(this.angle);
 
-		this.move("forward");
+		//this.moveBasic("forward");
 
 		this.x+= this.xVel;
 		this.y+= this.yVel;
 		this.xVel = 0;
 		this.yVel = 0;
+		this.timeSinceDirectChange++;
+	}
+	
+}
+
+
+
+Enemy.prototype.moveTowardPlayer = function(playerPosX, playerPosY){
+	if (this.alive == true){
+		var posDifferenceX = playerPosX - this.x; // finds the vector for the difference in positions
+		var posDifferenceY = playerPosY - this.y;
+		var rotation = Math.atan2(posDifferenceY, posDifferenceX);
+
+		if ((this.angle*-1) - 0.08 < rotation) {
+            this.angle += 0.03;
+        }
+		if ((this.angle*-1) - 0.08 > rotation){
+			this.angle -= 0.03;
+		}
+                /*if (timer < timerMax +10)
+                {
+                    enemyBullet.CreateBullet(enemyDirection, enemyPos); //lets the enemy create a bullet at rthe enemies position
+                    timer = 0;
+                }*/
 	}
 }
 
@@ -62,8 +93,11 @@ Enemy.prototype.kill = function(){
 
 
 
-Enemy.prototype.move = function(dir)
-{
+Enemy.prototype.moveBasic = function(dir){
+	if(this.timeSinceDirectChange>40){
+		this.angle = Math.random()*(8-1) +1;
+		this.timeSinceDirectChange = 0;
+	}
 	if(dir == "forward"){
 		this.xVel = this.xDirect*this.speed;
 		this.yVel = this.yDirect*this.speed;

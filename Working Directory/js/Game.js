@@ -7,15 +7,20 @@ function Game (){
 	var enemy;
 	var collisionManager;
 	var textManager;
+	var enemyManager;
 }
 
 Game.prototype.initWorld = function(){
 	player = new Player();
-	enemy = [];
+//	enemy = [];
+	enemyManager = new EnemyManager();
 	collisionManager = new CollisionManager();
 	textManager = new TextManager();
 	textManager.init();
 }
+
+
+
 
 Game.prototype.initCanvas=function () { 
 	canvas = document.createElement('canvas'); 
@@ -30,28 +35,34 @@ Game.prototype.initCanvas=function () {
 }
 
 function mouseDown(e){ 
-	var enemySingle = new Enemy();
+	/*var enemySingle = new Enemy();
 	enemySingle.spawnEnemy(this.xDirect,this.yDirect,this.x,this.y);
 	enemy.push(enemySingle);
-	console.log(enemySingle.x,enemySingle.y);
+	console.log(enemySingle.x,enemySingle.y);*/
 }
 
 
 Game.prototype.update = function(){
 	player.update();
-	for (var j = 0; j < enemy.length; ++j) {
+	/*for (var j = 0; j < enemy.length; ++j) {
 		enemy[j].update();
+	}*/
+	enemyManager.update();
+	for (var j = 0; j < enemyManager.enemy.length; ++j) {
+			enemyManager.moveControl(j,collisionManager.circleOnCircle(player,enemyManager.enemy[j]),
+				player.x,player.y);
 	}
+
 	for(var i = 0;i< bullets.length;++i){
 		if(bullets[i].alive){
-			for (var j = 0; j < enemy.length; ++j) {
+			for (var j = 0; j < enemyManager.enemy.length; ++j) {//enemy.length
 
-				if(collisionManager.boxOnBox(bullets[i],enemy[j])){
-					enemy[j].kill();
+				if(collisionManager.boxOnBox(bullets[i], enemyManager.enemy[j])){
+					enemyManager.enemy[j].kill();
 				}
-				if(!enemy[j].alive){
-    				var index = enemy.indexOf(j);
-    				enemy.splice(j, 1);
+				if(!enemyManager.enemy[j].alive){
+    				var index = enemyManager.enemy.indexOf(j);
+    				enemyManager.enemy.splice(j, 1);
     				j--;
     				bullets[i].kill();
    				}
@@ -98,8 +109,8 @@ Game.prototype.draw =function (){
     ctx.translate( camX, camY ); 
     ctx.drawImage(imgBack, -300,-200,1000, 600);
 	player.draw();
-	for (var i = 0; i < enemy.length; ++i) {
-		enemy[i].draw();
+	for (var i = 0; i < enemyManager.enemy.length; ++i) {
+		enemyManager.enemy[i].draw();
 	}
 	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative
 	textManager.controller();
