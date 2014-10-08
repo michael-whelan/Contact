@@ -11,7 +11,7 @@ var Player=function (){
 	this.y = 100;
 	this.width = 50;
 	this.height = 50;
-	this.angle = -2.87;
+	this.angle = 2.87;
 	this.xVel = 0;
 	this.yVel = 0;
 	this.xDirect = 0;
@@ -64,7 +64,12 @@ Player.prototype.update = function(){
 	if(KeyController.isKeyDown(Key.RIGHT)){
 		this.angle += 0.1;
 	}
-
+	if(this.angle<0){
+		this.angle = 6;
+	}
+	if(this.angle>6){
+		this.angle = 0;
+	}
 	if(KeyController.isKeyDown(Key.R)){
 		//console.log("Reloading...");
 		this.startReload = true;
@@ -76,6 +81,7 @@ Player.prototype.update = function(){
 	if(KeyController.isKeyDown(Key.LEFT)){
 		this.angle -= 0.1;
 	}
+
 	this.xDirect = Math.cos(this.angle);
 	this.yDirect = Math.sin(this.angle);
 

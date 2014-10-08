@@ -59,7 +59,7 @@ EnemyManager.prototype.moveControl = function(j,b,px,py){
 			this.enemy[j].moveTowardPlayer(px,py);
 		}
 		else{
-			//this.enemy[j].moveBasic("forward");	
+			this.enemy[j].moveBasic("forward");	
 		}
 }
 

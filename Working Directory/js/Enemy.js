@@ -10,7 +10,7 @@ var Enemy=function ()
 	this.y = 100;
 	this.width = 50;
 	this.height = 50;
-	this.angle = -2.87;
+	this.angle = 2.87;
 	this.xVel = 0;
 	this.yVel = 0;
 	this.alive = false;
@@ -48,6 +48,7 @@ Enemy.prototype.spawnEnemy = function(){
 
 Enemy.prototype.update = function(){
  	if(this.alive){
+ 		
  		this.moveDirection = "forward";
  		this.xDirect = Math.cos(this.angle);
 		this.yDirect = Math.sin(this.angle);
@@ -63,18 +64,33 @@ Enemy.prototype.update = function(){
 	
 }
 
-
+function diff(x, y) {
+    var a = (x * Math.PI / 180) - Math.PI;
+    var b = (y * Math.PI / 180) - Math.PI;
+    return Math.atan2(Math.sin(b - a), Math.cos(b - a)) * (180 / Math.PI);
+}
 
 Enemy.prototype.moveTowardPlayer = function(playerPosX, playerPosY){
 	if (this.alive == true){
 		var posDifferenceX = playerPosX - this.x; // finds the vector for the difference in positions
 		var posDifferenceY = playerPosY - this.y;
 		var rotation = Math.atan2(posDifferenceY, posDifferenceX);
-
-		if ((this.angle*-1) - 0.08 < rotation) {
+		//rotation = diff(posDifferenceX,posDifferenceY) * (Math.PI/180);
+		//console.log(rotation);
+		if( rotation<0){
+			if(rotation <-3.1){
+				rotation  = 6.2 - rotation*-1;
+			}
+		}
+		if( rotation>0){
+			if(rotation >3.1){
+				rotation  = 6.2 - rotation;
+			}
+		}
+		if (this.angle - 0.08 < rotation) {
             this.angle += 0.03;
         }
-		if ((this.angle*-1) - 0.08 > rotation){
+		if (this.angle - 0.08 > rotation){
 			this.angle -= 0.03;
 		}
                 /*if (timer < timerMax +10)
