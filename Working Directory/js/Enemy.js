@@ -64,40 +64,24 @@ Enemy.prototype.update = function(){
 	
 }
 
-function diff(x, y) {
-    var a = (x * Math.PI / 180) - Math.PI;
-    var b = (y * Math.PI / 180) - Math.PI;
-    return Math.atan2(Math.sin(b - a), Math.cos(b - a)) * (180 / Math.PI);
-}
 
 Enemy.prototype.moveTowardPlayer = function(playerPosX, playerPosY){
 	if (this.alive == true){
 		var posDifferenceX = playerPosX - this.x; // finds the vector for the difference in positions
 		var posDifferenceY = playerPosY - this.y;
 		var rotation = Math.atan2(posDifferenceY, posDifferenceX);
-		//rotation = diff(posDifferenceX,posDifferenceY) * (Math.PI/180);
-		//console.log(rotation);
-		if( rotation<0){
-			if(rotation <-3.1){
-				rotation  = 6.2 - rotation*-1;
-			}
+
+		//
+		if(((this.angle* (180/Math.PI))-(rotation* (180/Math.PI))+360)%360>180){
+			this.angle += 0.03;
 		}
-		if( rotation>0){
-			if(rotation >3.1){
-				rotation  = 6.2 - rotation;
-			}
-		}
-		if (this.angle - 0.08 < rotation) {
-            this.angle += 0.03;
-        }
-		if (this.angle - 0.08 > rotation){
+		else{
 			this.angle -= 0.03;
 		}
-                /*if (timer < timerMax +10)
-                {
-                    enemyBullet.CreateBullet(enemyDirection, enemyPos); //lets the enemy create a bullet at rthe enemies position
-                    timer = 0;
-                }*/
+		//stop the arrow vibrating when its close to perfect.
+		if(this.angle- rotation >-0.08&&this.angle- rotation <0.08){
+			this.angle = rotation;
+		}
 	}
 }
 
