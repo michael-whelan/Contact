@@ -4,6 +4,7 @@ imgEnemy.src = "images/Enemy.png"
 var imgViewRad= new Image();
 imgViewRad.src = "images/ViewRange.png"
 
+
 var Enemy=function ()
 {
 	this.x = 200;
@@ -19,10 +20,12 @@ var Enemy=function ()
 	this.speed = 2;
 	this.timeSinceDirectChange = 0;
 	this.moveDirection;
+	this.targetPosX= 0;
+	this.targetPosY =0;
 
 	this.viewRadius = 200;
 	//AI States
-	this.state = 0;
+	this.state = "wander";
 };
 
 
@@ -45,29 +48,39 @@ Enemy.prototype.spawnEnemy = function(){
 	//Math.floor(Math.random()*(this.max-this.min) +this.min);
 }
 
+Enemy.prototype.targetPos = function(px,py){
+	this.targetPosX = px;
+	this.targetPosY = py;
+}
+
+
 
 Enemy.prototype.update = function(){
  	if(this.alive){
  		
- 		this.moveDirection = "forward";
+ 		
  		this.xDirect = Math.cos(this.angle);
 		this.yDirect = Math.sin(this.angle);
 
 		//this.moveBasic("forward");
-
+		if(this.state === "wander"){
+			this.moveBasic();
+		}
+		else if(this.state === "attack"){
+			this.moveTowardPlayer();
+		}
 		this.x+= this.xVel;
 		this.y+= this.yVel;
 		this.xVel = 0;
 		this.yVel = 0;
-		this.timeSinceDirectChange++;
 	}
 }
 
 
-Enemy.prototype.moveTowardPlayer = function(playerPosX, playerPosY){
+Enemy.prototype.moveTowardPlayer = function(){
 	if (this.alive == true){
-		var posDifferenceX = playerPosX - this.x; // finds the vector for the difference in positions
-		var posDifferenceY = playerPosY - this.y;
+		var posDifferenceX = this.targetPosX - this.x; // finds the vector for the difference in positions
+		var posDifferenceY = this.targetPosY - this.y;
 		var rotation = Math.atan2(posDifferenceY, posDifferenceX);
 
 		//checks which direction of rotation is the correct one
@@ -92,16 +105,19 @@ Enemy.prototype.kill = function(){
 
 
 
-Enemy.prototype.moveBasic = function(dir){
+Enemy.prototype.moveBasic = function(){
+
+	this.moveDirection = "forward";
 	//causes regular changes in direction
 	if(this.timeSinceDirectChange>40){
 		this.angle = Math.random()*(8-1) +1;
 		this.timeSinceDirectChange = 0;
 	}
-	if(dir == "forward"){
+	if(this.moveDirection == "forward"){
 		this.xVel = this.xDirect*this.speed;
 		this.yVel = this.yDirect*this.speed;
 	}
+	this.timeSinceDirectChange++;
 	
 };
 

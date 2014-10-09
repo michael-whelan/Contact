@@ -1,6 +1,7 @@
 var canvas, ctx;
 var imgBack = new Image();
 imgBack.src = "images/Back.png"
+var fsm;
 
 function Game (){
 	var player;
@@ -12,7 +13,7 @@ function Game (){
 
 Game.prototype.initWorld = function(){
 	player = new Player();
-//	enemy = [];
+	fsm = new FSM();
 	enemyManager = new EnemyManager();
 	collisionManager = new CollisionManager();
 	textManager = new TextManager();

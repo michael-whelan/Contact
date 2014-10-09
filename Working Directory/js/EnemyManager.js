@@ -1,4 +1,7 @@
 
+//var fsm = new FSM();
+
+
 
 var EnemyManager=function (){
 	this.currentLvl = 1;
@@ -56,11 +59,15 @@ EnemyManager.prototype.update = function(){
 
 EnemyManager.prototype.moveControl = function(j,b,px,py){
 		//checks if the collision with the vision radius is true and decides which movement is appropriate.
+		
 		if(b){
-			this.enemy[j].moveTowardPlayer(px,py);
+
+			this.enemy[j].state = fsm.stateControl(this.enemy[j].state,"seeTarget");
+			this.enemy[j].targetPos(px,py);
 		}
 		else{
-			this.enemy[j].moveBasic("forward");	
+			this.enemy[j].state = fsm.stateControl(this.enemy[j].state,0);	
+			this.enemy[j].state = fsm.stateControl(this.enemy[j].state, 0);
 		}
 }
 
@@ -73,7 +80,6 @@ EnemyManager.prototype.spawnSwarm = function(){
 		this.enemy.push(enemySingle);
 	}
 }
-
 
 
 EnemyManager.prototype.collision = function(e)
