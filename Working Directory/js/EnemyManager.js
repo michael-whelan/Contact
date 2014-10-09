@@ -36,7 +36,7 @@ EnemyManager.prototype.draw = function()
 EnemyManager.prototype.setUp = function(){
 	if(this.currentLvl == 1){
 		this.totalEnemies = 10;
-		this.totalSwarms = 2;
+		this.totalSwarms = 10;
 	}
 	this.enemySwarms = this.totalSwarms;
 }
@@ -66,7 +66,9 @@ EnemyManager.prototype.moveControl = function(j,b,px,py){
 			this.enemy[j].targetPos(px,py);
 		}
 		else{
+			console.log("1",this.enemy[j].state);
 			this.enemy[j].state = fsm.stateControl(this.enemy[j].state,0);
+			console.log("2",this.enemy[j].state);
 		}
 }
 

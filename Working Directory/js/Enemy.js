@@ -17,7 +17,7 @@ var Enemy=function ()
 	this.alive = false;
 	this.xDirect = 0;
 	this.yDirect = 0;
-	this.speed = 2;
+	this.speed = 1.5;
 	this.timeSinceDirectChange = 0;
 	this.moveDirection;
 	this.targetPosX= 0;
@@ -32,6 +32,7 @@ var Enemy=function ()
 Enemy.prototype.draw = function(){
 	if(this.alive){
 		ctx.drawImage(imgViewRad,this.x- this.viewRadius/2, this.y - this.viewRadius/2, this.viewRadius, this.viewRadius);
+		ctx.drawImage(imgBullet,this.targetPosX, this.targetPosY, 8, 8);
 		ctx.save();//save the state of canvas before rotation wrecks the place.
 		ctx.translate(this.x, this.y); //let's translate
 		ctx.rotate(this.angle); //increment the angle and rotate the image 
@@ -69,7 +70,7 @@ Enemy.prototype.update = function(){
 			this.turnTowardPlayer();
 		}
 		else if(this.state === "moveToPos"){
-			this.goToPos();
+			this.goToPos(this.targetPosX,this.targetPosY);
 		}
 		this.x+= this.xVel;
 		this.y+= this.yVel;
@@ -83,9 +84,9 @@ Enemy.prototype.turnTowardPlayer = function(){
 	if (this.alive == true){
 		this.rotateToDirection(this.targetPosX,this.targetPosY,0.03,0.08);
 	
-		if(getDistance(this.targetPosX,this.targetPosY,this.x,this.y) > 100){
+		/*if(getDistance(this.targetPosX,this.targetPosY,this.x,this.y) > 100){
 			this.goToPos(midPoint(this.targetPosX,this.x),midPoint(this.targetPosY,this.y));
-		}
+		}*/
 	}
 	//console.log(getDistance(5,1,1,-2));
 }
@@ -113,11 +114,29 @@ Enemy.prototype.rotateToDirection = function(targX,targY,speed,leeWay){
 Enemy.prototype.goToPos = function(xPos,yPos){
 	this.rotateToDirection(xPos,yPos,0.08,0.1);
 	
-
+	//console.log("hit");
 	this.xDirect = Math.cos(this.angle);
 	this.yDirect = Math.sin(this.angle);
+	this.xVel = this.xDirect*this.speed;
+	this.yVel = this.yDirect*this.speed;
+
+	if(this.closeToPos(xPos,yPos)){
+	//	console.log("hit");
+	this.state = fsm.stateControl(this.state,"complete");
+	}
 }
 
+Enemy.prototype.closeToPos = function(xPos,yPos){
+
+	var marginGap = 8;
+	if(this.x > xPos -marginGap &&this.x < xPos +marginGap){
+		if(this.y > yPos -marginGap &&this.y < yPos +marginGap){
+			return true;
+		}
+	}
+	return false;
+
+}
 
 
 function midPoint(v1,v2){
