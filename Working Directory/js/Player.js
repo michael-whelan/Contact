@@ -69,9 +69,9 @@ Player.prototype.update = function(){
 		this.angle += 0.1;
 	}
 	if(this.angle<0){
-		this.angle = 6;
+		this.angle = 6.3;
 	}
-	if(this.angle>6){
+	if(this.angle>6.3){
 		this.angle = 0;
 	}
 	if(KeyController.isKeyDown(Key.R)){

@@ -20,13 +20,9 @@ Game.prototype.initWorld = function(){
 	textManager.init();
 }
 
-
-
-
 Game.prototype.initCanvas=function () { 
 	canvas = document.createElement('canvas'); 
 	ctx = canvas.getContext('2d'); 
-	
 
 	document.body.appendChild(canvas);
 	//set canvas to size of the screen.
@@ -45,7 +41,6 @@ function mouseDown(e){
 
 Game.prototype.update = function(){
 	player.update();
-
 	enemyManager.update();
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {
 			enemyManager.moveControl(j,collisionManager.circleOnCircle(player,enemyManager.enemy[j]),

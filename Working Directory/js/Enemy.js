@@ -57,8 +57,6 @@ Enemy.prototype.targetPos = function(px,py){
 	this.targetPosY = py;
 }
 
-
-
 Enemy.prototype.update = function(){
  	if(this.alive){
  		
@@ -66,21 +64,24 @@ Enemy.prototype.update = function(){
 		this.yDirect = Math.sin(this.angle);
 		if(this.angle<0){
 		this.angle = 6;
-	}
-	if(this.angle>6.3){
-		this.angle = 0;
-	}
-		//this.moveBasic("forward");
+		}
+		if(this.angle>6.3){
+			this.angle = 0;
+		}
+		//State Control
 		if(this.state === "wander"){
 			this.moveBasic();
 		}
 		else if(this.state === "attack"){
-			this.drawLast = true;
+			this.drawLast = true;//shows the dot which represents the enemies view of the player.
 			this.turnTowardPlayer();
 		}
 		else if(this.state === "moveToPos"){
 			this.goToPos(this.targetPosX,this.targetPosY);
 		}
+		//end state control
+
+
 		this.x+= this.xVel;
 		this.y+= this.yVel;
 		this.xVel = 0;
@@ -92,12 +93,7 @@ Enemy.prototype.update = function(){
 Enemy.prototype.turnTowardPlayer = function(){
 	if (this.alive == true){
 		this.rotateToDirection(this.targetPosX,this.targetPosY,0.03,0.08);
-	
-		/*if(getDistance(this.targetPosX,this.targetPosY,this.x,this.y) > 100){
-			this.goToPos(midPoint(this.targetPosX,this.x),midPoint(this.targetPosY,this.y));
-		}*/
 	}
-	//console.log(getDistance(5,1,1,-2));
 }
 
 
@@ -112,7 +108,6 @@ Enemy.prototype.rotateToDirection = function(targX,targY,speed,leeWay){
 	else{
 		this.angle -= speed;
 	}
-
 		//stop the arrow vibrating when its close to perfect.
 		if(this.angle- rotation >-leeWay&&this.angle- rotation <leeWay){
 			this.angle = rotation;
@@ -123,15 +118,14 @@ Enemy.prototype.rotateToDirection = function(targX,targY,speed,leeWay){
 Enemy.prototype.goToPos = function(xPos,yPos){
 	this.rotateToDirection(xPos,yPos,0.08,0.1);
 	
-	//console.log("hit");
+	//turn to face a specific point
 	this.xDirect = Math.cos(this.angle);
 	this.yDirect = Math.sin(this.angle);
 	this.xVel = this.xDirect*this.speed;
 	this.yVel = this.yDirect*this.speed;
 	if(this.closeToPos(xPos,yPos)){
-	//	console.log("hit");
-	this.state = fsm.stateControl(this.state,"complete");
-	this.drawLast = false;
+		this.state = fsm.stateControl(this.state,"complete");
+		this.drawLast = false;
 	}
 }
 
@@ -144,36 +138,8 @@ Enemy.prototype.closeToPos = function(xPos,yPos){
 		}
 	}
 	return false;
-
 }
 
-
-function midPoint(v1,v2){
-    return (v1+v2)/2;
-}
-
-function getDistance(x1,y1,x2,y2){
-	var xs = 0;
-  	var ys = 0;
- 
-  	xs = x2 - x1;
-  	xs = xs * xs;
- 
-  	ys = y2 - y1;
- 	 ys = ys * ys;
- 
-  	return sqrt( xs + ys );
-}
-
-function sqrt(x) {
-    var i;
-    var s;
-    s=((x/2)+x/(x/2)) / 2; /*first guess*/
-    for(i=1;i<=4;i++) { /*average of guesses*/
-        s=(s+x/s)/2;
-    }
-    return s;
-}
 
 Enemy.prototype.kill = function(){
 	this.alive = false;
@@ -181,7 +147,6 @@ Enemy.prototype.kill = function(){
 
 
 Enemy.prototype.moveBasic = function(){
-
 	this.moveDirection = "forward";
 	//causes regular changes in direction
 	if(this.timeSinceDirectChange>40){
@@ -197,7 +162,7 @@ Enemy.prototype.moveBasic = function(){
 
 Enemy.prototype.collision = function(e)
 {
- 
+
 };
 
 
