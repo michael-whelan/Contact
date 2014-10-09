@@ -58,7 +58,6 @@ Enemy.prototype.targetPos = function(px,py){
 Enemy.prototype.update = function(){
  	if(this.alive){
  		
- 		
  		this.xDirect = Math.cos(this.angle);
 		this.yDirect = Math.sin(this.angle);
 
@@ -67,7 +66,10 @@ Enemy.prototype.update = function(){
 			this.moveBasic();
 		}
 		else if(this.state === "attack"){
-			this.moveTowardPlayer();
+			this.turnTowardPlayer();
+		}
+		else if(this.state === "moveToPos"){
+			this.goToPos();
 		}
 		this.x+= this.xVel;
 		this.y+= this.yVel;
@@ -77,32 +79,77 @@ Enemy.prototype.update = function(){
 }
 
 
-Enemy.prototype.moveTowardPlayer = function(){
+Enemy.prototype.turnTowardPlayer = function(){
 	if (this.alive == true){
-		var posDifferenceX = this.targetPosX - this.x; // finds the vector for the difference in positions
-		var posDifferenceY = this.targetPosY - this.y;
-		var rotation = Math.atan2(posDifferenceY, posDifferenceX);
-
-		//checks which direction of rotation is the correct one
-		if(((this.angle* (180/Math.PI))-(rotation* (180/Math.PI))+360)%360>180){
-			this.angle += 0.03;
-		}
-		else{
-			this.angle -= 0.03;
-		}
-		//stop the arrow vibrating when its close to perfect.
-		if(this.angle- rotation >-0.08&&this.angle- rotation <0.08){
-			this.angle = rotation;
+		this.rotateToDirection(this.targetPosX,this.targetPosY,0.03,0.08);
+	
+		if(getDistance(this.targetPosX,this.targetPosY,this.x,this.y) > 100){
+			this.goToPos(midPoint(this.targetPosX,this.x),midPoint(this.targetPosY,this.y));
 		}
 	}
+	//console.log(getDistance(5,1,1,-2));
 }
 
+
+Enemy.prototype.rotateToDirection = function(targX,targY,speed,leeWay){
+	var posDifferenceX = targX - this.x; // finds the vector for the difference in positions
+	var posDifferenceY = targY - this.y;
+	var rotation = Math.atan2(posDifferenceY, posDifferenceX);
+	//checks which direction of rotation is the correct one
+	if(((this.angle* (180/Math.PI))-(rotation* (180/Math.PI))+360)%360>180){
+		this.angle += speed;//0.08
+	}
+	else{
+		this.angle -= speed;
+	}
+
+		//stop the arrow vibrating when its close to perfect.
+		if(this.angle- rotation >-leeWay&&this.angle- rotation <leeWay){
+			this.angle = rotation;
+		}
+}
+
+
+Enemy.prototype.goToPos = function(xPos,yPos){
+	this.rotateToDirection(xPos,yPos,0.08,0.1);
+	
+
+	this.xDirect = Math.cos(this.angle);
+	this.yDirect = Math.sin(this.angle);
+}
+
+
+
+function midPoint(v1,v2){
+    return (v1+v2)/2;
+}
+
+function getDistance(x1,y1,x2,y2){
+	var xs = 0;
+  	var ys = 0;
+ 
+  	xs = x2 - x1;
+  	xs = xs * xs;
+ 
+  	ys = y2 - y1;
+ 	 ys = ys * ys;
+ 
+  	return sqrt( xs + ys );
+}
+
+function sqrt(x) {
+    var i;
+    var s;
+    s=((x/2)+x/(x/2)) / 2; /*first guess*/
+    for(i=1;i<=4;i++) { /*average of guesses*/
+        s=(s+x/s)/2;
+    }
+    return s;
+}
 
 Enemy.prototype.kill = function(){
 	this.alive = false;
 }
-
-
 
 
 Enemy.prototype.moveBasic = function(){
@@ -118,7 +165,6 @@ Enemy.prototype.moveBasic = function(){
 		this.yVel = this.yDirect*this.speed;
 	}
 	this.timeSinceDirectChange++;
-	
 };
 
 Enemy.prototype.collision = function(e)

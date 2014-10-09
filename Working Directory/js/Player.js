@@ -24,6 +24,10 @@ var Player=function (){
 	this.lastShotTime = 0;
 	this.reloadTimer = 50;
 	this.startReload = false; 
+
+
+	this.centreX =0;
+	this.centreY =0;
 };
 
 
@@ -120,6 +124,9 @@ Player.prototype.draw = function(){
 };
 
 Player.prototype.move= function(dir){
+
+	this.centreX = this.x+this.width/2
+	this.centreY = this.y+this.height/2;
 	if(dir == "forward"){
 		this.xVel = this.xDirect*this.speed;
 		this.yVel = this.yDirect*this.speed;
