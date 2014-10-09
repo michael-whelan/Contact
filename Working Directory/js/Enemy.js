@@ -26,13 +26,16 @@ var Enemy=function ()
 	this.viewRadius = 200;
 	//AI States
 	this.state = "wander";
+	this.drawLast = false;
 };
 
 
 Enemy.prototype.draw = function(){
 	if(this.alive){
 		ctx.drawImage(imgViewRad,this.x- this.viewRadius/2, this.y - this.viewRadius/2, this.viewRadius, this.viewRadius);
-		ctx.drawImage(imgBullet,this.targetPosX, this.targetPosY, 8, 8);
+		if(this.drawLast){
+			ctx.drawImage(imgBullet,this.targetPosX, this.targetPosY, 8, 8);
+		}
 		ctx.save();//save the state of canvas before rotation wrecks the place.
 		ctx.translate(this.x, this.y); //let's translate
 		ctx.rotate(this.angle); //increment the angle and rotate the image 
@@ -61,12 +64,18 @@ Enemy.prototype.update = function(){
  		
  		this.xDirect = Math.cos(this.angle);
 		this.yDirect = Math.sin(this.angle);
-
+		if(this.angle<0){
+		this.angle = 6;
+	}
+	if(this.angle>6.3){
+		this.angle = 0;
+	}
 		//this.moveBasic("forward");
 		if(this.state === "wander"){
 			this.moveBasic();
 		}
 		else if(this.state === "attack"){
+			this.drawLast = true;
 			this.turnTowardPlayer();
 		}
 		else if(this.state === "moveToPos"){
@@ -119,10 +128,10 @@ Enemy.prototype.goToPos = function(xPos,yPos){
 	this.yDirect = Math.sin(this.angle);
 	this.xVel = this.xDirect*this.speed;
 	this.yVel = this.yDirect*this.speed;
-
 	if(this.closeToPos(xPos,yPos)){
 	//	console.log("hit");
 	this.state = fsm.stateControl(this.state,"complete");
+	this.drawLast = false;
 	}
 }
 

@@ -45,9 +45,7 @@ function mouseDown(e){
 
 Game.prototype.update = function(){
 	player.update();
-	/*for (var j = 0; j < enemy.length; ++j) {
-		enemy[j].update();
-	}*/
+
 	enemyManager.update();
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {
 			enemyManager.moveControl(j,collisionManager.circleOnCircle(player,enemyManager.enemy[j]),
