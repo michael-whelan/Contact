@@ -36,6 +36,30 @@ function mouseDown(e){
 	enemySingle.spawnEnemy(this.xDirect,this.yDirect,this.x,this.y);
 	enemy.push(enemySingle);
 	console.log(enemySingle.x,enemySingle.y);*/
+//	console.log(getDistance(player.x,player.y,e.clientX,e.clientY));
+}
+
+function getDistance(x1,y1,x2,y2){
+	var xs = 0;
+  	var ys = 0;
+ 
+  	xs = x2 - x1;
+  	xs = xs * xs;
+ 
+  	ys = y2 - y1;
+ 	 ys = ys * ys;
+ 
+  	return sqrt( xs + ys );
+}
+
+function sqrt(x) {
+    var i;
+    var s;
+    s=((x/2)+x/(x/2)) / 2; /*first guess*/
+    for(i=1;i<=4;i++) { /*average of guesses*/
+        s=(s+x/s)/2;
+    }
+    return s;
 }
 
 

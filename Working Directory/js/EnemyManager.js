@@ -54,7 +54,6 @@ EnemyManager.prototype.update = function(){
 	for (var j = 0; j < this.enemy.length; ++j) {
 		this.enemy[j].update();
 	}
- 	
 }
 
 EnemyManager.prototype.moveControl = function(j,b,px,py){

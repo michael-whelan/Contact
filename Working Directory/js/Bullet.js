@@ -20,19 +20,17 @@ var Bullet=function ()
 Bullet.prototype.draw = function()
 {
 	if(this.alive){
-
  	   ctx.drawImage(imgBullet,this.x, this.y, this.width, this.height);
 	}
 };
 
-Bullet.prototype.spawnBullet = function(playXDirect,playYDirect,xPos,yPos){
+Bullet.prototype.spawnBullet = function(playXDirect,playYDirect,xPos,yPos,angle){
  	this.xDirect = playXDirect;
  	this.yDirect = playYDirect;	
  	this.alive = true;
  	this.x = xPos;
  	this.y = yPos;
  	this.timeOfBirth = Date.now();
- 	console.log(xPos);
 }
 
 
@@ -52,8 +50,6 @@ Bullet.prototype.update = function(){
 }
 
 Bullet.prototype.moveForward = function(){
-
-
 	this.xVel = this.xDirect*this.speed;
 	this.yVel = this.yDirect*this.speed;
 }

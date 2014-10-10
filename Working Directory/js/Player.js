@@ -1,5 +1,5 @@
 var imgPlayer= new Image();
-imgPlayer.src = "images/Player.png"
+imgPlayer.src = "images/character_01.png"
 
 
 
@@ -9,8 +9,8 @@ var numBullets;
 var Player=function (){
 	this.x = 100;
 	this.y = 100;
-	this.width = 50;
-	this.height = 50;
+	this.width = 128;
+	this.height = 101;
 	this.angle = 2.87;
 	this.xVel = 0;
 	this.yVel = 0;
@@ -25,11 +25,9 @@ var Player=function (){
 	this.reloadTimer = 50;
 	this.startReload = false; 
 
-
 	this.centreX =0;
 	this.centreY =0;
 };
-
 
 
 Player.prototype.reload = function(){
@@ -47,7 +45,7 @@ Player.prototype.shoot = function(){
 	if(KeyController.isKeyDown(Key.SPACE)){
 		if(numBullets>0){
 			var bullet = new Bullet();
-			bullet.spawnBullet(this.xDirect,this.yDirect,this.x,this.y);
+			bullet.spawnBullet(this.xDirect,this.yDirect,this.x,this.y,this.angle);
 			bullets.push(bullet);
 			numBullets--;
 		}
@@ -122,6 +120,10 @@ Player.prototype.draw = function(){
 	ctx.drawImage(imgPlayer,-this.width/2, -this.height/2, this.width, this.height);
 	ctx.restore(); //restore the state of canvas
 };
+
+
+
+
 
 Player.prototype.move= function(dir){
 

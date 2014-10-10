@@ -41,7 +41,6 @@ Enemy.prototype.draw = function(){
 		ctx.rotate(this.angle); //increment the angle and rotate the image 
 		ctx.drawImage(imgEnemy,-this.width/2, -this.height/2, this.width, this.height);
 		ctx.restore(); //restore the state of canvas
-	
  	  // ctx.drawImage(imgEnemy,this.x, this.y, this.width, this.height);
 	}
 };
@@ -108,10 +107,10 @@ Enemy.prototype.rotateToDirection = function(targX,targY,speed,leeWay){
 	else{
 		this.angle -= speed;
 	}
-		//stop the arrow vibrating when its close to perfect.
-		if(this.angle- rotation >-leeWay&&this.angle- rotation <leeWay){
-			this.angle = rotation;
-		}
+	//stop the arrow vibrating when its close to perfect.
+	if(this.angle- rotation >-leeWay&&this.angle- rotation <leeWay){
+		this.angle = rotation;
+	}
 }
 
 
