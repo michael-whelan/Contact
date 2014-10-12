@@ -112,16 +112,18 @@ Player.prototype.draw = function(){
 	//canvas.width = canvas.width;
 	//ctx.clearRect(this.x-this.width/2, this.y-this.height/2, this.width, this.height);
 	ctx.save();//save the state of canvas before rotation wrecks the place.
+
 	for(var i = 0; i <bullets.length; i++){
 		bullets[i].draw();
 	}
 	ctx.translate(this.x, this.y); //let's translate
 	ctx.rotate(this.angle); //increment the angle and rotate the image 
 	ctx.drawImage(imgPlayer,-this.width/2, -this.height/2, this.width, this.height);
+	ctx.drawImage(imgBullet,-this.width/2+80, -this.height/2+65, 10, 10);
 	ctx.restore(); //restore the state of canvas
+	//ctx.drawImage(imgBullet,Math.cos(this.angle) + (this.x-40) - Math.sin(this.angle) * (this.y+50-this.y) +(this.x - this.width/2), 
+	//	Math.sin(this.angle) + (this.x-40) + Math.cos(this.angle) * (this.y+30-this.y) + (this.y+50 - this.height/2), 10, 10);
 };
-
-
 
 
 

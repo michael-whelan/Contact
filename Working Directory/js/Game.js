@@ -36,10 +36,12 @@ function mouseDown(e){
 	enemySingle.spawnEnemy(this.xDirect,this.yDirect,this.x,this.y);
 	enemy.push(enemySingle);
 	console.log(enemySingle.x,enemySingle.y);*/
-//	console.log(getDistance(player.x,player.y,e.clientX,e.clientY));
+	//var rect = canvas.getBoundingClientRect();
+	//console.log(getDistance(player.x,player.y,e.clientX-rect.left,e.clientY - rect.top));
 }
 
 function getDistance(x1,y1,x2,y2){
+	console.log(x1,y1,x2,y2);
 	var xs = 0;
   	var ys = 0;
  
