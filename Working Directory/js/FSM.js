@@ -30,10 +30,12 @@ FSM.prototype.stateControl = function(currState, evt){
 		}
 	}
 
-
 	if(currState === "moveToPos"){//if on the way to a destination
 		if(evt === "complete"){//the event that is triggered whenever the current aim of a state is complete
 			return "wander";//return to idle
+		}
+		else if(evt === "hearShot"){//interrupted by shot taken 
+			return "moveToPos";//tells the entity to change states to the appropriate
 		}
 		else if(evt === "seeTarget"){//if the player is sighted
 			return "attack";//attack the player
@@ -50,6 +52,8 @@ FSM.prototype.stateControl = function(currState, evt){
 			return "moveToPos";
 		}
 	}
+
+	
 
 
 	return "wander";

@@ -69,9 +69,14 @@ Game.prototype.update = function(){
 	player.update();
 	enemyManager.update();
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {
-			enemyManager.moveControl(j,collisionManager.circleOnCircle(player,enemyManager.enemy[j]),
-				player.x,player.y);
+		enemyManager.moveControl(j,collisionManager.circleOnCircle(player,enemyManager.enemy[j]),
+			player.x,player.y);
+		if(player.shot){
+			enemyManager.hearShot(player.x,player.y);
+			player.shot = false;
+		}
 	}
+
 
 	for(var i = 0;i< bullets.length;++i){
 		if(bullets[i].alive){

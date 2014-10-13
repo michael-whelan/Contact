@@ -10,7 +10,7 @@ var Player=function (){
 	this.x = 100;
 	this.y = 100;
 	this.width = 128;
-	this.height = 101;
+	this.height = 101;//135
 	this.angle = 2.87;
 	this.xVel = 0;
 	this.yVel = 0;
@@ -27,6 +27,7 @@ var Player=function (){
 
 	this.centreX =0;
 	this.centreY =0;
+	this.shot = false;//the sound of the gun shot
 };
 
 
@@ -46,6 +47,7 @@ Player.prototype.shoot = function(){
 		if(numBullets>0){
 			var bullet = new Bullet();
 			bullet.spawnBullet(this.xDirect,this.yDirect,this.x,this.y,this.angle);
+			this.shot = true;
 			bullets.push(bullet);
 			numBullets--;
 		}

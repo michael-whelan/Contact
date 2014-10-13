@@ -29,8 +29,11 @@ EnemyManager.prototype.allEnemies = function(){
 
 }
 
-EnemyManager.prototype.draw = function()
-{
+EnemyManager.prototype.hearShot = function(px,py){
+	for (var j = 0; j < this.enemy.length; ++j) {
+		this.enemy[j].state = fsm.stateControl(this.enemy[j].state,"hearShot");
+		this.enemy[j].targetPos(px,py);
+	}
 };
 
 EnemyManager.prototype.setUp = function(){
