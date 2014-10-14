@@ -23,7 +23,7 @@ CollisionManager.prototype.update = function(){
 }
 
 CollisionManager.prototype.circleOnCircle = function(c1,c2){
-	var radius1 = c1.width/2;
+	var radius1 = c1.radius/2;
 	var radius2 = c2.viewRadius/2;
 
 	var dx = c1.x - c2.x;
