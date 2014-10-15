@@ -18,6 +18,7 @@ var EnemyManager=function (){
 
 
 EnemyManager.prototype.init = function(lvl){
+	lvl =1;
 	this.currentLvl = lvl;
 }
 

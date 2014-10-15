@@ -18,7 +18,7 @@ TextManager.prototype.drawInstruc =function (){
 
 
 TextManager.prototype.controller = function(){
-    if(numBullets>0){
+    if(player.numBullets>0){
         this.gameText();
     }
     else{
@@ -45,7 +45,7 @@ TextManager.prototype.gameText=function(){
 ctx.font = '40px san-serif';
 ctx.textBaseline = 'bottom';
 //txtAmmo = txtAmmo + numBullets.toString();
-ctx.strokeText(txtAmmo+ numBullets.toString(), 300, 100);
+ctx.strokeText(txtAmmo+ player.numBullets.toString(), 300, 100);
 }
 
 // This represents the main game Title

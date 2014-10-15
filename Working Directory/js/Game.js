@@ -3,21 +3,24 @@ var imgBack = new Image();
 imgBack.src = "images/Back.png"
 var fsm;
 
-function Game (){
-	var player;
-	var enemy;
-	var collisionManager;
-	var textManager;
-	var enemyManager;
-}
+var player;
+var enemy;
+var collisionManager;
+var textManager;
+var enemyManager;
 
-Game.prototype.initWorld = function(){
+function Game (){
 	player = new Player();
 	fsm = new FSM();
 	enemyManager = new EnemyManager();
 	collisionManager = new CollisionManager();
 	textManager = new TextManager();
+}
+
+Game.prototype.initWorld = function(){
+	//player.init();
 	textManager.init();
+	enemyManager.init();
 }
 
 Game.prototype.initCanvas=function () { 
@@ -77,19 +80,18 @@ Game.prototype.update = function(){
 		}
 	}
 
-
-	for(var i = 0;i< bullets.length;++i){
-		if(bullets[i].alive){
+	for(var i = 0;i< player.bullets.length;++i){
+		if(player.bullets[i].alive){
 			for (var j = 0; j < enemyManager.enemy.length; ++j) {//enemy.length
 
-				if(collisionManager.boxOnBox(bullets[i], enemyManager.enemy[j])){
+				if(collisionManager.boxOnBox(player.bullets[i], enemyManager.enemy[j])){
 					enemyManager.enemy[j].kill();
 				}
 				if(!enemyManager.enemy[j].alive){
     				var index = enemyManager.enemy.indexOf(j);
     				enemyManager.enemy.splice(j, 1);
     				j--;
-    				bullets[i].kill();
+    				player.bullets[i].kill();
    				}
 			}
 		}
@@ -115,11 +117,11 @@ function calculateFps(now) {
 }
 
 Game.prototype.gameLoop = function (){
-   var GAME_RUNNING=0;
- 	  game.update();
-	  game.draw();
+   	var GAME_RUNNING=0;
+ 	game.update();
+	game.draw();
 	  
-	  window.requestAnimFrame(game.gameLoop);
+	window.requestAnimFrame(game.gameLoop);
 }
 
 Game.prototype.draw =function (){

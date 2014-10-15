@@ -3,10 +3,13 @@ imgPlayer.src = "images/character_01.png"
 
 
 
-var bullets;
-var numBullets;
+
+
 
 var Player=function (){
+	this.bullets =[];
+	this.numBullets = 30;
+
 	this.x = 100;
 	this.y = 100;
 	this.width = 128;
@@ -17,9 +20,8 @@ var Player=function (){
 	this.xDirect = 0;
 	this.yDirect = 0;
 	this.speed = 2;
-	bullets = [];
 	//bullet = new Bullet();
-	numBullets = 30;
+	
 	this.bulletsAlive = 0;
 	this.lastShotTime = 0;
 	this.reloadTimer = 50;
@@ -30,13 +32,12 @@ var Player=function (){
 	this.shot = false;//the sound of the gun shot
 };
 
-
 Player.prototype.reload = function(){
 	this.reloadTimer--;
 
 	if(this.reloadTimer<=0){
 		this.reloadTimer = 50;
-		numBullets = 30;
+		this.numBullets = 30;
 		this.startReload = false;
 	}
 }
@@ -44,21 +45,21 @@ Player.prototype.reload = function(){
 
 Player.prototype.shoot = function(){
 	if(KeyController.isKeyDown(Key.SPACE)){
-		if(numBullets>0){
+		if(this.numBullets>0){
 			var bullet = new Bullet();
 			bullet.spawnBullet(this.xDirect,this.yDirect,this.x,this.y,this.angle);
 			this.shot = true;
-			bullets.push(bullet);
-			numBullets--;
+			this.bullets.push(bullet);
+			this.numBullets--;
 		}
 	}//end Space
 		/*if(this.numBullets<=0){
 			console.log("Press R To Reload");
 		}*/
-	for (var i = 0; i < bullets.length; ++i) {
-    	if (!bullets[i].alive) {
-    		var index = bullets.indexOf(i);
-    		bullets.splice(i, 1);
+	for (var i = 0; i < this.bullets.length; ++i) {
+    	if (!this.bullets[i].alive) {
+    		var index = this.bullets.indexOf(i);
+    		this.bullets.splice(i, 1);
     		i--;
    		}
 	}
@@ -90,9 +91,9 @@ Player.prototype.update = function(){
 	this.yDirect = Math.sin(this.angle);
 
 	this.shoot();
-	for(var i = 0; i <bullets.length; i++){
-		if(bullets[i].alive){
-			bullets[i].update();
+	for(var i = 0; i <this.bullets.length; i++){
+		if(this.bullets[i].alive){
+			this.bullets[i].update();
 		}
 	}
 
@@ -115,8 +116,8 @@ Player.prototype.draw = function(){
 	//ctx.clearRect(this.x-this.width/2, this.y-this.height/2, this.width, this.height);
 	ctx.save();//save the state of canvas before rotation wrecks the place.
 
-	for(var i = 0; i <bullets.length; i++){
-		bullets[i].draw();
+	for(var i = 0; i <this.bullets.length; i++){
+		this.bullets[i].draw();
 	}
 	ctx.translate(this.x, this.y); //let's translate
 	ctx.rotate(this.angle); //increment the angle and rotate the image 
