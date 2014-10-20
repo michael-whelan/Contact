@@ -40,7 +40,7 @@ EnemyManager.prototype.hearShot = function(px,py){
 EnemyManager.prototype.setUp = function(){
 	if(this.currentLvl == 1){
 		this.totalEnemies = 10;
-		this.totalSwarms = 2;
+		this.totalSwarms = 10;
 	}
 	this.enemySwarms = this.totalSwarms;
 }

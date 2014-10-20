@@ -23,7 +23,7 @@ CollisionManager.prototype.update = function(){
 }
 
 CollisionManager.prototype.circleOnCircle = function(c1,c2){
-	var radius1 = c1.radius/2;
+	var radius1 = c1.radius;
 	var radius2 = c2.viewRadius/2;
 
 	var dx = c1.x - c2.x;
@@ -35,6 +35,29 @@ CollisionManager.prototype.circleOnCircle = function(c1,c2){
 	return false;
     
 }
+
+CollisionManager.prototype.circleOnTriangle = function(cir,triX1,triY1,triX2,triY2,triX3,triY3){
+	var centreX = cir.x + cir.width/2;
+	var centreY = cir.y + cir.height/2;
+
+	//var check1 = false,check2= false,check3 = false;
+
+	if(!this.onSideOfLine(triX1,triY1,triX2,triY2,centreX,centreY) &&
+		!this.onSideOfLine(triX2,triY2,triX3,triY3,centreX,centreY)&&
+		!this.onSideOfLine(triX3,triY3,triX1,triY1,centreX,centreY)){
+		return true;
+	}
+	return false;
+}
+
+CollisionManager.prototype.onSideOfLine = function(aX,aY,bX,bY,cX,cY){
+	if(((bX-aX)* (cY - aY)) - ((bY-aY)*(cX-aX))>0){
+		return true;
+	}
+	return false;
+}
+
+
 
 
 CollisionManager.prototype.circleOnBox = function(cir,box){

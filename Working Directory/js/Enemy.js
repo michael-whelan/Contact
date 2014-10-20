@@ -36,6 +36,9 @@ var Enemy=function ()
 	this.reloadTimer = 80;
 	this.startReload = false; 
 	//this.bulletTimer = 0;
+
+	//triangle variables
+	this.aX=0,this.aY=0,this.bX=0,this.bY=0,this.cX=0,this.cY=0;
 };
 
 
@@ -64,7 +67,7 @@ Enemy.prototype.update = function(){
 		}
 		//State Control
 		if(this.state === "wander"){
-			this.moveBasic();
+		//	this.moveBasic();
 		}
 		else if(this.state === "attack"){
 			this.drawLast = true;//shows the dot which represents the enemies view of the player.
@@ -102,10 +105,15 @@ Enemy.prototype.draw = function(){
 		ctx.rotate(this.angle); //increment the angle and rotate the image 
 		ctx.drawImage(imgEnemy,-this.width/2, -this.height/2, this.width, this.height);
 		ctx.beginPath();
-    	ctx.moveTo(-this.width/2,-this.height/2 +20);
-    	ctx.lineTo(-this.width/2+350,-this.height/2+180);
-    	ctx.lineTo(-this.width/2+350,-this.height/2-120);
+    	ctx.moveTo(-this.width/2,-this.height/2 +20);//a
+    	ctx.lineTo(-this.width/2+350,-this.height/2+180);//b
+    	ctx.lineTo(-this.width/2+350,-this.height/2-120);//c
     	ctx.lineTo(-this.width/2,-this.height/2 +20);
+
+    	this.aX=-this.width/2, this.aY=-this.height/2 +20,
+    	this.bX=-this.width/2+350,this.bY=-this.height/2+180,
+    	this.cX=-this.width/2+350,this.cY=-this.height/2-120;
+
     	ctx.stroke();
 		ctx.restore(); //restore the state of canvas
  	  // ctx.drawImage(imgEnemy,this.x, this.y, this.width, this.height);

@@ -48,8 +48,7 @@ function mouseDown(e){
 	//console.log(getDistance(player.x,player.y,e.clientX-rect.left,e.clientY - rect.top));
 }
 
-Game.prototype.playBackgroundLoop = function()
-{
+Game.prototype.playBackgroundLoop = function(){
 	//an alternative method 
 	backTrack.addEventListener('ended', function() {
 	    this.currentTime = 0;
@@ -90,6 +89,10 @@ Game.prototype.update = function(){
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {
 		enemyManager.moveControl(j,collisionManager.circleOnCircle(player,enemyManager.enemy[j]),
 			player.x,player.y);
+		console.log(collisionManager.circleOnTriangle(player,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
+			enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
+			enemyManager.enemy[j].cX,enemyManager.enemy[j].cY));
+
 		if(player.shot){
 			enemyManager.hearShot(player.x,player.y);
 			player.shot = false;
@@ -99,7 +102,6 @@ Game.prototype.update = function(){
 	for(var i = 0;i< player.bullets.length;++i){
 		if(player.bullets[i].alive){
 			for (var j = 0; j < enemyManager.enemy.length; ++j) {//enemy.length
-
 				if(collisionManager.boxOnBox(player.bullets[i], enemyManager.enemy[j])){
 					enemyManager.enemy[j].kill();
 				}
