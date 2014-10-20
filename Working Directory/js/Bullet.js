@@ -1,6 +1,10 @@
 var imgBullet= new Image();
 imgBullet.src = "images/Bullet.png"
 
+
+var gunshot = new Audio();
+gunshot.src = "sounds/sfx/Gun_Pew.mp3";
+
 var Bullet=function ()
 {
 	this.x = 0;
@@ -14,23 +18,26 @@ var Bullet=function ()
 	this.xDirect = 0;
 	this.yDirect = 0;
 	this.speed = 5;
+	//this.gunshot = new Audio();
+	//Bullet.bulletTimer = 0;
 };
 
 
-Bullet.prototype.draw = function()
-{
+Bullet.prototype.draw = function(){
 	if(this.alive){
  	   ctx.drawImage(imgBullet,this.x, this.y, this.width, this.height);
 	}
 };
 
 Bullet.prototype.spawnBullet = function(playXDirect,playYDirect,xPos,yPos,angle){
+	//Bullet.bulletTimer++;
  	this.xDirect = playXDirect;
  	this.yDirect = playYDirect;	
  	this.alive = true;
  	this.x = xPos;
  	this.y = yPos;
  	this.timeOfBirth = Date.now();
+ 	gunshot.play();
 }
 
 

@@ -1,6 +1,10 @@
 var canvas, ctx;
 var imgBack = new Image();
 imgBack.src = "images/Back.png"
+
+var backTrack = new Audio();
+backTrack.src = "sounds/music/Gameplay_Theme_Idea.mp3";
+
 var fsm;
 
 var player;
@@ -21,6 +25,7 @@ Game.prototype.initWorld = function(){
 	//player.init();
 	textManager.init();
 	enemyManager.init();
+	this.playBackgroundLoop();
 }
 
 Game.prototype.initCanvas=function () { 
@@ -42,6 +47,17 @@ function mouseDown(e){
 	//var rect = canvas.getBoundingClientRect();
 	//console.log(getDistance(player.x,player.y,e.clientX-rect.left,e.clientY - rect.top));
 }
+
+Game.prototype.playBackgroundLoop = function()
+{
+	//an alternative method 
+	backTrack.addEventListener('ended', function() {
+	    this.currentTime = 0;
+	    this.play();
+	}, false);
+
+	backTrack.play();
+};
 
 function getDistance(x1,y1,x2,y2){
 	console.log(x1,y1,x2,y2);

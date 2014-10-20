@@ -35,7 +35,7 @@ var Enemy=function ()
 	this.numBullets = 4;
 	this.reloadTimer = 80;
 	this.startReload = false; 
-
+	//this.bulletTimer = 0;
 };
 
 
@@ -54,7 +54,6 @@ Enemy.prototype.targetPos = function(px,py){
 
 Enemy.prototype.update = function(){
  	if(this.alive){
- 		
  		this.xDirect = Math.cos(this.angle);
 		this.yDirect = Math.sin(this.angle);
 		if(this.angle<0){
@@ -70,7 +69,6 @@ Enemy.prototype.update = function(){
 		else if(this.state === "attack"){
 			this.drawLast = true;//shows the dot which represents the enemies view of the player.
 			this.turnTowardPlayer();
-
 		}
 		else if(this.state === "moveToPos"){
 			this.goToPos(this.targetPosX,this.targetPosY);
@@ -92,6 +90,7 @@ Enemy.prototype.update = function(){
 Enemy.prototype.draw = function(){
 	if(this.alive){
 		ctx.drawImage(imgViewRad,this.x- this.viewRadius/2, this.y - this.viewRadius/2, this.viewRadius, this.viewRadius);
+
 		if(this.drawLast){
 			ctx.drawImage(imgBullet,this.targetPosX, this.targetPosY, 8, 8);
 		}
@@ -102,6 +101,12 @@ Enemy.prototype.draw = function(){
 		ctx.translate(this.x, this.y); //let's translate
 		ctx.rotate(this.angle); //increment the angle and rotate the image 
 		ctx.drawImage(imgEnemy,-this.width/2, -this.height/2, this.width, this.height);
+		ctx.beginPath();
+    	ctx.moveTo(-this.width/2,-this.height/2 +20);
+    	ctx.lineTo(-this.width/2+350,-this.height/2+180);
+    	ctx.lineTo(-this.width/2+350,-this.height/2-120);
+    	ctx.lineTo(-this.width/2,-this.height/2 +20);
+    	ctx.stroke();
 		ctx.restore(); //restore the state of canvas
  	  // ctx.drawImage(imgEnemy,this.x, this.y, this.width, this.height);
 	}
@@ -138,7 +143,7 @@ Enemy.prototype.shoot = function(){
 			this.numBullets--;
 		}
 		else{
-			console.log(this.numBullets);
+			//console.log(this.numBullets);
 			this.startReload = true;
 		}
 

@@ -2,10 +2,6 @@ var imgPlayer= new Image();
 imgPlayer.src = "images/character_01.png"
 
 
-
-
-
-
 var Player=function (){
 	this.bullets =[];
 	this.numBullets = 30;
@@ -29,7 +25,8 @@ var Player=function (){
 	this.radius= 100;//used for collision
 	this.centreX =0;
 	this.centreY =0;
-	this.shot = false;//the sound of the gun shot
+	this.shot = false;//the sound of the gun shot for the enemies to hear
+	this.bulletTimer=0;//stops the bullets from spawning all at once.
 };
 
 Player.prototype.reload = function(){
@@ -43,14 +40,15 @@ Player.prototype.reload = function(){
 }
 
 
-Player.prototype.shoot = function(){
+Player.prototype.shoot = function(){	
 	if(KeyController.isKeyDown(Key.SPACE)){
-		if(this.numBullets>0){
+		if(this.numBullets>0 && this.bulletTimer>18){
 			var bullet = new Bullet();
 			bullet.spawnBullet(this.xDirect,this.yDirect,this.x,this.y,this.angle);
 			this.shot = true;
 			this.bullets.push(bullet);
 			this.numBullets--;
+			this.bulletTimer=0;
 		}
 	}//end Space
 		/*if(this.numBullets<=0){
@@ -89,11 +87,12 @@ Player.prototype.update = function(){
 
 	this.xDirect = Math.cos(this.angle);
 	this.yDirect = Math.sin(this.angle);
-
+	this.bulletTimer++;
 	this.shoot();
 	for(var i = 0; i <this.bullets.length; i++){
 		if(this.bullets[i].alive){
 			this.bullets[i].update();
+			console.log(this.bullets[i].bulletTimer);
 		}
 	}
 

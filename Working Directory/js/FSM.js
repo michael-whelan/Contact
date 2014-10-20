@@ -53,7 +53,6 @@ FSM.prototype.stateControl = function(currState, evt){
 		}
 	}
 
-	
 
 
 	return "wander";
