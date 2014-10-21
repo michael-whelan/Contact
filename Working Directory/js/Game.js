@@ -89,10 +89,19 @@ Game.prototype.update = function(){
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {
 		enemyManager.moveControl(j,collisionManager.circleOnCircle(player,enemyManager.enemy[j]),
 			player.x,player.y);
-		console.log(collisionManager.circleOnTriangle(player,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
+		
+		enemyManager.moveControl(j,collisionManager.circleOnTriangle(player.x,player.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
+			enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
+			enemyManager.enemy[j].cX,enemyManager.enemy[j].cY),
+			player.x,player.y);
+
+		/*console.log(collisionManager.circleOnTriangle(player.x,player.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
 			enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
 			enemyManager.enemy[j].cX,enemyManager.enemy[j].cY));
-
+		console.log(collisionManager.onSideOfLine(enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
+			enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
+			player.x,player.y));
+*/
 		if(player.shot){
 			enemyManager.hearShot(player.x,player.y);
 			player.shot = false;

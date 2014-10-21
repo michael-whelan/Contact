@@ -23,8 +23,9 @@ var Enemy=function ()
 	this.moveDirection;
 	this.targetPosX= 0;
 	this.targetPosY =0;
-
-	this.viewRadius = 200;
+	this.lastX;
+	this.lastY;
+	this.viewRadius = 80;
 	//AI States
 	this.state = "wander";
 	this.drawLast = false;
@@ -83,6 +84,12 @@ Enemy.prototype.update = function(){
 				this.bullets[i].update();
 			}
 		}
+		//the magic numbers are used to resemble the rotation and translation of the enemy.
+        this.aX=rotate_point(this.x,this.y,this.x,this.y,this.angle).x,this.aY = rotate_point(this.x,this.y,this.x,this.y,this.angle).y;
+    	this.bX=rotate_point(this.x+350,this.y+160,this.x,this.y,this.angle).x, this.bY =rotate_point(this.x+350,this.y+160,this.x,this.y,this.angle).y;
+    	this.cX=rotate_point(this.x+350,this.y-140,this.x,this.y,this.angle).x,this.cY=rotate_point(this.x+350,this.y-140,this.x,this.y,this.angle).y;
+
+
 		this.x+= this.xVel;
 		this.y+= this.yVel;
 		this.xVel = 0;
@@ -94,6 +101,13 @@ Enemy.prototype.draw = function(){
 	if(this.alive){
 		ctx.drawImage(imgViewRad,this.x- this.viewRadius/2, this.y - this.viewRadius/2, this.viewRadius, this.viewRadius);
 
+		ctx.beginPath();
+    	ctx.moveTo(rotate_point(this.x,this.y,this.x,this.y,this.angle).x,rotate_point(this.x,this.y,this.x,this.y,this.angle).y);//a
+    	ctx.lineTo(rotate_point(this.x+350,this.y+160,this.x,this.y,this.angle).x,rotate_point(this.x+350,this.y+160,this.x,this.y,this.angle).y);//b
+    	ctx.lineTo(rotate_point(this.x+350,this.y-140,this.x,this.y,this.angle).x,rotate_point(this.x+350,this.y-140,this.x,this.y,this.angle).y);//c
+    	ctx.lineTo(rotate_point(this.x,this.y,this.x,this.y,this.angle).x,rotate_point(this.x,this.y,this.x,this.y,this.angle).y);
+    	ctx.stroke();
+
 		if(this.drawLast){
 			ctx.drawImage(imgBullet,this.targetPosX, this.targetPosY, 8, 8);
 		}
@@ -104,21 +118,21 @@ Enemy.prototype.draw = function(){
 		ctx.translate(this.x, this.y); //let's translate
 		ctx.rotate(this.angle); //increment the angle and rotate the image 
 		ctx.drawImage(imgEnemy,-this.width/2, -this.height/2, this.width, this.height);
-		ctx.beginPath();
-    	ctx.moveTo(-this.width/2,-this.height/2 +20);//a
-    	ctx.lineTo(-this.width/2+350,-this.height/2+180);//b
-    	ctx.lineTo(-this.width/2+350,-this.height/2-120);//c
-    	ctx.lineTo(-this.width/2,-this.height/2 +20);
 
-    	this.aX=-this.width/2, this.aY=-this.height/2 +20,
-    	this.bX=-this.width/2+350,this.bY=-this.height/2+180,
-    	this.cX=-this.width/2+350,this.cY=-this.height/2-120;
-
-    	ctx.stroke();
 		ctx.restore(); //restore the state of canvas
- 	  // ctx.drawImage(imgEnemy,this.x, this.y, this.width, this.height);
+
+		this.lastX = this.x;
+		this.lastY = this.y;
 	}
 };
+
+function rotate_point(pointX, pointY, originX, originY, angle) {
+	//angle = angle * Math.PI / 180.0;
+	return {
+		x: Math.cos(angle) * (pointX-originX) - Math.sin(angle) * (pointY-originY) + originX,
+		y: Math.sin(angle) * (pointX-originX) + Math.cos(angle) * (pointY-originY) + originY
+	};
+}
 
 
 Enemy.prototype.turnTowardPlayer = function(){

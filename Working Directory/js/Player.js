@@ -27,6 +27,8 @@ var Player=function (){
 	this.centreY =0;
 	this.shot = false;//the sound of the gun shot for the enemies to hear
 	this.bulletTimer=0;//stops the bullets from spawning all at once.
+
+	this.bulletX = 0,this.bulletY = 0;//this is the initial position of all bullets fired from the player
 };
 
 Player.prototype.reload = function(){
@@ -44,7 +46,7 @@ Player.prototype.shoot = function(){
 	if(KeyController.isKeyDown(Key.SPACE)){
 		if(this.numBullets>0 && this.bulletTimer>18){
 			var bullet = new Bullet();
-			bullet.spawnBullet(this.xDirect,this.yDirect,this.x,this.y,this.angle);
+			bullet.spawnBullet(this.xDirect,this.yDirect,this.bulletX,this.bulletY,this.angle);
 			this.shot = true;
 			this.bullets.push(bullet);
 			this.numBullets--;
@@ -92,7 +94,7 @@ Player.prototype.update = function(){
 	for(var i = 0; i <this.bullets.length; i++){
 		if(this.bullets[i].alive){
 			this.bullets[i].update();
-			console.log(this.bullets[i].bulletTimer);
+			//console.log(this.bullets[i].bulletTimer);
 		}
 	}
 
@@ -111,8 +113,8 @@ Player.prototype.update = function(){
 }
 
 Player.prototype.draw = function(){
-	//canvas.width = canvas.width;
-	//ctx.clearRect(this.x-this.width/2, this.y-this.height/2, this.width, this.height);
+
+	
 	ctx.save();//save the state of canvas before rotation wrecks the place.
 
 	for(var i = 0; i <this.bullets.length; i++){
@@ -121,13 +123,24 @@ Player.prototype.draw = function(){
 	ctx.translate(this.x, this.y); //let's translate
 	ctx.rotate(this.angle); //increment the angle and rotate the image 
 	ctx.drawImage(imgPlayer,-this.width/2, -this.height/2, this.width, this.height);
-	ctx.drawImage(imgBullet,-this.width/2+80, -this.height/2+65, 10, 10);
+	
 	ctx.restore(); //restore the state of canvas
+	ctx.drawImage(imgBullet,rotate_point(this.x+30,this.y+20,this.x,this.y,this.angle).x, rotate_point(this.x+30,this.y+20,this.x,this.y,this.angle).y, 10, 10);//80 65
+
+	this.bulletX = rotate_point(this.x+30,this.y+20,this.x,this.y,this.angle).x;
+	this.bulletY = rotate_point(this.x+30,this.y+20,this.x,this.y,this.angle).y;
+
 	//ctx.drawImage(imgBullet,Math.cos(this.angle) + (this.x-40) - Math.sin(this.angle) * (this.y+50-this.y) +(this.x - this.width/2), 
 	//	Math.sin(this.angle) + (this.x-40) + Math.cos(this.angle) * (this.y+30-this.y) + (this.y+50 - this.height/2), 10, 10);
 };
 
-
+function rotate_point(pointX, pointY, originX, originY, angle) {
+	//angle = angle * Math.PI / 180.0;
+	return {
+		x: Math.cos(angle) * (pointX-originX) - Math.sin(angle) * (pointY-originY) + originX,
+		y: Math.sin(angle) * (pointX-originX) + Math.cos(angle) * (pointY-originY) + originY
+	};
+}
 
 Player.prototype.move= function(dir){
 

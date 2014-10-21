@@ -36,29 +36,51 @@ CollisionManager.prototype.circleOnCircle = function(c1,c2){
     
 }
 
-CollisionManager.prototype.circleOnTriangle = function(cir,triX1,triY1,triX2,triY2,triX3,triY3){
-	var centreX = cir.x + cir.width/2;
-	var centreY = cir.y + cir.height/2;
+/* REXX
+parse upper arg x y x1 y1 x2 y2 x3 y3
+if fAB()*fBC()>0 & fBC()*fCA()>0 then say "Inside"
+else say "Not Inside"
+exit
 
-	//var check1 = false,check2= false,check3 = false;
+fAB: return (y-y1)*(x2-x1) - (x-x1)*(y2-y1)
+fCA: return (y-y3)*(x1-x3) - (x-x3)*(y1-y3)
+fBC: return (y-y2)*(x3-x2) - (x-x2)*(y3-y2)
+*/
+CollisionManager.prototype.circleOnTriangle = function(x,y,x1,y1,x2,y2,x3,y3){
 
-	if(!this.onSideOfLine(triX1,triY1,triX2,triY2,centreX,centreY) &&
-		!this.onSideOfLine(triX2,triY2,triX3,triY3,centreX,centreY)&&
-		!this.onSideOfLine(triX3,triY3,triX1,triY1,centreX,centreY)){
+	/*if(!this.onSideOfLine(x1,y1,x2,y2,x,y) &&
+		!this.onSideOfLine(x2,y2,x3,y3,x,y)&&
+		!this.onSideOfLine(x3,y3,x1,y1,x,y)){
 		return true;
 	}
-	return false;
+	return false;*/
+	//console.log(x,y,x1,y1,x2,y2,x3,y3);
+	if( this.fAB(x,y,x1,y1,x2,y2)*this.fBC(x,y,x2,y2,x3,y3)>0 && this.fBC(x,y,x2,y2,x3,y3)*this.fCA(x,y,x1,y1,x3,y3)>0){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+CollisionManager.prototype.fAB = function(x,y,x1,y1,x2,y2){
+	return (y-y1)*(x2-x1) - (x-x1)*(y2-y1);
+}
+
+CollisionManager.prototype.fCA = function(x,y,x1,y1,x3,y3){
+	return (y-y3)*(x1-x3) - (x-x3)*(y1-y3);
+}
+CollisionManager.prototype.fBC = function(x,y,x2,y2,x3,y3){
+	return (y-y2)*(x3-x2) - (x-x2)*(y3-y2);
 }
 
 CollisionManager.prototype.onSideOfLine = function(aX,aY,bX,bY,cX,cY){
 	if(((bX-aX)* (cY - aY)) - ((bY-aY)*(cX-aX))>0){
+	//	console.log(aX,aY,bX,bY);
 		return true;
 	}
 	return false;
 }
-
-
-
 
 CollisionManager.prototype.circleOnBox = function(cir,box){
 
