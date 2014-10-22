@@ -10,6 +10,8 @@ var Enemy=function ()
 	
 	this.x = 200;
 	this.y = 100;
+	this.centreX =0;
+	this.centreY =0;
 	this.width = 50;
 	this.height = 50;
 	this.angle = 2.87;
@@ -25,7 +27,8 @@ var Enemy=function ()
 	this.targetPosY =0;
 	this.lastX;
 	this.lastY;
-	this.viewRadius = 80;
+	this.viewRadius = 40;
+	this.hitRadius =25;
 	//AI States
 	this.state = "wander";
 	this.drawLast = false;
@@ -94,12 +97,15 @@ Enemy.prototype.update = function(){
 		this.y+= this.yVel;
 		this.xVel = 0;
 		this.yVel = 0;
+
+		//this.centreX = this.x +this.width/2;
+		//this.centreY = this.y+this.height/2;
 	}
 }
 
 Enemy.prototype.draw = function(){
 	if(this.alive){
-		ctx.drawImage(imgViewRad,this.x- this.viewRadius/2, this.y - this.viewRadius/2, this.viewRadius, this.viewRadius);
+		ctx.drawImage(imgViewRad,this.x- this.viewRadius, this.y - this.viewRadius, this.viewRadius*2, this.viewRadius*2);
 
 		ctx.beginPath();
     	ctx.moveTo(rotate_point(this.x,this.y,this.x,this.y,this.angle).x,rotate_point(this.x,this.y,this.x,this.y,this.angle).y);//a
@@ -137,7 +143,7 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
 
 Enemy.prototype.turnTowardPlayer = function(){
 	if (this.alive == true){
-		if(this.rotateToDirection(this.targetPosX,this.targetPosY,0.03,0.08)){
+		if(this.rotateToDirection(this.targetPosX,this.targetPosY,0.03,0.04)){
 			this.shoot();
 			if(this.startReload){
 				this.reload();

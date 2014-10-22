@@ -22,12 +22,12 @@ CollisionManager.prototype.update = function(){
  	
 }
 
-CollisionManager.prototype.circleOnCircle = function(c1,c2){
-	var radius1 = c1.radius;
-	var radius2 = c2.viewRadius/2;
+CollisionManager.prototype.circleOnCircle = function(r1,x1,y1,r2,x2,y2){
+	var radius1 = r1;
+	var radius2 = r2;
 
-	var dx = c1.x - c2.x;
-	var dy = c1.y - c2.y;
+	var dx = x1 - x2;
+	var dy = y1 - y2;
 	var radii = radius1 + radius2;
 	if ((dx * dx) + (dy * dy) < radii * radii){
 		return true;

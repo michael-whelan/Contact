@@ -18,6 +18,7 @@ var Bullet=function ()
 	this.xDirect = 0;
 	this.yDirect = 0;
 	this.speed = 5;
+	this.radius = 2;
 	//this.gunshot = new Audio();
 	//Bullet.bulletTimer = 0;
 };

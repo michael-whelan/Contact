@@ -31,7 +31,7 @@ EnemyManager.prototype.allEnemies = function(){
 }
 
 EnemyManager.prototype.hearShot = function(px,py){
-	for (var j = 0; j < this.enemy.length; ++j) {
+	for (var j = 0; j < this.enemy.length; ++j){
 		this.enemy[j].state = fsm.stateControl(this.enemy[j].state,"hearShot");
 		this.enemy[j].targetPos(px,py);
 	}
@@ -62,7 +62,6 @@ EnemyManager.prototype.update = function(){
 
 EnemyManager.prototype.moveControl = function(j,b,px,py){
 		//b = checks if the collision with the vision radius is true and decides which movement is appropriate.
-		console.log(j,b,px,py);
 		if(b){
 			this.enemy[j].state = fsm.stateControl(this.enemy[j].state,"seeTarget");
 			this.enemy[j].targetPos(px,py);

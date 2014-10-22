@@ -86,8 +86,14 @@ function sqrt(x) {
 Game.prototype.update = function(){
 	player.update();
 	enemyManager.update();
+	this.collisionCall();
+	
+	calculateFps(Date.now());
+}
+
+Game.prototype.collisionCall = function(){
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {
-		enemyManager.moveControl(j,collisionManager.circleOnCircle(player,enemyManager.enemy[j]),
+		enemyManager.moveControl(j,collisionManager.circleOnCircle(player.radius,player.x,player.y,enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y),
 			player.x,player.y);
 		
 		enemyManager.moveControl(j,collisionManager.circleOnTriangle(player.x,player.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
@@ -95,23 +101,28 @@ Game.prototype.update = function(){
 			enemyManager.enemy[j].cX,enemyManager.enemy[j].cY),
 			player.x,player.y);
 
-		/*console.log(collisionManager.circleOnTriangle(player.x,player.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
-			enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
-			enemyManager.enemy[j].cX,enemyManager.enemy[j].cY));
-		console.log(collisionManager.onSideOfLine(enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
-			enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
-			player.x,player.y));
-*/
 		if(player.shot){
 			enemyManager.hearShot(player.x,player.y);
 			player.shot = false;
+		}
+	}
+	
+	for (var j = 0; j < enemyManager.enemy.length; ++j) {
+		for(var i = 0; i < enemyManager.enemy[j].bullets.length; ++i){
+			if(collisionManager.circleOnCircle(enemyManager.enemy[j].bullets[i].radius,enemyManager.enemy[j].bullets[i].x,
+				enemyManager.enemy[j].bullets[i].y,player.radius,player.x,player.y) && player.flash === false){
+				
+				player.health-=10;
+				player.lastHitTime = Date.now();
+				enemyManager.enemy[j].bullets[i].kill();
+			}
 		}
 	}
 
 	for(var i = 0;i< player.bullets.length;++i){
 		if(player.bullets[i].alive){
 			for (var j = 0; j < enemyManager.enemy.length; ++j) {//enemy.length
-				if(collisionManager.boxOnBox(player.bullets[i], enemyManager.enemy[j])){
+				if(collisionManager.circleOnCircle(player.bullets[i].radius,player.bullets[i].x,player.bullets[i].y,enemyManager.enemy[j].hitRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y)){
 					enemyManager.enemy[j].kill();
 				}
 				if(!enemyManager.enemy[j].alive){
@@ -123,8 +134,8 @@ Game.prototype.update = function(){
 			}
 		}
 	}
-	calculateFps(Date.now());
 }
+
 
 var fps = 0,
     lastFpsUpdateTime = 0,

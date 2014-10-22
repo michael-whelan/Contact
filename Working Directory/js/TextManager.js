@@ -1,14 +1,18 @@
 var TextManager=function(){
 	//put each piece of text here. rename all you want it will need to be mentioned in the index too.
-	var txtAmmo;
+	var strAmmo;
     var ammoInt;
+
+    var strHealth;
+    var iAmmo;
     this.lowestFps = 100;
 };
 
 
 
 TextManager.prototype.init = function(){
-	txtAmmo = document.getElementById("txtAmmo").innerHTML;
+	strAmmo = document.getElementById("txtAmmo").innerHTML;
+    strHealth = document.getElementById("txtHealth").innerHTML;
 };
 
 // This represents the Instructions Title
@@ -42,10 +46,11 @@ TextManager.prototype.controller = function(){
 
 TextManager.prototype.gameText=function(){
     ctx.strokeStyle = "#003300";
-ctx.font = '40px san-serif';
-ctx.textBaseline = 'bottom';
-//txtAmmo = txtAmmo + numBullets.toString();
-ctx.strokeText(txtAmmo+ player.numBullets.toString(), 300, 100);
+    ctx.font = '40px san-serif';
+    ctx.textBaseline = 'bottom';
+    //txtAmmo = txtAmmo + numBullets.toString();
+    ctx.strokeText(strAmmo+ player.numBullets.toString(), 300, 100);
+    ctx.strokeText(strHealth+ player.health.toString()+"%", 30, 50);
 }
 
 // This represents the main game Title
