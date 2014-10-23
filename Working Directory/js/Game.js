@@ -19,6 +19,8 @@ function Game (){
 	enemyManager = new EnemyManager();
 	collisionManager = new CollisionManager();
 	textManager = new TextManager();
+	this.mapWidth = 1600;
+	this.mapHeight = 900;
 }
 
 Game.prototype.initWorld = function(){
@@ -163,16 +165,18 @@ Game.prototype.gameLoop = function (){
 }
 
 Game.prototype.draw =function (){
-	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative
+	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative 
 
+
+	//wipes the screen at the start of each draw frame;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
-	//setBackgroundOffset();
-	//ctx.translate(player.x,player.y);
-	//drawBackground();
-	var camX = clamp(-player.x + canvas.width/2, 0, 1100 - canvas.width);
-    var camY = clamp(-player.y + canvas.height/2, 0, 800 - canvas.height);
+
+	//this clamp sets the limits to the world size.
+	var camX = clamp(-player.x + canvas.width/2, 0, this.mapWidth - canvas.width);
+    var camY = clamp(-player.y + canvas.height/2, 0, this.mapHeight - canvas.height);
     ctx.translate( camX, camY ); 
-    ctx.drawImage(imgBack, -300,-200,1000, 600);
+    //the numbers offset the background so that it centres with the map
+    ctx.drawImage(imgBack, -(300 + (this.mapWidth-1100)),-(200+this.mapHeight-800),this.mapWidth, this.mapHeight);
 	player.draw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
 		enemyManager.enemy[i].draw();
