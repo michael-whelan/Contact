@@ -71,7 +71,7 @@ Enemy.prototype.update = function(){
 		}
 		//State Control
 		if(this.state === "wander"){
-		//	this.moveBasic();
+			this.moveBasic();
 		}
 		else if(this.state === "attack"){
 			this.drawLast = true;//shows the dot which represents the enemies view of the player.
