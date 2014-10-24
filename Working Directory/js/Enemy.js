@@ -1,8 +1,8 @@
 var imgEnemy= new Image();
-imgEnemy.src = "images/Enemy.png"
+//imgEnemy.src = "images/Enemy.png"
 
 var imgViewRad= new Image();
-imgViewRad.src = "images/ViewRange.png"
+//imgViewRad.src = "images/ViewRange.png"
 
 
 var Enemy=function ()

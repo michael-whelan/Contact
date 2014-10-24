@@ -1,5 +1,5 @@
 var imgBullet= new Image();
-imgBullet.src = "images/Bullet.png"
+//imgBullet.src = "images/Bullet.png"
 
 
 var gunshot = new Audio();

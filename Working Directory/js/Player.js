@@ -1,5 +1,5 @@
 var imgPlayer= new Image();
-imgPlayer.src = "images/character_01.png"
+//imgPlayer.src = "images/character_01.png"
 
 
 var spawnSnd = new Audio();

@@ -1,6 +1,6 @@
 var canvas, ctx;
 var imgBack = new Image();
-imgBack.src = "images/Back.png"
+//imgBack.src = "images/Back.png"
 
 var backTrack = new Audio();
 backTrack.src = "sounds/music/Gameplay_Theme_Idea.mp3";
@@ -12,8 +12,10 @@ var enemy;
 var collisionManager;
 var textManager;
 var enemyManager;
+var assetManager;
 
 function Game (){
+	assetManager = new AssetManager();
 	player = new Player();
 	fsm = new FSM();
 	enemyManager = new EnemyManager();
@@ -39,6 +41,27 @@ Game.prototype.initCanvas=function () {
 	canvas.width = 800;//window.innerWidth -200; 
 	canvas.height = 600;//window.innerHeight - 200;
 	canvas.addEventListener("mousedown",mouseDown,false);
+	this.queueAssets();
+	assetManager.loadAllImages(function() {
+    assetManager.loadAllImages
+});
+	this.setImages();
+}
+
+Game.prototype.queueAssets = function(){
+	assetManager.queueLoad("images/Back.png");
+	assetManager.queueLoad("images/ViewRange.png");
+	assetManager.queueLoad("images/Enemy.png");
+	assetManager.queueLoad("images/character_01.png");
+	assetManager.queueLoad("images/Bullet.png");
+	//assetManager.queueLoad("images/Back.png");
+}
+Game.prototype.setImages = function(){
+	imgBack = assetManager.getAsset("images/Back.png");
+	imgPlayer = assetManager.getAsset("images/character_01.png");
+	imgEnemy = assetManager.getAsset("images/Enemy.png");
+	imgViewRad = assetManager.getAsset("images/ViewRange.png");
+	imgBullet = assetManager.getAsset("images/Bullet.png");
 }
 
 function mouseDown(e){ 
