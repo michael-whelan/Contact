@@ -3,10 +3,10 @@ var imgPlayer= new Image();
 
 
 var spawnSnd = new Audio();
-spawnSnd.src = "sounds/sfx/Player_Spawn.mp3";
+//spawnSnd.src = "sounds/sfx/Player_Spawn.mp3";
 
 var reloadSnd = new Audio();
-reloadSnd.src = "sounds/sfx/Gun_Recharge.mp3";
+//reloadSnd.src = "sounds/sfx/Gun_Recharge.mp3";
 
 var Player=function (){
 	this.bullets =[];
