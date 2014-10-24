@@ -2,11 +2,14 @@ var game;
 var canvas, ctx;
 var assetManager;
 var timeSpent;
+var loading;
+var imgLoader;
 
 function SceneManager(){
 	game = new Game();
 	assetManager = new AssetManager();
 	this.initCanvas();
+	//loading = true;
 };
 
 SceneManager.prototype.initCanvas=function () { 
@@ -51,13 +54,25 @@ SceneManager.prototype.setSounds = function(){
 	gunshot = assetManager.getAsset("sounds/sfx/Gun_Pew.mp3");
 }
 
+SceneManager.prototype.loadScreen = function(){
+	ctx.drawImage(loadingImg, 0,0,800,600);
+}
+
+
+
 SceneManager.prototype.loadScene = function(state,scene){
+	timeSpent = Date.now();
+	assetManager.queueLoadEssen("images/loadScreen.png");
+	    assetManager.loadEssential(function() {
+        assetManager.loadEssential
+    });
+	imgLoader = assetManager.getAsset("images/loadScreen.png");
+	loading = true;
 	if(state === "menu"){
 		if(scene === "titleScreen"){
 
 		}
 		else if(scene ==="LevelSelect"){}
-
 	}
 	else if(state === "gameplay"){
 		if(scene === "level1"){
@@ -70,7 +85,7 @@ SceneManager.prototype.loadScene = function(state,scene){
 			});
 			this.setImages();
 			this.setSounds();
-			console.log(Date.now()-timeSpent);
+
 			game.initWorld();
 			game.gameLoop();
 		}
@@ -81,4 +96,6 @@ SceneManager.prototype.loadScene = function(state,scene){
 	else if(state === "credits"){
 
 	}
+	console.log(Date.now()-timeSpent);
+	loading =false;
 }
