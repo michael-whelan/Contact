@@ -52,13 +52,13 @@ Game.prototype.queueAssets = function(){
 	assetManager.queueLoad("images/Back.png");
 	assetManager.queueLoad("images/ViewRange.png");
 	assetManager.queueLoad("images/Enemy.png");
-	assetManager.queueLoad("images/character_01.png");
+	assetManager.queueLoad("images/character_05.png");
 	assetManager.queueLoad("images/Bullet.png");
 	//assetManager.queueLoad("images/Back.png");
 }
 Game.prototype.setImages = function(){
 	imgBack = assetManager.getAsset("images/Back.png");
-	imgPlayer = assetManager.getAsset("images/character_01.png");
+	imgPlayer = assetManager.getAsset("images/character_05.png");
 	imgEnemy = assetManager.getAsset("images/Enemy.png");
 	imgViewRad = assetManager.getAsset("images/ViewRange.png");
 	imgBullet = assetManager.getAsset("images/Bullet.png");
