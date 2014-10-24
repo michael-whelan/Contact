@@ -1,6 +1,7 @@
 var game;
 var canvas, ctx;
 var assetManager;
+var timeSpent;
 
 function SceneManager(){
 	game = new Game();
@@ -69,6 +70,7 @@ SceneManager.prototype.loadScene = function(state,scene){
 			});
 			this.setImages();
 			this.setSounds();
+			console.log(Date.now()-timeSpent);
 			game.initWorld();
 			game.gameLoop();
 		}

@@ -20,6 +20,7 @@ AssetManager.prototype.queueLoadSnd = function(path) {
 
 
 AssetManager.prototype.loadLvl1Images = function(loadCallback) {
+    timeSpent = Date.now();
       if (this.loadQueueImg.length === 0) {
       loadCallback();
   }
