@@ -87,6 +87,7 @@ Game.prototype.update = function(){
 	this.collisionCall();
 	
 	calculateFps(Date.now());
+	return "gameplay";
 }
 
 Game.prototype.collisionCall = function(){
@@ -152,13 +153,6 @@ function calculateFps(now) {
    return fps; 
 }
 
-Game.prototype.gameLoop = function (){
-   	var GAME_RUNNING=0;
- 	game.update();
-	game.draw();
-	  
-	window.requestAnimFrame(game.gameLoop);
-}
 
 Game.prototype.draw =function (){
 	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative 

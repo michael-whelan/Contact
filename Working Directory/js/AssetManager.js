@@ -6,8 +6,6 @@ var AssetManager=function ()
     this.cache = {};
     this.successCount = 0;
     this.errorCount = 0;
-
-
 };
 
 
@@ -20,7 +18,7 @@ AssetManager.prototype.queueLoadSnd = function(path) {
     this.loadQueueSnd.push(path);
 }
 AssetManager.prototype.queueLoadEssen = function(path) {
-    this.loadQueueSnd.push(path);
+    this.loadQueueEssen.push(path);
 }
 
 
@@ -80,9 +78,9 @@ AssetManager.prototype.loadLvl1Images = function(loadCallback) {
 
 
 AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
-      if (this.loadQueueSnd.length === 0) {
-      loadCallback();
-  }
+    if (this.loadQueueSnd.length === 0) {
+        loadCallback();
+    }
     for (var i = 0; i < this.loadQueueSnd.length; i++) {
         var path = this.loadQueueSnd[i];
         var snd = new Audio();

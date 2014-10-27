@@ -5,10 +5,13 @@ var timeSpent;
 var loading;
 var imgLoader;
 
+var sc;
 function SceneManager(){
 	game = new Game();
 	assetManager = new AssetManager();
 	this.initCanvas();
+	this.gameState="0";
+	sc = this;
 	//loading = true;
 };
 
@@ -23,7 +26,6 @@ SceneManager.prototype.initCanvas=function () {
 	canvas.addEventListener("mousedown",mouseDown,false);
 	//this.queueAssets();
 }
-
 
 SceneManager.prototype.queueLvl1Assets = function(){
 	assetManager.queueLoadImg("images/Back.png");
@@ -45,8 +47,6 @@ SceneManager.prototype.setImages = function(){
 	imgBullet = assetManager.getAsset("images/Bullet.png");
 }
 
-
-
 SceneManager.prototype.setSounds = function(){
 	backTrack = assetManager.getAsset("sounds/music/Gameplay_Theme_Idea.mp3");
 	spawnSnd = assetManager.getAsset("sounds/sfx/Player_Spawn.mp3");
@@ -55,18 +55,33 @@ SceneManager.prototype.setSounds = function(){
 }
 
 SceneManager.prototype.loadScreen = function(){
-	ctx.drawImage(loadingImg, 0,0,800,600);
+	imgLoader = assetManager.getAsset("images/loadScreen.png");
+	console.log("draw");
+	ctx.drawImage(imgLoader, 0,0,800,600);
+}
+
+SceneManager.prototype.gameLoop = function (){
+   	var GAME_RUNNING=0;
+   	//this.update();
+   	if(sc.gameState === "gameplay"){
+ 		sc.gameState = game.update();
+		game.draw();
+		//check for change and call load scene.
+	}
+	else if(sc.gameState === "menu"){
+	}
+	window.requestAnimFrame(sc.gameLoop);
 }
 
 
 
 SceneManager.prototype.loadScene = function(state,scene){
-	timeSpent = Date.now();
 	assetManager.queueLoadEssen("images/loadScreen.png");
 	    assetManager.loadEssential(function() {
         assetManager.loadEssential
     });
-	imgLoader = assetManager.getAsset("images/loadScreen.png");
+	this.loadScreen();
+	timeSpent = Date.now();
 	loading = true;
 	if(state === "menu"){
 		if(scene === "titleScreen"){
@@ -85,9 +100,10 @@ SceneManager.prototype.loadScene = function(state,scene){
 			});
 			this.setImages();
 			this.setSounds();
-
+			setTimeout(function(){			sc.gameState = state;
 			game.initWorld();
-			game.gameLoop();
+			sc.gameLoop();}, 3000);
+
 		}
 		else if(scene === "level2"){
 
