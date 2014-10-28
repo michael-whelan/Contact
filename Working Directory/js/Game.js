@@ -12,9 +12,15 @@ var collisionManager;
 var textManager;
 var enemyManager;
 
+//stick stuff
+var stick;
+var limitSize = 36;
+var inputSize = 20;
+
 function Game (){
 	//assetManager = new AssetManager();
 	player = new Player();
+	stick = new Stick(40);
 	fsm = new FSM();
 	enemyManager = new EnemyManager();
 	collisionManager = new CollisionManager();
@@ -28,6 +34,7 @@ Game.prototype.initWorld = function(){
 	textManager.init();
 	enemyManager.init();
 	this.playBackgroundLoop();
+	stick.active = false;
 }
 
 
@@ -37,13 +44,25 @@ Game.prototype.queueAssets = function(){
 	//assetManager.queueLoad("images/Back.png");
 }
 
+
+function mouseMove(e){
+	if(stick.active){
+		console.log("move");
+		e.preventDefault();
+		stick.setInputXY(e.pageX, e.pageY);
+	}
+}
+
+
 function mouseDown(e){ 
-	/*var enemySingle = new Enemy();
-	enemySingle.spawnEnemy(this.xDirect,this.yDirect,this.x,this.y);
-	enemy.push(enemySingle);
-	console.log(enemySingle.x,enemySingle.y);*/
-	//var rect = canvas.getBoundingClientRect();
-	//console.log(getDistance(player.x,player.y,e.clientX-rect.left,e.clientY - rect.top));
+	console.log("down");
+	
+	stick.setLimitXY(e.pageX, e.pageY);
+	stick.setInputXY(e.pageX, e.pageY);
+	stick.active = true;
+}
+function mouseUp(e){ 
+	stick.active = false;
 }
 
 Game.prototype.playBackgroundLoop = function(){
@@ -82,11 +101,40 @@ function sqrt(x) {
 
 
 Game.prototype.update = function(){
-	player.update();
+	stick.update();
+	player.update(stick.normal.x,stick.normal.y,stick.active);
 	enemyManager.update();
 	this.collisionCall();
 	
 	calculateFps(Date.now());
+
+	
+
+	/*if (stick.active && (stick.length > threshold)) {
+		point.x += (
+			(stick.length * stick.normal.x)
+			* point.speed
+			* (elapsed / 1000)
+		);
+		point.y += (
+			(stick.length * stick.normal.y)
+			* point.speed
+			* (elapsed / 1000)
+		);
+
+		if (point.x < point.radius) {
+			point.x = point.radius;
+		} else if (point.x > (WIDTH - point.radius)) {
+			point.x = (WIDTH - point.radius);
+		}
+		if (point.y < point.radius) {
+			point.y = point.radius;
+		} else if (point.y > (HEIGHT - point.radius)) {
+			point.y = (HEIGHT - point.radius);
+		}
+	}*/
+
+
 	return "gameplay";
 }
 
@@ -172,6 +220,7 @@ Game.prototype.draw =function (){
 		enemyManager.enemy[i].draw();
 	}
 	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative
+	stick.drawStick();
 	textManager.controller();
 }
 

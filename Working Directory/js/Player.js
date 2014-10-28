@@ -22,6 +22,9 @@ var Player=function (){
 	this.yVel = 0;
 	this.xDirect = 0;
 	this.yDirect = 0;
+
+	this.xFacing = 0;
+	this.yFacing = 0;
 	this.speed = 2;
 	//bullet = new Bullet();
 	this.centreX =0;
@@ -59,7 +62,7 @@ Player.prototype.shoot = function(){
 	if(KeyController.isKeyDown(Key.SPACE)){
 		if(this.numBullets>0 && this.bulletTimer>18){
 			var bullet = new Bullet();
-			bullet.spawnBullet(this.xDirect,this.yDirect,this.bulletX,this.bulletY,this.angle);
+			bullet.spawnBullet(this.xFacing,this.yFacing,this.bulletX,this.bulletY,this.angle);
 			this.shot = true;
 			this.bullets.push(bullet);
 			this.numBullets--;
@@ -86,9 +89,15 @@ Player.prototype.rechargeHealth = function(){
 	}
 }
 
-Player.prototype.controller = function(){
+Player.prototype.controller = function(b){
+	/*if(b){
+		this.angle+=x*0.2;
+	}*/
 	if(KeyController.isKeyDown(Key.RIGHT)){
 		this.angle += 0.1;
+	}
+	if(KeyController.isKeyDown(Key.LEFT)){
+		this.angle -= 0.1;
 	}
 	if(this.angle<0){
 		this.angle = 6.3;
@@ -101,16 +110,16 @@ Player.prototype.controller = function(){
 		this.startReload = true;
 		reloadSnd.play();
 	}
-	if(KeyController.isKeyDown(Key.LEFT)){
-		this.angle -= 0.1;
-	}
 
-	if(KeyController.isKeyDown(Key.UP)){
-		this.move("forward");
-	}
-	else if(KeyController.isKeyDown(Key.DOWN)){
-		this.move("backward");
-	}
+
+	//if(KeyController.isKeyDown(Key.UP)){
+		if(b){
+			this.move("forward");
+		}
+	//}
+	//else if(KeyController.isKeyDown(Key.DOWN)){
+	//	this.move("backward");
+	//}
 }
 
 Player.prototype.respawn = function(){
@@ -121,8 +130,8 @@ Player.prototype.respawn = function(){
 	spawnSnd.play();
 }
 
-Player.prototype.update = function(){
-	this.controller();
+Player.prototype.update = function(x,y,b){
+	this.controller(b);
 
 	if(this.startReload){
 		this.reload();
@@ -131,8 +140,10 @@ Player.prototype.update = function(){
 	if(this.health<100 && Date.now() - this.lastHitTime > 5000){
 		this.rechargeHealth();
 	}
-	this.xDirect = Math.cos(this.angle);
-	this.yDirect = Math.sin(this.angle);
+	this.xDirect = x;
+	this.yDirect = y;
+	this.xFacing = Math.cos(this.angle);
+	this.yFacing = Math.sin(this.angle);
 	this.bulletTimer++;
 	this.shoot();
 	for(var i = 0; i <this.bullets.length; i++){

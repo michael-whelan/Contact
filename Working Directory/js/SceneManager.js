@@ -24,6 +24,12 @@ SceneManager.prototype.initCanvas=function () {
 	canvas.width = 800;//window.innerWidth -200;
 	canvas.height = 600;//window.innerHeight - 200;
 	canvas.addEventListener("mousedown",mouseDown,false);
+	canvas.addEventListener("mousemove",mouseMove,false);
+	canvas.addEventListener("mouseup",mouseUp,false);
+	//document.addEventListener("mousemove", function (e) {
+	//e.preventDefault();
+	//stick.setInputXY(e.pageX, e.pageY);
+//});
 	//this.queueAssets();
 }
 
