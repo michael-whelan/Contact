@@ -85,8 +85,8 @@ Stick.prototype.update = function () {
 };
 
 
-Stick.prototype.drawStick = function() {
-	if (!stick.active) {
+Stick.prototype.draw = function() {
+	if (!this.active) {
 		return;
 	}
 

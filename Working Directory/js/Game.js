@@ -13,14 +13,14 @@ var textManager;
 var enemyManager;
 
 //stick stuff
-var stick;
+var sticks;
 var limitSize = 36;
 var inputSize = 20;
 
 function Game (){
 	//assetManager = new AssetManager();
 	player = new Player();
-	stick = new Stick(40);
+	sticks = [new Stick(inputSize), new Stick(inputSize)];
 	fsm = new FSM();
 	enemyManager = new EnemyManager();
 	collisionManager = new CollisionManager();
@@ -34,7 +34,10 @@ Game.prototype.initWorld = function(){
 	textManager.init();
 	enemyManager.init();
 	this.playBackgroundLoop();
-	stick.active = false;
+	for (var i = 0; i < sticks.length; ++i) {
+		sticks[i].active = false;
+	}
+	
 }
 
 
@@ -45,24 +48,35 @@ Game.prototype.queueAssets = function(){
 }
 
 
-function mouseMove(e){
-	if(stick.active){
-		console.log("move");
-		e.preventDefault();
-		stick.setInputXY(e.pageX, e.pageY);
+function touchMove(e){
+	e.preventDefault();
+	for (var i = 0; i < e.touches.length; ++i) {
+		var stick = sticks[i];
+		var touch = e.touches[i];
+
+		stick.setInputXY(touch.pageX, touch.pageY);
 	}
 }
 
 
-function mouseDown(e){ 
-	console.log("down");
-	
-	stick.setLimitXY(e.pageX, e.pageY);
-	stick.setInputXY(e.pageX, e.pageY);
-	stick.active = true;
+function touchStart(e){ 
+	e.preventDefault();
+	for (var i = 0; i < e.touches.length; ++i) {
+			var stick = sticks[i];
+			var touch = e.touches[i];
+
+			stick.setLimitXY(touch.pageX, touch.pageY);
+			stick.setInputXY(touch.pageX, touch.pageY);
+			stick.active = true;
+		}
 }
-function mouseUp(e){ 
-	stick.active = false;
+
+function touchEnd(e){ 
+	var touches = e.changedTouches;
+	for (var i = 0; i < touches.length; ++i) {
+		var stick = sticks[i];
+		stick.active = false;
+	}
 }
 
 Game.prototype.playBackgroundLoop = function(){
@@ -101,7 +115,11 @@ function sqrt(x) {
 
 
 Game.prototype.update = function(){
-	stick.update();
+	for (var i = 0; i < sticks.length; ++i) {
+		sticks[i].update();
+	}
+
+	var stick = sticks[0];
 	player.update(stick.normal.x,stick.normal.y,stick.active);
 	enemyManager.update();
 	this.collisionCall();
@@ -110,7 +128,7 @@ Game.prototype.update = function(){
 
 	
 
-	/*if (stick.active && (stick.length > threshold)) {
+	if (stick.active && (stick.length > threshold)) {
 		point.x += (
 			(stick.length * stick.normal.x)
 			* point.speed
@@ -132,7 +150,7 @@ Game.prototype.update = function(){
 		} else if (point.y > (HEIGHT - point.radius)) {
 			point.y = (HEIGHT - point.radius);
 		}
-	}*/
+	}
 
 
 	return "gameplay";
@@ -220,7 +238,9 @@ Game.prototype.draw =function (){
 		enemyManager.enemy[i].draw();
 	}
 	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative
-	stick.drawStick();
+	for (var i = 0; i < sticks.length; ++i) {
+		sticks[i].draw();
+	}
 	textManager.controller();
 }
 

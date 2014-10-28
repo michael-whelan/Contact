@@ -110,16 +110,16 @@ Player.prototype.controller = function(b){
 		this.startReload = true;
 		reloadSnd.play();
 	}
+	if(b){
+		this.move("forward");
+	}
 
-
-	//if(KeyController.isKeyDown(Key.UP)){
-		if(b){
-			this.move("forward");
-		}
-	//}
-	//else if(KeyController.isKeyDown(Key.DOWN)){
-	//	this.move("backward");
-	//}
+	if(KeyController.isKeyDown(Key.UP)){
+		this.move("forward");
+	}
+	else if(KeyController.isKeyDown(Key.DOWN)){
+		this.move("backward");
+	}
 }
 
 Player.prototype.respawn = function(){
@@ -140,10 +140,13 @@ Player.prototype.update = function(x,y,b){
 	if(this.health<100 && Date.now() - this.lastHitTime > 5000){
 		this.rechargeHealth();
 	}
+	this.xDirect= this.xFacing = Math.cos(this.angle);
+	this.yDirect=this.yFacing = Math.sin(this.angle);
+	if(b){
 	this.xDirect = x;
 	this.yDirect = y;
-	this.xFacing = Math.cos(this.angle);
-	this.yFacing = Math.sin(this.angle);
+	}
+
 	this.bulletTimer++;
 	this.shoot();
 	for(var i = 0; i <this.bullets.length; i++){
