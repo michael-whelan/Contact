@@ -94,10 +94,10 @@ Stick.prototype.draw = function() {
 
 	// Limit
 	ctx.beginPath();
-	ctx.arc(stick.limit.x, stick.limit.y, limitSize, 0, (Math.PI * 2), true);
+	ctx.arc(this.limit.x, this.limit.y, limitSize, 0, (Math.PI * 2), true);
 
 	ctx.lineWidth = 3;
-	if (stick.atLimit) {
+	if (this.atLimit) {
 		ctx.strokeStyle = "rgb(200, 0, 0)";
 	} else {
 		ctx.strokeStyle = "rgb(0, 0, 0)";
@@ -106,7 +106,7 @@ Stick.prototype.draw = function() {
 
 	// Base
 	ctx.beginPath();
-	ctx.arc(stick.limit.x, stick.limit.y, (limitSize / 2), 0, (Math.PI * 2), true);
+	ctx.arc(this.limit.x, this.limit.y, (limitSize / 2), 0, (Math.PI * 2), true);
 
 	ctx.lineWidth = 3;
 	ctx.strokeStyle = "rgb(200, 200, 200)";
@@ -114,7 +114,7 @@ Stick.prototype.draw = function() {
 
 	// Input
 	ctx.beginPath();
-	ctx.arc(stick.input.x, stick.input.y, inputSize, 0, (Math.PI * 2), true);
+	ctx.arc(this.input.x, this.input.y, inputSize, 0, (Math.PI * 2), true);
 	ctx.fillStyle = "rgb(0, 0, 200)";
 	ctx.fill();
 

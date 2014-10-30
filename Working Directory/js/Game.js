@@ -16,6 +16,15 @@ var enemyManager;
 var sticks;
 var limitSize = 36;
 var inputSize = 20;
+var threshold=4;
+var WIDTH = 800;
+var HEIGHT = 600;
+var point = {
+	radius: 20,
+	speed: 10,
+	x: (800 / 2),
+	y: (600 / 2)
+};
 
 function Game (){
 	//assetManager = new AssetManager();
@@ -37,7 +46,6 @@ Game.prototype.initWorld = function(){
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].active = false;
 	}
-	
 }
 
 
@@ -51,10 +59,9 @@ Game.prototype.queueAssets = function(){
 function touchMove(e){
 	e.preventDefault();
 	for (var i = 0; i < e.touches.length; ++i) {
-		var stick = sticks[i];
 		var touch = e.touches[i];
 
-		stick.setInputXY(touch.pageX, touch.pageY);
+		sticks[i].setInputXY(touch.pageX, touch.pageY);
 	}
 }
 
@@ -62,20 +69,19 @@ function touchMove(e){
 function touchStart(e){ 
 	e.preventDefault();
 	for (var i = 0; i < e.touches.length; ++i) {
-			var stick = sticks[i];
 			var touch = e.touches[i];
 
-			stick.setLimitXY(touch.pageX, touch.pageY);
-			stick.setInputXY(touch.pageX, touch.pageY);
-			stick.active = true;
+			sticks[i].setLimitXY(touch.pageX, touch.pageY);
+			sticks[i].setInputXY(touch.pageX, touch.pageY);
+			sticks[i].active = true;
+			console.log(e.touches[0].pageX,e.touches[0].pageY);
 		}
 }
 
 function touchEnd(e){ 
 	var touches = e.changedTouches;
 	for (var i = 0; i < touches.length; ++i) {
-		var stick = sticks[i];
-		stick.active = false;
+		sticks[i].active=false;
 	}
 }
 
@@ -85,7 +91,6 @@ Game.prototype.playBackgroundLoop = function(){
 	    this.currentTime = 0;
 	    this.play();
 	}, false);
-
 	backTrack.play();
 };
 
@@ -120,7 +125,8 @@ Game.prototype.update = function(){
 	}
 
 	var stick = sticks[0];
-	player.update(stick.normal.x,stick.normal.y,stick.active);
+	var stick2 = sticks[1];
+	player.update(stick.normal.x,stick.normal.y,stick2.normal.x,stick2.normal.y,stick.active);
 	enemyManager.update();
 	this.collisionCall();
 	
@@ -132,12 +138,12 @@ Game.prototype.update = function(){
 		point.x += (
 			(stick.length * stick.normal.x)
 			* point.speed
-			* (elapsed / 1000)
+			
 		);
 		point.y += (
 			(stick.length * stick.normal.y)
 			* point.speed
-			* (elapsed / 1000)
+			
 		);
 
 		if (point.x < point.radius) {

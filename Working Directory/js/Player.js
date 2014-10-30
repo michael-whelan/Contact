@@ -59,7 +59,7 @@ Player.prototype.reload = function(){
 }
 
 Player.prototype.shoot = function(){	
-	if(KeyController.isKeyDown(Key.SPACE)){
+	//if(KeyController.isKeyDown(Key.SPACE)){
 		if(this.numBullets>0 && this.bulletTimer>18){
 			var bullet = new Bullet();
 			bullet.spawnBullet(this.xFacing,this.yFacing,this.bulletX,this.bulletY,this.angle);
@@ -68,7 +68,10 @@ Player.prototype.shoot = function(){
 			this.numBullets--;
 			this.bulletTimer=0;
 		}
-	}//end Space
+		else if(this.numBullets<=0){
+			this.reload();
+		}
+	//}//end Space
 		/*if(this.numBullets<=0){
 			console.log("Press R To Reload");
 		}*/
@@ -130,7 +133,11 @@ Player.prototype.respawn = function(){
 	spawnSnd.play();
 }
 
-Player.prototype.update = function(x,y,b){
+Player.prototype.getAngle = function(x,y){
+	return Math.atan2(y,x);//*180/Math.PI;
+}
+
+Player.prototype.update = function(x1,y1,x2,y2,b){
 	this.controller(b);
 
 	if(this.startReload){
@@ -143,12 +150,16 @@ Player.prototype.update = function(x,y,b){
 	this.xDirect= this.xFacing = Math.cos(this.angle);
 	this.yDirect=this.yFacing = Math.sin(this.angle);
 	if(b){
-	this.xDirect = x;
-	this.yDirect = y;
+		this.xDirect = x1;
+		this.yDirect = y1;
+		this.xFacing = x2;
+		this.yFacing = y2;
+		this.angle = this.getAngle(this.xFacing,this.yFacing);
+		this.shoot();
 	}
 
 	this.bulletTimer++;
-	this.shoot();
+	
 	for(var i = 0; i <this.bullets.length; i++){
 		if(this.bullets[i].alive){
 			this.bullets[i].update();

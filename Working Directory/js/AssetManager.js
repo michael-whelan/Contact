@@ -8,7 +8,19 @@ var AssetManager=function ()
     this.errorCount = 0;
 };
 
-
+var context;
+window.addEventListener('load', init, false);
+function init() {
+  try {
+    // Fix up for prefixing
+    window.AudioContext = window.AudioContext||window.webkitAudioContext;
+    context = new AudioContext();
+  console.log("worked");
+  }
+  catch(e) {
+    alert('Web Audio API is not supported in this browser');
+  }
+}
 
 AssetManager.prototype.queueLoadImg = function(path) {
     this.loadQueueImg.push(path);
@@ -23,7 +35,7 @@ AssetManager.prototype.queueLoadEssen = function(path) {
 
 
 AssetManager.prototype.loadEssential = function(loadCallback) {
-        if (this.loadQueueEssen.length === 0) {
+    if (this.loadQueueEssen.length === 0) {
       loadCallback();
     }
     for (var i = 0; i < this.loadQueueEssen.length; i++) {

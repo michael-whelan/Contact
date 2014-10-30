@@ -26,6 +26,10 @@ SceneManager.prototype.initCanvas=function () {
 	canvas.addEventListener("touchstart",touchStart,false);
 	canvas.addEventListener("touchmove",touchMove,false);
 	canvas.addEventListener("touchend",touchEnd,false);
+
+	/*canvas.addEventListener("mousedown",mouseDown,false);
+	canvas.addEventListener("mousemove",mouseMove,false);
+	canvas.addEventListener("mouseup",mouseUp,false);*/
 	//document.addEventListener("mousemove", function (e) {
 	//e.preventDefault();
 	//stick.setInputXY(e.pageX, e.pageY);
