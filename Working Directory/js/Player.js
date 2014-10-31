@@ -157,6 +157,7 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 		this.xFacing = x2;
 		this.yFacing = y2;
 		this.angle = this.getAngle(this.xFacing,this.yFacing);
+		if(this.xFacing!=0 ||this.yFacing!=0)
 		this.shoot();
 	}
 

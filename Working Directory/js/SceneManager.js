@@ -5,6 +5,8 @@ var timeSpent;
 var loading;
 var imgLoader;
 
+var loadedImages;
+var loadedSounds;
 var sc;
 function SceneManager(){
 	game = new Game();
@@ -12,6 +14,8 @@ function SceneManager(){
 	this.initCanvas();
 	this.gameState="0";
 	sc = this;
+	loadedImages = false;
+	loadedSounds = false;
 	//loading = true;
 };
 
@@ -43,10 +47,10 @@ SceneManager.prototype.queueLvl1Assets = function(){
 	assetManager.queueLoadImg("images/Enemy.png");
 	assetManager.queueLoadImg("images/character_05.png");
 	assetManager.queueLoadImg("images/Bullet.png");
-	assetManager.queueLoadSnd("sounds/music/Gameplay_Theme_Idea.mp3");
-	assetManager.queueLoadSnd("sounds/sfx/Player_Spawn.mp3");
-	assetManager.queueLoadSnd("sounds/sfx/Gun_Recharge.mp3");
-	assetManager.queueLoadSnd("sounds/sfx/Gun_Pew.mp3");
+	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/gun_recharge.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/gun_pew.ogg");
 }
 
 SceneManager.prototype.setImages = function(){
@@ -55,26 +59,37 @@ SceneManager.prototype.setImages = function(){
 	imgEnemy = assetManager.getAsset("images/Enemy.png");
 	imgViewRad = assetManager.getAsset("images/ViewRange.png");
 	imgBullet = assetManager.getAsset("images/Bullet.png");
+	loadedImages = true;
 }
 
 SceneManager.prototype.setSounds = function(){
-	backTrack = assetManager.getAsset("sounds/music/Gameplay_Theme_Idea.mp3");
-	spawnSnd = assetManager.getAsset("sounds/sfx/Player_Spawn.mp3");
-	reloadSnd = assetManager.getAsset("sounds/sfx/Gun_Recharge.mp3");
-	gunshot = assetManager.getAsset("sounds/sfx/Gun_Pew.mp3");
+	spawnSnd = assetManager.getAsset("sounds/sfx/player_spawn.mp3");
+	backTrack = assetManager.getAsset("sounds/music/gameplay_theme_idea.mp3");
+	reloadSnd = assetManager.getAsset("sounds/sfx/gun_recharge.mp3");
+	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.ogg");
+	loadedSounds = true;
+
 }
 
 SceneManager.prototype.loadScreen = function(){
 	
-	console.log("draw");
+//	console.log("draw");
 	ctx.drawImage(imgLoader, 0,0,800,600);
 }
 
 SceneManager.prototype.gameLoop = function (){
    	var GAME_RUNNING=0;
    	//this.update();
+if(loadedSounds &&loadedImages){
+   			loading = false;
+   			loadedImages = false;
+   			loadedSounds =false;
+   			sc.runLvl1();
+   		}
+
    	if(loading){
    		sc.loadScreen();
+   		
    	}
    	else if(sc.gameState === "gameplay"){
  		sc.gameState = game.update();
@@ -87,14 +102,18 @@ SceneManager.prototype.gameLoop = function (){
 }
 
 
+SceneManager.prototype.runLvl1 = function(){
+	game.initWorld();
+}
+
 
 SceneManager.prototype.loadScene = function(state,scene){
 	loading = true;
-	assetManager.queueLoadEssen("images/loadScreen.png");
+	assetManager.queueLoadEssen("images/load_Screen.png");
 	    assetManager.loadEssential(function() {
         assetManager.loadEssential
     });
-	imgLoader = assetManager.getAsset("images/loadScreen.png");
+	imgLoader = assetManager.getAsset("images/load_Screen.png");
 	sc.gameLoop();
 	timeSpent = Date.now();
 	
@@ -108,17 +127,16 @@ SceneManager.prototype.loadScene = function(state,scene){
 		if(scene === "level1"){
 			this.queueLvl1Assets();
 			assetManager.loadLvl1Images(function() {
-    			assetManager.loadLvl1Images
+    			sc.setImages()
 			});
 			assetManager.loadLvl1Sounds(function() {
-    			assetManager.loadLvl1Sounds
+    			sc.setSounds()
 			});
-			this.setImages();
-			this.setSounds();
+
+			sc.setSounds();
+			//sc.setSounds();
 			//setTimeout(function(){		
-			sc.gameState = state;
-			game.initWorld();
-			loading =false;
+			
 			//}, 3000);
 
 
@@ -130,6 +148,7 @@ SceneManager.prototype.loadScene = function(state,scene){
 	else if(state === "credits"){
 
 	}
+	sc.gameState = state;
 	console.log(Date.now()-timeSpent);
 	
 }

@@ -15,7 +15,6 @@ function init() {
     // Fix up for prefixing
     window.AudioContext = window.AudioContext||window.webkitAudioContext;
     context = new AudioContext();
-  console.log("worked");
   }
   catch(e) {
     alert('Web Audio API is not supported in this browser');
@@ -74,6 +73,7 @@ AssetManager.prototype.loadLvl1Images = function(loadCallback) {
             that.successCount += 1;
             if (that.isDone(that.loadQueueImg)) {
                 loadCallback();
+
             }
         }, false);
         img.addEventListener("error", function() {
@@ -83,6 +83,7 @@ AssetManager.prototype.loadLvl1Images = function(loadCallback) {
                 loadCallback();
             }
     }, false);
+
         img.src = path;
         this.cache[path] = img;
     }
@@ -99,16 +100,20 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
         var that = this;
         snd.addEventListener("load", function() {
             that.successCount += 1;
+                console.log("hit");
             if (that.isDone(that.loadQueueSnd)) {
                 loadCallback();
+              console.log("hit");
             }
         }, false);
         snd.addEventListener("error", function() {
             that.errorCount += 1;
+  
             if (that.isDone(that.loadQueueSnd)) {
                 loadCallback();
             }
     }, false);
+        console.log(snd);
         snd.src = path;
         this.cache[path] = snd;
     }
