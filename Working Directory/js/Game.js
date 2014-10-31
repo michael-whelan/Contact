@@ -60,8 +60,12 @@ function touchMove(e){
 	e.preventDefault();
 	for (var i = 0; i < e.touches.length; ++i) {
 		var touch = e.touches[i];
-
-		sticks[i].setInputXY(touch.pageX, touch.pageY);
+		if(touch.pageX<400){
+			sticks[0].setInputXY(touch.pageX, touch.pageY);
+		}
+		else{
+			sticks[1].setInputXY(touch.pageX, touch.pageY);
+		}
 	}
 }
 
@@ -70,18 +74,25 @@ function touchStart(e){
 	e.preventDefault();
 	for (var i = 0; i < e.touches.length; ++i) {
 			var touch = e.touches[i];
-
-			sticks[i].setLimitXY(touch.pageX, touch.pageY);
-			sticks[i].setInputXY(touch.pageX, touch.pageY);
-			sticks[i].active = true;
-			console.log(e.touches[0].pageX,e.touches[0].pageY);
+			if(touch.pageX<400){
+				sticks[0].setLimitXY(touch.pageX, touch.pageY);
+				sticks[0].setInputXY(touch.pageX, touch.pageY);
+				sticks[0].active = true;
+			}
+			else{
+				sticks[1].setLimitXY(touch.pageX, touch.pageY);
+				sticks[1].setInputXY(touch.pageX, touch.pageY);
+				sticks[1].active = true;	
+			}
+		//	console.log(e.touches[0].pageX,e.touches[0].pageY);
 		}
 }
 
 function touchEnd(e){ 
 	var touches = e.changedTouches;
 	for (var i = 0; i < touches.length; ++i) {
-		sticks[i].active=false;
+		sticks[0].active=false;
+		sticks[1].active=false;
 	}
 }
 
@@ -126,7 +137,7 @@ Game.prototype.update = function(){
 
 	var stick = sticks[0];
 	var stick2 = sticks[1];
-	player.update(stick.normal.x,stick.normal.y,stick2.normal.x,stick2.normal.y,stick.active);
+	player.update(stick.normal.x,stick.normal.y,stick2.normal.x,stick2.normal.y,stick.active,stick2.active);
 	enemyManager.update();
 	this.collisionCall();
 	

@@ -92,7 +92,7 @@ Player.prototype.rechargeHealth = function(){
 	}
 }
 
-Player.prototype.controller = function(b){
+Player.prototype.controller = function(b1,b2){
 	/*if(b){
 		this.angle+=x*0.2;
 	}*/
@@ -113,7 +113,7 @@ Player.prototype.controller = function(b){
 		this.startReload = true;
 		reloadSnd.play();
 	}
-	if(b){
+	if(b1){
 		this.move("forward");
 	}
 
@@ -137,8 +137,8 @@ Player.prototype.getAngle = function(x,y){
 	return Math.atan2(y,x);//*180/Math.PI;
 }
 
-Player.prototype.update = function(x1,y1,x2,y2,b){
-	this.controller(b);
+Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
+	this.controller(b1,b2);
 
 	if(this.startReload){
 		this.reload();
@@ -149,9 +149,11 @@ Player.prototype.update = function(x1,y1,x2,y2,b){
 	}
 	this.xDirect= this.xFacing = Math.cos(this.angle);
 	this.yDirect=this.yFacing = Math.sin(this.angle);
-	if(b){
+	if(b1){
 		this.xDirect = x1;
 		this.yDirect = y1;
+	}
+	if(b2){
 		this.xFacing = x2;
 		this.yFacing = y2;
 		this.angle = this.getAngle(this.xFacing,this.yFacing);
