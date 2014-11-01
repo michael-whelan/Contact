@@ -59,8 +59,7 @@ Player.prototype.reload = function(){
 }
 
 Player.prototype.shoot = function(){	
-	//Having the if statement commented out(was that accidental or on purpose?) made it so I couldn't test the game
-	if(KeyController.isKeyDown(Key.SPACE)){
+	//if(KeyController.isKeyDown(Key.SPACE)){
 		if(this.numBullets>0 && this.bulletTimer>18){
 			var bullet = new Bullet();
 			bullet.spawnBullet(this.xFacing,this.yFacing,this.bulletX,this.bulletY,this.angle);
@@ -68,7 +67,7 @@ Player.prototype.shoot = function(){
 			this.bullets.push(bullet);
 			this.numBullets--;
 			this.bulletTimer=0;
-		}
+			}
 		else if(this.numBullets<=0){
 			this.reload();
 		}
@@ -81,7 +80,7 @@ Player.prototype.shoot = function(){
     		var index = this.bullets.indexOf(i);
     		this.bullets.splice(i, 1);
     		i--;
-   		}
+   	}
 	}
 }
 
