@@ -160,6 +160,9 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 		if(this.xFacing!=0 ||this.yFacing!=0)
 		this.shoot();
 	}
+	else if(KeyController.isKeyDown(Key.SPACE)){
+		this.shoot();
+	}
 
 	this.bulletTimer++;
 	

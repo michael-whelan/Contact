@@ -1,4 +1,4 @@
-var game;
+var game,menu;
 var canvas, ctx;
 var assetManager;
 var timeSpent;
@@ -10,9 +10,11 @@ var loadedSounds;
 var sc;
 function SceneManager(){
 	game = new Game();
+	menu = new Menu();
 	assetManager = new AssetManager();
 	this.initCanvas();
 	this.gameState="0";
+	this.gameScene = "0";
 	sc = this;
 	loadedImages = false;
 	loadedSounds = false;
@@ -25,8 +27,8 @@ SceneManager.prototype.initCanvas=function () {
 
 	document.body.appendChild(canvas);
 	//set canvas to size of the screen.
-	canvas.width = 800;//window.innerWidth -200;
-	canvas.height = 600;//window.innerHeight - 200;
+	canvas.width = 512;//1024
+	canvas.height = 384;//768 
 	canvas.addEventListener("touchstart",touchStart,false);
 	canvas.addEventListener("touchmove",touchMove,false);
 	canvas.addEventListener("touchend",touchEnd,false);
@@ -49,11 +51,22 @@ SceneManager.prototype.queueLvl1Assets = function(){
 	assetManager.queueLoadImg("images/Bullet.png");
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
-	assetManager.queueLoadSnd("sounds/sfx/gun_recharge.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/gun_pew.ogg");
 }
 
-SceneManager.prototype.setImages = function(){
+
+SceneManager.prototype.queueTitleAssets = function(){
+	assetManager.queueLoadImg("images/menuLayout_01.png");
+}
+
+SceneManager.prototype.setTitleImages = function(){
+	imgTitleScreen = assetManager.getAsset("images/menuLayout_01.png");
+	loadedImages=true;
+}
+
+
+SceneManager.prototype.setLvl1Images = function(){
 	imgBack = assetManager.getAsset("images/Back.png");
 	imgPlayer = assetManager.getAsset("images/character_05.png");
 	imgEnemy = assetManager.getAsset("images/Enemy.png");
@@ -62,31 +75,29 @@ SceneManager.prototype.setImages = function(){
 	loadedImages = true;
 }
 
-SceneManager.prototype.setSounds = function(){
+SceneManager.prototype.setLvl1Sounds = function(){
 	spawnSnd = assetManager.getAsset("sounds/sfx/player_spawn.mp3");
 	backTrack = assetManager.getAsset("sounds/music/gameplay_theme_idea.mp3");
-	reloadSnd = assetManager.getAsset("sounds/sfx/gun_recharge.mp3");
+	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.mp3");
 	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.ogg");
 	loadedSounds = true;
 
 }
 
 SceneManager.prototype.loadScreen = function(){
-	
-//	console.log("draw");
-	ctx.drawImage(imgLoader, 0,0,800,600);
+	ctx.drawImage(imgLoader, 0,0,512 ,384);
 }
 
 SceneManager.prototype.gameLoop = function (){
    	var GAME_RUNNING=0;
    	//this.update();
-if(loadedSounds &&loadedImages){
+	if(loadedSounds &&loadedImages){
    			loading = false;
    			loadedImages = false;
    			loadedSounds =false;
-   			sc.runLvl1();
-   		}
-
+   			sc.runLoaded(sc.gameState,sc.gameScene);
+   	}
+   	//no updateing or drawing allowed until loading is complete
    	if(loading){
    		sc.loadScreen();
    		
@@ -97,13 +108,17 @@ if(loadedSounds &&loadedImages){
 		//check for change and call load scene.
 	}
 	else if(sc.gameState === "menu"){
+		sc.gameState = menu.update();
+		menu.draw();
 	}
 	window.requestAnimFrame(sc.gameLoop);
 }
 
 
-SceneManager.prototype.runLvl1 = function(){
-	game.initWorld();
+SceneManager.prototype.runLoaded = function(state,scene){
+	if(state ==="gameplay" && scene === "level1"){
+		game.initWorld();
+	}
 }
 
 
@@ -119,7 +134,11 @@ SceneManager.prototype.loadScene = function(state,scene){
 	
 	if(state === "menu"){
 		if(scene === "titleScreen"){
-
+			this.queueTitleAssets();
+			assetManager.loadTitleImages(function() {
+    			sc.setTitleImages()
+			});
+			loadedSounds=true;
 		}
 		else if(scene ==="LevelSelect"){}
 	}
@@ -127,13 +146,13 @@ SceneManager.prototype.loadScene = function(state,scene){
 		if(scene === "level1"){
 			this.queueLvl1Assets();
 			assetManager.loadLvl1Images(function() {
-    			sc.setImages()
+    			sc.setLvl1Images()
 			});
 			assetManager.loadLvl1Sounds(function() {
-    			sc.setSounds()
+    			sc.setLvl1Sounds()
 			});
 
-			sc.setSounds();
+			sc.setLvl1Sounds();
 			//sc.setSounds();
 			//setTimeout(function(){		
 			
@@ -149,6 +168,7 @@ SceneManager.prototype.loadScene = function(state,scene){
 
 	}
 	sc.gameState = state;
+	sc.gameScene = scene;
 	console.log(Date.now()-timeSpent);
 	
 }

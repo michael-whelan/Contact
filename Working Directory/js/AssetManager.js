@@ -32,7 +32,6 @@ AssetManager.prototype.queueLoadEssen = function(path) {
     this.loadQueueEssen.push(path);
 }
 
-
 AssetManager.prototype.loadEssential = function(loadCallback) {
     if (this.loadQueueEssen.length === 0) {
       loadCallback();
@@ -43,8 +42,46 @@ AssetManager.prototype.loadEssential = function(loadCallback) {
         var that = this;
         img.addEventListener("load", function() {
             that.successCount += 1;
-            if (that.isDone(that.loadQueueImg)) {
+            if (that.isDone(that.loadQueueEssen)) {
+                that.successCount =0;
+                that.errorCount=0;
+                while(that.loadQueueEssen.length > 0) {
+                    that.loadQueueEssen.pop();
+                }
                 loadCallback();
+            }
+        }, false);
+        img.addEventListener("error", function() {
+            that.errorCount += 1;
+            console.log("Error file: "+path);
+            if (that.isDone(that.loadQueueEssen)) {
+                loadCallback();
+            }
+    }, false);
+        img.src = path;
+        this.cache[path] = img;
+    }
+}
+
+AssetManager.prototype.loadTitleImages = function(loadCallback) {
+    if (this.loadQueueImg.length === 0) {
+      loadCallback();
+    }
+    for (var i = 0; i < this.loadQueueImg.length; i++) {
+        var path = this.loadQueueImg[i];
+        var img = new Image();
+        var that = this;
+        img.addEventListener("load", function() {
+            that.successCount += 1;
+            //console.log(that.isDone(that.loadQueueImg));
+            if (that.isDone(that.loadQueueImg)) {
+                that.successCount = 0;
+                that.errorCount=0;
+                while(that.loadQueueImg.length > 0) {
+                    that.loadQueueImg.pop();
+                }
+                loadCallback();
+
             }
         }, false);
         img.addEventListener("error", function() {
@@ -54,12 +91,11 @@ AssetManager.prototype.loadEssential = function(loadCallback) {
                 loadCallback();
             }
     }, false);
+
         img.src = path;
         this.cache[path] = img;
     }
 }
-
-
 
 AssetManager.prototype.loadLvl1Images = function(loadCallback) {
     if (this.loadQueueImg.length === 0) {
@@ -72,6 +108,11 @@ AssetManager.prototype.loadLvl1Images = function(loadCallback) {
         img.addEventListener("load", function() {
             that.successCount += 1;
             if (that.isDone(that.loadQueueImg)) {
+                that.successCount = 0;
+                that.errorCount=0;
+                while(that.loadQueueImg.length > 0) {
+                    that.loadQueueImg.pop();
+                }
                 loadCallback();
 
             }
@@ -89,7 +130,6 @@ AssetManager.prototype.loadLvl1Images = function(loadCallback) {
     }
 }
 
-
 AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
     if (this.loadQueueSnd.length === 0) {
         loadCallback();
@@ -100,10 +140,14 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
         var that = this;
         snd.addEventListener("load", function() {
             that.successCount += 1;
-                console.log("hit");
             if (that.isDone(that.loadQueueSnd)) {
+                that.successCount = 0;
+                that.errorCount=0;
+                 while(that.loadQueueSnd.length > 0) {
+                    that.loadQueueSnd.pop();
+                }
                 loadCallback();
-              console.log("hit");
+              //console.log("hit");
             }
         }, false);
         snd.addEventListener("error", function() {
@@ -113,13 +157,15 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
                 loadCallback();
             }
     }, false);
-        console.log(snd);
+       // console.log(snd);
         snd.src = path;
         this.cache[path] = snd;
     }
 }
 
 AssetManager.prototype.isDone = function(queue) {
+  //  console.log("queue len "+queue.length, this.successCount,this.errorCount);
+
     return (queue.length == this.successCount + this.errorCount);
 }
 

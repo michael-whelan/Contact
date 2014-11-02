@@ -17,13 +17,13 @@ var sticks;
 var limitSize = 36;
 var inputSize = 20;
 var threshold=4;
-var WIDTH = 800;
-var HEIGHT = 600;
+var WIDTH = 512;
+var HEIGHT =384;
 var point = {
 	radius: 20,
 	speed: 10,
-	x: (800 / 2),
-	y: (600 / 2)
+	x: (512 / 2),
+	y: (384 / 2)
 };
 
 function Game (){
@@ -46,13 +46,6 @@ Game.prototype.initWorld = function(){
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].active = false;
 	}
-}
-
-
-
-Game.prototype.queueAssets = function(){
-
-	//assetManager.queueLoad("images/Back.png");
 }
 
 
