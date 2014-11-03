@@ -20,7 +20,8 @@ function SceneManager(){
 	loadedImages = false;
 	loadedSounds = false;
 	//loading = true;
-
+	this.onceMenu = false;
+	this.onceLvl1 = false;
 	scaleRatio = canvas.height/ parseInt(canvas.style.height, 10);
 	canvas.style.width = canvas.width/scaleRatio;
 };
@@ -137,7 +138,7 @@ SceneManager.prototype.gameLoop = function (){
    			loading = false;
    			loadedImages = false;
    			loadedSounds =false;
-   			sc.runLoaded(sc.gameState,sc.gameScene);
+   			game.reset();
    	}
    	//no updateing or drawing allowed until loading is complete
    	if(loading){
@@ -146,26 +147,29 @@ SceneManager.prototype.gameLoop = function (){
    	}
    	else if(sc.gameState === "gameplay"){
  		sc.gameState = game.update();
+ 		if(sc.gameState !== "gameplay"){
+ 			sc.gameScene = "titleScreen";
+ 			if(!sc.onceMenu){
+ 				sc.loadScene(sc.gameState,sc.gameScene);
+ 			}
+ 		}
 		game.draw();
+		sc.onceLvl1 = true;
 		//check for change and call load scene.
 	}
 	else if(sc.gameState === "menu"){
 		sc.gameState = menu.update();
 		if(sc.gameState !=="menu"){
 			sc.gameScene = "level1";
-			sc.loadScene(sc.gameState,sc.gameScene);
+			game.reset();
+			if(!sc.onceLvl1){
+				sc.loadScene(sc.gameState,sc.gameScene);
+			}
 		}
 		menu.draw();
+		sc.onceMenu = true;
 	}
 	window.requestAnimFrame(sc.gameLoop);
-}
-
-
-
-SceneManager.prototype.runLoaded = function(state,scene){
-	if(state ==="gameplay" && scene === "level1"){
-		game.initWorld();
-	}
 }
 
 

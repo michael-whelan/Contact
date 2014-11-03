@@ -10,42 +10,22 @@ var reloadSnd = new Audio();
 
 var Player=function (){
 	this.bullets =[];
-	this.numBullets = 30;
-	this.health=100;
-	this.x = 100;
-	this.y = 100;
+
 	this.width = 128;
 	this.height = 101;//135
-	this.alive = true;
-	this.angle = 2.87;
-	this.xVel = 0;
-	this.yVel = 0;
-	this.xDirect = 0;
-	this.yDirect = 0;
 
-	this.xFacing = 0;
-	this.yFacing = 0;
 	this.speed = 2;
 	//bullet = new Bullet();
 	this.centreX =0;
 	this.centreY =0;
 	this.bulletsAlive = 0;
 	this.lastShotTime = 0;
-	this.reloadTimer = 50;
-	this.reloadDelay =50;
+	this.reloadTimer = 100;
+	this.reloadDelay =100;
 
-	this.startReload = false; 
-	this.radius= 50;//used for collision
-	this.centreX =0;
-	this.centreY =0;
-	this.shot = false;//the sound of the gun shot for the enemies to hear
-	this.bulletTimer=0;//stops the bullets from spawning all at once.
-
-	this.bulletX = 0,this.bulletY = 0;//this is the initial position of all bullets fired from the player
-	this.flash = false; this.flashTimer=0;//makes the player flash on respawn;
-	this.healthTimer = 0;
 	this.healDelay =15;
-	this.lastHitTime = 0;
+
+	this.reset();
 };
 
 Player.prototype.reload = function(){
@@ -56,6 +36,35 @@ Player.prototype.reload = function(){
 		this.numBullets = 30;
 		this.startReload = false;
 	}
+}
+
+Player.prototype.reset = function(){
+	this.numBullets = 30;
+	this.health=100;
+	this.x = 100;
+	this.y = 100;
+	this.xVel = 0;
+	this.yVel = 0;
+	this.xDirect = 0;
+	this.yDirect = 0;
+	this.lastHitTime = 0;
+
+	this.alive = true;
+	this.angle = 2.87;
+	
+
+	this.xFacing = 0;
+	this.yFacing = 0;
+	this.startReload = false; 
+	this.radius= 50;//used for collision
+	this.centreX =0;
+	this.centreY =0;
+	this.shot = false;//the sound of the gun shot for the enemies to hear
+	this.bulletTimer=0;//stops the bullets from spawning all at once.
+	this.respawn();
+	this.bulletX = 0,this.bulletY = 0;//this is the initial position of all bullets fired from the player
+	this.flash = false; this.flashTimer=0;//makes the player flash on respawn;
+	this.healthTimer = 0;
 }
 
 Player.prototype.shoot = function(){	
@@ -69,6 +78,7 @@ Player.prototype.shoot = function(){
 			this.bulletTimer=0;
 			}
 		else if(this.numBullets<=0){
+			reloadSnd.play();
 			this.reload();
 		}
 	//}//end Space
@@ -112,6 +122,7 @@ Player.prototype.controller = function(b1,b2){
 		//console.log("Reloading...");
 		this.startReload = true;
 		reloadSnd.play();
+		console.log("reload");
 	}
 	if(b1){
 		this.move("forward");

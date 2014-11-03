@@ -38,16 +38,17 @@ function Game (){
 	this.mapHeight = 900;
 }
 
-Game.prototype.initWorld = function(){
-	//player.init();
+
+Game.prototype.reset = function(){
+	player.reset();
+	enemyManager.reset(1);
+		//player.init();
 	textManager.init();
-	enemyManager.init();
 	this.playBackgroundLoop();
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].active = false;
 	}
 }
-
 
 Game.prototype.touchMove= function(e){
 	e.preventDefault();
@@ -160,6 +161,12 @@ Game.prototype.update = function(){
 		} else if (point.y > (HEIGHT - point.radius)) {
 			point.y = (HEIGHT - point.radius);
 		}
+	}
+
+	if(KeyController.isKeyDown(Key.ESC)){
+		backTrack.pause();
+		backTrack.currentTime=0;
+		return "menu";
 	}
 
 
