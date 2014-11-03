@@ -17,13 +17,13 @@ var sticks;
 var limitSize = 36;
 var inputSize = 20;
 var threshold=4;
-var WIDTH = 1024;
-var HEIGHT =768;
+var WIDTH =1152;
+var HEIGHT =648;
 var point = {
 	radius: 20,
 	speed: 10,
-	x: (1024 / 2),
-	y: (768 / 2)
+	x: (1152 / 2),
+	y: (648 / 2)
 };
 
 function Game (){

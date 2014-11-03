@@ -35,7 +35,7 @@ Menu.prototype.touchStart = function(e){
 	e.preventDefault();
 	for (var i = 0; i < e.touches.length; ++i) {
 		var touch = e.touches[i];
-		if(touch.pageX >  770  && touchXScaled <955&&touch.pageY>190&&touchYScaled<375){//770,190,955,375
+		if(touch.pageX >  860  && touchXScaled <1075&&touch.pageY>160&&touchYScaled<315){//860,160,1075,315
 			this.play = true;
 		}
 	}
@@ -50,5 +50,5 @@ Menu.prototype.touchEnd = function(e){
 Menu.prototype.draw = function(){
 	//wipes the screen at the start of each draw frame;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
-	ctx.drawImage(imgTitleScreen, 0,0,1024,768);
+	ctx.drawImage(imgTitleScreen, 0,0,1152,648);
 }
