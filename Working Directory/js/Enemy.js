@@ -8,8 +8,7 @@ var imgViewRad= new Image();
 var Enemy=function ()
 {
 	
-	this.x = 200;
-	this.y = 100;
+	
 	this.centreX =0;
 	this.centreY =0;
 	this.width = 50;
@@ -21,32 +20,34 @@ var Enemy=function ()
 	this.xDirect = 0;
 	this.yDirect = 0;
 	this.speed = 1.5;
-	this.timeSinceDirectChange = 0;
-	this.moveDirection;
-	this.targetPosX= 0;
-	this.targetPosY =0;
-	this.lastX;
-	this.lastY;
 	this.viewRadius = 40;
 	this.hitRadius =25;
 	//AI States
 	this.state = "wander";
 	this.drawLast = false;
 
-
 	//bullets and crap
 	this.bullets = [];
-	this.numBullets = 4;
-	this.reloadTimer = 80;
-	this.startReload = false; 
-	//this.bulletTimer = 0;
+	this.reset();
 
 	//triangle variables
 	this.aX=0,this.aY=0,this.bX=0,this.bY=0,this.cX=0,this.cY=0;
 };
 
 
-
+Enemy.prototype.reset = function(){
+	this.moveDirection;
+	this.targetPosX= 0;
+	this.targetPosY =0;
+	this.lastX;
+	this.lastY;
+	this.timeSinceDirectChange = 0;
+	this.x = 200;
+	this.y = 100;
+	this.numBullets = 4;
+	this.reloadTimer = 80;
+	this.startReload = false; 
+}
 
 Enemy.prototype.spawnEnemy = function(){
 	this.alive = true;

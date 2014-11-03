@@ -4,22 +4,24 @@
 
 
 var EnemyManager=function (){
-	this.currentLvl = 1;
-	this.totalEnemies = 0;
-	this.enemySwarms = 0;
-	this.totalSwarms=0;
 	this.enemy = [];
-	this.spawnTimer= 0;
 	this.setUp();
-	this.playerPosX = 0;
-	this.playerPosY = 0;
 };
 
 
 
-EnemyManager.prototype.init = function(lvl){
-	lvl =1;
+EnemyManager.prototype.reset = function(lvl){
+	while(this.enemy.length>0) {
+		this.enemy.pop();
+	};
 	this.currentLvl = lvl;
+	this.totalEnemies = 0;
+	this.enemySwarms = 0;
+	this.totalSwarms=0;
+	this.playerPosX = 0;
+	this.playerPosY = 0;
+	this.spawnTimer= 0;
+	this.setUp();
 }
 
 
@@ -27,7 +29,6 @@ EnemyManager.prototype.allEnemies = function(){
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {//enemy.length
 		return enemy[j];
 	}
-
 }
 
 EnemyManager.prototype.hearShot = function(px,py){
