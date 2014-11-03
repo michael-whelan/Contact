@@ -34,8 +34,8 @@ function Game (){
 	enemyManager = new EnemyManager();
 	collisionManager = new CollisionManager();
 	textManager = new TextManager();
-	this.mapWidth = 1600;
-	this.mapHeight = 900;
+	this.mapWidth = 2000;
+	this.mapHeight = 1300;
 }
 
 
@@ -249,7 +249,7 @@ Game.prototype.draw =function (){
     var camY = clamp(-player.y + canvas.height/2, 0, this.mapHeight - canvas.height);
     ctx.translate( camX, camY ); 
     //the numbers offset the background so that it centres with the map
-    ctx.drawImage(imgBack, -(300 + (this.mapWidth-1100)),-(200+this.mapHeight-800),this.mapWidth, this.mapHeight);
+    ctx.drawImage(imgBack, -(300 + (this.mapWidth-1450)),-(200+this.mapHeight-845),this.mapWidth, this.mapHeight);
 	player.draw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
 		enemyManager.enemy[i].draw();
