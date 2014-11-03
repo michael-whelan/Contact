@@ -9,7 +9,7 @@ var AssetManager=function ()
 };
 
 var context;
-window.addEventListener('load', init, false);
+window.addEventListener('load', init , false);
 function init() {
   try {
     // Fix up for prefixing
@@ -138,7 +138,7 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
         var path = this.loadQueueSnd[i];
         var snd = new Audio();
         var that = this;
-        snd.addEventListener("load", function() {
+        snd.addEventListener("loadeddata", function() {
             that.successCount += 1;
             if (that.isDone(that.loadQueueSnd)) {
                 that.successCount = 0;
@@ -149,10 +149,10 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
                 loadCallback();
               //console.log("hit");
             }
-        }, false);
+        },false);
         snd.addEventListener("error", function() {
             that.errorCount += 1;
-  
+
             if (that.isDone(that.loadQueueSnd)) {
                 loadCallback();
             }

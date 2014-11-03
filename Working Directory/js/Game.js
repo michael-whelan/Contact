@@ -17,13 +17,13 @@ var sticks;
 var limitSize = 36;
 var inputSize = 20;
 var threshold=4;
-var WIDTH = 512;
-var HEIGHT =384;
+var WIDTH = 1024;
+var HEIGHT =768;
 var point = {
 	radius: 20,
 	speed: 10,
-	x: (512 / 2),
-	y: (384 / 2)
+	x: (1024 / 2),
+	y: (768 / 2)
 };
 
 function Game (){
@@ -49,11 +49,11 @@ Game.prototype.initWorld = function(){
 }
 
 
-function touchMove(e){
+Game.prototype.touchMove= function(e){
 	e.preventDefault();
 	for (var i = 0; i < e.touches.length; ++i) {
 		var touch = e.touches[i];
-		if(touch.pageX<400){
+		if(touch.pageX<canvas.width/2){
 			sticks[0].setInputXY(touch.pageX, touch.pageY);
 		}
 		else{
@@ -63,11 +63,11 @@ function touchMove(e){
 }
 
 
-function touchStart(e){ 
+Game.prototype.touchStart = function(e){ 
 	e.preventDefault();
 	for (var i = 0; i < e.touches.length; ++i) {
 			var touch = e.touches[i];
-			if(touch.pageX<400){
+			if(touch.pageX<canvas.width/2){
 				sticks[0].setLimitXY(touch.pageX, touch.pageY);
 				sticks[0].setInputXY(touch.pageX, touch.pageY);
 				sticks[0].active = true;
@@ -81,7 +81,7 @@ function touchStart(e){
 		}
 }
 
-function touchEnd(e){ 
+Game.prototype.touchEnd = function(e){ 
 	var touches = e.changedTouches;
 	for (var i = 0; i < touches.length; ++i) {
 		sticks[0].active=false;

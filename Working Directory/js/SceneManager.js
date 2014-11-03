@@ -8,6 +8,7 @@ var imgLoader;
 var loadedImages;
 var loadedSounds;
 var sc;
+var scaleRatio;
 function SceneManager(){
 	game = new Game();
 	menu = new Menu();
@@ -19,20 +20,23 @@ function SceneManager(){
 	loadedImages = false;
 	loadedSounds = false;
 	//loading = true;
+
+	scaleRatio = canvas.height/ parseInt(canvas.style.height, 10);
+	canvas.style.width = canvas.width/scaleRatio;
 };
 
 SceneManager.prototype.initCanvas=function () { 
 	canvas = document.createElement('canvas'); 
 	ctx = canvas.getContext('2d'); 
-
 	document.body.appendChild(canvas);
 	//set canvas to size of the screen.
-	canvas.width = 512;//1024
-	canvas.height = 384;//768 
+	canvas.width = 1024;//1024
+	canvas.height = 768;//768 
+	resizeGame();
 	canvas.addEventListener("touchstart",touchStart,false);
 	canvas.addEventListener("touchmove",touchMove,false);
 	canvas.addEventListener("touchend",touchEnd,false);
-
+	canvas.addEventListener("mousedown",mouseDown,false);
 	/*canvas.addEventListener("mousedown",mouseDown,false);
 	canvas.addEventListener("mousemove",mouseMove,false);
 	canvas.addEventListener("mouseup",mouseUp,false);*/
@@ -42,6 +46,44 @@ SceneManager.prototype.initCanvas=function () {
 //});
 	//this.queueAssets();
 }
+function resizeGame(){
+	canvas.style.height = window.parent.document.getElementById("getHeight").style.height;
+  	canvas.style.width = window.parent.document.getElementById("getWidth").style.width;
+	scaleRatio = canvas.height/ parseInt(canvas.style.height, 10);
+	canvas.style.width = canvas.width/scaleRatio;
+	console.log(canvas.style.height);
+	
+}
+
+function mouseDown(e){
+	menu.mouseDown(e);
+}
+
+function touchStart(e){
+	if(this.gameState ==="menu"){
+		menu.touchStart(e);
+	}
+	else if(this.gameScene === "gameplay"){
+		game.touchStart(e);
+	}	
+}
+function touchMove(e){
+	if(this.gameState ==="menu"){
+		menu.touchMove(e);
+	}
+	else if(this.gameScene === "gameplay"){
+		game.touchMove(e);
+	}	
+}
+function touchEnd(e){
+	if(this.gameState ==="menu"){
+		menu.touchEnd(e);
+	}
+	else if(this.gameScene === "gameplay"){
+		game.touchEnd(e);
+	}	
+}
+
 
 SceneManager.prototype.queueLvl1Assets = function(){
 	assetManager.queueLoadImg("images/Back.png");
@@ -52,7 +94,7 @@ SceneManager.prototype.queueLvl1Assets = function(){
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.mp3");
-	assetManager.queueLoadSnd("sounds/sfx/gun_pew.ogg");
+	assetManager.queueLoadSnd("sounds/sfx/gun_pew.mp3");
 }
 
 
@@ -79,13 +121,12 @@ SceneManager.prototype.setLvl1Sounds = function(){
 	spawnSnd = assetManager.getAsset("sounds/sfx/player_spawn.mp3");
 	backTrack = assetManager.getAsset("sounds/music/gameplay_theme_idea.mp3");
 	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.mp3");
-	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.ogg");
+	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.mp3");
 	loadedSounds = true;
-
 }
 
 SceneManager.prototype.loadScreen = function(){
-	ctx.drawImage(imgLoader, 0,0,512 ,384);
+	ctx.drawImage(imgLoader, 0,0,canvas.width ,canvas.height);
 }
 
 SceneManager.prototype.gameLoop = function (){
@@ -109,10 +150,15 @@ SceneManager.prototype.gameLoop = function (){
 	}
 	else if(sc.gameState === "menu"){
 		sc.gameState = menu.update();
+		if(sc.gameState !=="menu"){
+			sc.gameScene = "level1";
+			sc.loadScene(sc.gameState,sc.gameScene);
+		}
 		menu.draw();
 	}
 	window.requestAnimFrame(sc.gameLoop);
 }
+
 
 
 SceneManager.prototype.runLoaded = function(state,scene){
@@ -151,13 +197,6 @@ SceneManager.prototype.loadScene = function(state,scene){
 			assetManager.loadLvl1Sounds(function() {
     			sc.setLvl1Sounds()
 			});
-
-			sc.setLvl1Sounds();
-			//sc.setSounds();
-			//setTimeout(function(){		
-			
-			//}, 3000);
-
 
 		}
 		else if(scene === "level2"){

@@ -38,7 +38,7 @@ TextManager.prototype.controller = function(){
         //txtAmmo = txtAmmo + numBullets.toString();
        // ctx.strokeText("fps: "+fps.toFixed(), 680, 150);
         if(fps<60){
-            this.lowestFps = fps;
+           this.lowestFps = fps;
         }
         ctx.strokeText("fps: "+this.lowestFps.toFixed(), 680, 50);
 

@@ -1,4 +1,5 @@
 <html>
+<head>
 
 <script src="./lib/util.js"></script>
 <script src="./lib/KeyController.js"></script>
@@ -22,12 +23,30 @@
 
 <link href='http://fonts.googleapis.com/css?family=Shadows+Into+Light|Dosis'>
 
-<body onload="main();">
+<style>
+	body {
+		margin: 0;
+		padding: 0;
+	}
+	
+	p {
+		display: none;
+	}
+</style>
 
-</body>
+
+</head>
+<body onload="main();">
+	<script id = "getHeight" type = jquery> 
+		$(window).height(); 
+	</script>
+		<script id = "getWidth" type = jquery> 
+		$(window).width(); 
+	</script>
 
 
 <!--This is where all of the game text can be written and pulled onto the gamescreen-->
 <noembed id="txtAmmo">Ammo: </noembed>
 <noembed id="txtHealth">Health: </noembed>
+</body>
 </html>

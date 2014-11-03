@@ -6,7 +6,7 @@ function main()
 	console.log("version 1");
 	sceneManager = new SceneManager();
 
-	sceneManager.loadScene("gameplay","level1");
+	sceneManager.loadScene("menu","titleScreen");
 	//game= new Game();
 
 	//game.initCanvas();
