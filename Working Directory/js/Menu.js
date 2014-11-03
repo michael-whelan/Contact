@@ -16,12 +16,12 @@ Menu.prototype.update = function() {
 
 //temp
 Menu.prototype.mouseDown= function(e){
-	if(e.clientX >  770  && e.clientX <955&&e.clientY>190&&e.clientY<375){//770,190,955,375
+	if(e.clientX >  860  && e.clientX <1075&&e.clientY>160&&e.clientY<315){//770,190,955,375
 			this.play = true;
 		}
 }
-
 //end temp
+
 Menu.prototype.touchMove= function(e){
 	e.preventDefault();
 	for (var i = 0; i < e.touches.length; ++i) {

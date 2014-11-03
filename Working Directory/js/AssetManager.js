@@ -130,6 +130,35 @@ AssetManager.prototype.loadLvl1Images = function(loadCallback) {
     }
 }
 
+AssetManager.prototype.loadSoundObj = function(obj) {
+  var request = new XMLHttpRequest();
+  request.open('GET', obj.src + format, true);
+  request.responseType = 'arraybuffer';
+
+  request.onload = function() {
+    // request.response is encoded... so decode it now
+    context.decodeAudioData(request.response, function(buffer) {
+      obj.buffer = buffer;
+    }, function(err) {
+      throw new Error(err);
+    });
+  }
+  request.send();
+}
+
+
+AssetManager.prototype.loadSounds = function(obj) {
+  var len = obj.length, i;
+
+  // iterate over sounds obj
+  for (i in obj) {
+    if (obj.hasOwnProperty(i)) {
+      // load sound
+      loadSoundObj(obj[i]);
+    }
+  }
+}
+
 AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
     if (this.loadQueueSnd.length === 0) {
         loadCallback();

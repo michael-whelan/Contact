@@ -18,7 +18,7 @@ function main()
 	//game.initWorld();		
 		
 	//start game loop
-	//game.gameLoop();
+	sceneManager.gameLoop();
 			
 }
 

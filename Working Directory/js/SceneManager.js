@@ -9,6 +9,7 @@ var loadedImages;
 var loadedSounds;
 var sc;
 var scaleRatio;
+var lvl1Sounds;
 function SceneManager(){
 	game = new Game();
 	menu = new Menu();
@@ -180,7 +181,7 @@ SceneManager.prototype.loadScene = function(state,scene){
         assetManager.loadEssential
     });
 	imgLoader = assetManager.getAsset("images/load_Screen.png");
-	sc.gameLoop();
+	//sc.gameLoop();
 	timeSpent = Date.now();
 	
 	if(state === "menu"){
@@ -202,7 +203,7 @@ SceneManager.prototype.loadScene = function(state,scene){
 			assetManager.loadLvl1Sounds(function() {
     			sc.setLvl1Sounds()
 			});
-
+			//assetManager.loadSounds(lvl1Sounds);
 		}
 		else if(scene === "level2"){
 
