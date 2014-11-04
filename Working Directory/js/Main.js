@@ -3,7 +3,7 @@ var sceneManager;
 function main()
 {
 	//change version number if you suspect a problem with caching
-	console.log("version 1");
+	console.log("version 2");
 	sceneManager = new SceneManager();
 
 	sceneManager.loadScene("menu","titleScreen");

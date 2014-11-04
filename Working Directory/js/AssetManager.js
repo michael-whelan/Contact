@@ -8,7 +8,7 @@ var AssetManager=function ()
     this.errorCount = 0;
 };
 
-var context;
+/*var context;
 window.addEventListener('load', init , false);
 function init() {
   try {
@@ -19,7 +19,7 @@ function init() {
   catch(e) {
     alert('Web Audio API is not supported in this browser');
   }
-}
+}*/
 
 AssetManager.prototype.queueLoadImg = function(path) {
     this.loadQueueImg.push(path);
@@ -129,7 +129,7 @@ AssetManager.prototype.loadLvl1Images = function(loadCallback) {
         this.cache[path] = img;
     }
 }
-
+/*
 AssetManager.prototype.loadSoundObj = function(obj) {
   var request = new XMLHttpRequest();
   request.open('GET', obj.src + format, true);
@@ -158,7 +158,23 @@ AssetManager.prototype.loadSounds = function(obj) {
     }
   }
 }
+*/
+AssetManager.prototype.loadSounds = function(loadCallback) {
+    if (this.loadQueueSnd.length === 0) {
+        loadCallback();
+    }
+    var audioPath = "sounds/";
+    var manifest = [
+        {id:"spawnSnd", src:"sfx/player_spawn.mp3"},
+        {id:"backTrack", src:"music/gameplay_theme_idea.mp3"},
+        {id:"reloadSnd", src:"sfx/gun_crecharge.mp3"},
+        {id:"gunshot", src:"sfx/gun_pew.mp3"}
+    ];
+    createjs.Sound.alternateExtensions = ["ogg"];
+    createjs.Sound.addEventListener("fileload", loadCallback);
+    createjs.Sound.registerManifest(manifest, audioPath);
 
+}
 AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
     if (this.loadQueueSnd.length === 0) {
         loadCallback();

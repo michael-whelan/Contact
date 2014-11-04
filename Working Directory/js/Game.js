@@ -44,6 +44,7 @@ Game.prototype.reset = function(){
 	enemyManager.reset(1);
 		//player.init();
 	textManager.init();
+	//createjs.Sound.registerSound(backTrack);
 	this.playBackgroundLoop();
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].active = false;
@@ -92,11 +93,8 @@ Game.prototype.touchEnd = function(e){
 
 Game.prototype.playBackgroundLoop = function(){
 	//an alternative method 
-	backTrack.addEventListener('ended', function() {
-	    this.currentTime = 0;
-	    this.play();
-	}, false);
-	backTrack.play();
+	console.log("hit");
+	createjs.Sound.play(backTrack);
 };
 /*
 function playSound(buffer) {
