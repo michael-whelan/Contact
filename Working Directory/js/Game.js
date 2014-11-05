@@ -92,39 +92,12 @@ Game.prototype.touchEnd = function(e){
 }
 
 Game.prototype.playBackgroundLoop = function(){
-	//an alternative method 
-	createjs.Sound.play(backTrack);
+	backTrack.addEventListener('ended', function() {
+	    this.currentTime = 0;
+	    this.play();
+	}, false);
+	backTrack.play();
 };
-/*
-function playSound(buffer) {
-  var source = ctx.createBufferSource();
-  source.buffer = buffer;
-  source.connect(ctx.destination);
-  source.start(0);
-}
-Game.prototype.playSoundObj = function(buffer) {
-  var source = context.createBufferSource();
-  source.buffer = buffer;
-
-  // loop the audio?
-  source.loop = buffer.loop;
-
-  // create a gain node
-  buffer.gainNode = context.createGain();
-
-  // connect the source to the gain node
-  source.connect(buffer.gainNode);
-
-  // set the gain (volume)
-  buffer.gainNode.gain.value = buffer.volume;
-
-  // connect gain node to destination
-  buffer.gainNode.connect(context.destination);
-
-  // play sound
-  source.start(0);
-}
-*/
 function getDistance(x1,y1,x2,y2){
 	console.log(x1,y1,x2,y2);
 	var xs = 0;

@@ -25,7 +25,7 @@ function SceneManager(){
 	this.onceLvl1 = false;
 	scaleRatio = canvas.height/ parseInt(canvas.style.height, 10);
 	canvas.style.width = canvas.width/scaleRatio;
-	console.log(createjs.Sound.initializeDefaultPlugins());
+	//console.log(createjs.Sound.initializeDefaultPlugins());
 };
 
 
@@ -124,23 +124,13 @@ SceneManager.prototype.setLvl1Images = function(){
 	loadedImages = true;
 }
 
-SceneManager.prototype.setLvl1Sounds = function(event){
-/*	spawnSnd = assetManager.getAsset("sounds/sfx/player_spawn.mp3");
+SceneManager.prototype.setLvl1Sounds = function(){
+	spawnSnd = assetManager.getAsset("sounds/sfx/player_spawn.mp3");
 	backTrack = assetManager.getAsset("sounds/music/gameplay_theme_idea.mp3");
 	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.mp3");
 	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.mp3");
-*/
-	console.log(event);
-	/*var audioPath = "sounds/";
-    var manifest = [
-        {id:"spawnSnd", src:"sfx/player_spawn.mp3"},
-        {id:"backTrack", src:"music/gameplay_theme_idea.mp3"},
-		{id:"reloadSnd", src:"sfx/gun_crecharge.mp3"},
-		{id:"gunshot", src:"sfx/gun_pew.mp3"}
-    ];
- 
-    createjs.Sound.alternateExtensions = ["ogg"];
-    createjs.Sound.registerManifest(manifest, audioPath);*/
+	
+console.log("loadlevl");
 	loadedSounds = true;
 }
 
@@ -216,7 +206,7 @@ SceneManager.prototype.loadScene = function(state,scene){
 			assetManager.loadLvl1Images(function() {
     			sc.setLvl1Images()
 			});
-			assetManager.loadSounds(function() {
+			assetManager.loadLvl1Sounds(function() {
     			sc.setLvl1Sounds()
 			});
 			//assetManager.loadSounds(lvl1Sounds);

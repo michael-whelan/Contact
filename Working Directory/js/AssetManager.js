@@ -129,52 +129,7 @@ AssetManager.prototype.loadLvl1Images = function(loadCallback) {
         this.cache[path] = img;
     }
 }
-/*
-AssetManager.prototype.loadSoundObj = function(obj) {
-  var request = new XMLHttpRequest();
-  request.open('GET', obj.src + format, true);
-  request.responseType = 'arraybuffer';
 
-  request.onload = function() {
-    // request.response is encoded... so decode it now
-    context.decodeAudioData(request.response, function(buffer) {
-      obj.buffer = buffer;
-    }, function(err) {
-      throw new Error(err);
-    });
-  }
-  request.send();
-}
-
-
-AssetManager.prototype.loadSounds = function(obj) {
-  var len = obj.length, i;
-
-  // iterate over sounds obj
-  for (i in obj) {
-    if (obj.hasOwnProperty(i)) {
-      // load sound
-      loadSoundObj(obj[i]);
-    }
-  }
-}
-*/
-AssetManager.prototype.loadSounds = function(loadCallback) {
-    if (this.loadQueueSnd.length === 0) {
-        loadCallback();
-    }
-    var audioPath = "sounds/";
-    var manifest = [
-        {id:"spawnSnd", src:"sfx/player_spawn.mp3"},
-        {id:"backTrack", src:"music/gameplay_theme_idea.mp3"},
-        {id:"reloadSnd", src:"sfx/gun_crecharge.mp3"},
-        {id:"gunshot", src:"sfx/gun_pew.mp3"}
-    ];
-    createjs.Sound.alternateExtensions = ["ogg"];
-    createjs.Sound.addEventListener("fileload", loadCallback());
-    createjs.Sound.registerManifest(manifest, audioPath);
-
-}
 AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
     if (this.loadQueueSnd.length === 0) {
         loadCallback();
@@ -183,8 +138,10 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
         var path = this.loadQueueSnd[i];
         var snd = new Audio();
         var that = this;
+        console.log("check");
         snd.addEventListener("loadeddata", function() {
             that.successCount += 1;
+            console.log("hit");
             if (that.isDone(that.loadQueueSnd)) {
                 that.successCount = 0;
                 that.errorCount=0;
@@ -202,7 +159,7 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
                 loadCallback();
             }
     }, false);
-       // console.log(snd);
+        console.log(snd);
         snd.src = path;
         this.cache[path] = snd;
     }
