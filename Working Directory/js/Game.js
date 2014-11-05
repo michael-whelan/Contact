@@ -44,7 +44,6 @@ Game.prototype.reset = function(){
 	enemyManager.reset(1);
 		//player.init();
 	textManager.init();
-	//createjs.Sound.registerSound(backTrack);
 	this.playBackgroundLoop();
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].active = false;
@@ -92,18 +91,14 @@ Game.prototype.touchEnd = function(e){
 }
 
 Game.prototype.playBackgroundLoop = function(){
-<<<<<<< HEAD
+	//an alternative method 
 	backTrack.addEventListener('ended', function() {
 	    this.currentTime = 0;
 	    this.play();
 	}, false);
 	backTrack.play();
-=======
-	//an alternative method 
-	console.log("hit");
-	createjs.Sound.play(backTrack);
->>>>>>> parent of e7bdf61... Still implementing soundjs
 };
+
 function getDistance(x1,y1,x2,y2){
 	console.log(x1,y1,x2,y2);
 	var xs = 0;

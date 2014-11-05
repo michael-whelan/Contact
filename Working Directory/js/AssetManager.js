@@ -1,6 +1,6 @@
 var AssetManager=function ()
 {
-	this.loadQueueImg = [];
+    this.loadQueueImg = [];
     this.loadQueueSnd = [];
     this.loadQueueEssen = [];
     this.cache = {};
@@ -8,7 +8,7 @@ var AssetManager=function ()
     this.errorCount = 0;
 };
 
-/*var context;
+var context;
 window.addEventListener('load', init , false);
 function init() {
   try {
@@ -19,7 +19,7 @@ function init() {
   catch(e) {
     alert('Web Audio API is not supported in this browser');
   }
-}*/
+}
 
 AssetManager.prototype.queueLoadImg = function(path) {
     this.loadQueueImg.push(path);
@@ -140,10 +140,9 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
         var path = this.loadQueueSnd[i];
         var snd = new Audio();
         var that = this;
-        console.log("check");
         snd.addEventListener("loadeddata", function() {
-            that.successCount += 1;
             console.log("hit");
+            that.successCount += 1;
             if (that.isDone(that.loadQueueSnd)) {
                 that.successCount = 0;
                 that.errorCount=0;
@@ -156,12 +155,12 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
         },false);
         snd.addEventListener("error", function() {
             that.errorCount += 1;
-
+console.log("hit");
             if (that.isDone(that.loadQueueSnd)) {
                 loadCallback();
             }
     }, false);
-        console.log(snd);
+       // console.log(snd);
         snd.src = path;
         this.cache[path] = snd;
     }
@@ -176,3 +175,4 @@ AssetManager.prototype.isDone = function(queue) {
 AssetManager.prototype.getAsset = function(path) {
     return this.cache[path];
 }
+

@@ -9,7 +9,6 @@ var loadedImages;
 var loadedSounds;
 var sc;
 var scaleRatio;
-var lvl1Sounds;
 function SceneManager(){
 	game = new Game();
 	menu = new Menu();
@@ -25,15 +24,7 @@ function SceneManager(){
 	this.onceLvl1 = false;
 	scaleRatio = canvas.height/ parseInt(canvas.style.height, 10);
 	canvas.style.width = canvas.width/scaleRatio;
-<<<<<<< HEAD
-	//console.log(createjs.Sound.initializeDefaultPlugins());
-=======
-	console.log(createjs.Sound.initializeDefaultPlugins())
->>>>>>> parent of e7bdf61... Still implementing soundjs
 };
-
-
-
 
 SceneManager.prototype.initCanvas=function () { 
 	canvas = document.createElement('canvas'); 
@@ -133,8 +124,6 @@ SceneManager.prototype.setLvl1Sounds = function(){
 	backTrack = assetManager.getAsset("sounds/music/gameplay_theme_idea.mp3");
 	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.mp3");
 	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.mp3");
-	
-console.log("loadlevl");
 	loadedSounds = true;
 }
 
@@ -191,7 +180,7 @@ SceneManager.prototype.loadScene = function(state,scene){
         assetManager.loadEssential
     });
 	imgLoader = assetManager.getAsset("images/load_Screen.png");
-	//sc.gameLoop();
+	sc.gameLoop();
 	timeSpent = Date.now();
 	
 	if(state === "menu"){
@@ -213,7 +202,7 @@ SceneManager.prototype.loadScene = function(state,scene){
 			assetManager.loadLvl1Sounds(function() {
     			sc.setLvl1Sounds()
 			});
-			//assetManager.loadSounds(lvl1Sounds);
+
 		}
 		else if(scene === "level2"){
 
