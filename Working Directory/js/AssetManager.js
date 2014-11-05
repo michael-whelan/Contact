@@ -1,5 +1,4 @@
-var AssetManager=function ()
-{
+var AssetManager=function (){
     this.loadQueueImg = [];
     this.loadQueueSnd = [];
     this.loadQueueEssen = [];
@@ -7,19 +6,6 @@ var AssetManager=function ()
     this.successCount = 0;
     this.errorCount = 0;
 };
-
-var context;
-window.addEventListener('load', init , false);
-function init() {
-  try {
-    // Fix up for prefixing
-    window.AudioContext = window.AudioContext||window.webkitAudioContext;
-    context = new AudioContext();
-  }
-  catch(e) {
-    alert('Web Audio API is not supported in this browser');
-  }
-}
 
 AssetManager.prototype.queueLoadImg = function(path) {
     this.loadQueueImg.push(path);
@@ -140,8 +126,9 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
         var path = this.loadQueueSnd[i];
         var snd = new Audio();
         var that = this;
-        snd.addEventListener("loadeddata", function() {
-            console.log("hit");
+
+        snd.addEventListener("canplaythrough", function() {
+            console.log("i= "+i, "len = "+that.loadQueueSnd.length);
             that.successCount += 1;
             if (that.isDone(that.loadQueueSnd)) {
                 that.successCount = 0;
@@ -155,11 +142,10 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
         },false);
         snd.addEventListener("error", function() {
             that.errorCount += 1;
-console.log("hit");
             if (that.isDone(that.loadQueueSnd)) {
                 loadCallback();
             }
-    }, false);
+        }, false);
        // console.log(snd);
         snd.src = path;
         this.cache[path] = snd;
