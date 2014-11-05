@@ -92,11 +92,17 @@ Game.prototype.touchEnd = function(e){
 }
 
 Game.prototype.playBackgroundLoop = function(){
+<<<<<<< HEAD
 	backTrack.addEventListener('ended', function() {
 	    this.currentTime = 0;
 	    this.play();
 	}, false);
 	backTrack.play();
+=======
+	//an alternative method 
+	console.log("hit");
+	createjs.Sound.play(backTrack);
+>>>>>>> parent of e7bdf61... Still implementing soundjs
 };
 function getDistance(x1,y1,x2,y2){
 	console.log(x1,y1,x2,y2);

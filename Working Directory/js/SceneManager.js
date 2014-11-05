@@ -25,7 +25,11 @@ function SceneManager(){
 	this.onceLvl1 = false;
 	scaleRatio = canvas.height/ parseInt(canvas.style.height, 10);
 	canvas.style.width = canvas.width/scaleRatio;
+<<<<<<< HEAD
 	//console.log(createjs.Sound.initializeDefaultPlugins());
+=======
+	console.log(createjs.Sound.initializeDefaultPlugins())
+>>>>>>> parent of e7bdf61... Still implementing soundjs
 };
 
 

@@ -130,6 +130,8 @@ AssetManager.prototype.loadLvl1Images = function(loadCallback) {
     }
 }
 
+
+
 AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
     if (this.loadQueueSnd.length === 0) {
         loadCallback();
