@@ -25,7 +25,7 @@ function SceneManager(){
 	this.onceLvl1 = false;
 	scaleRatio = canvas.height/ parseInt(canvas.style.height, 10);
 	canvas.style.width = canvas.width/scaleRatio;
-	console.log(createjs.Sound.initializeDefaultPlugins())
+	console.log(createjs.Sound.initializeDefaultPlugins());
 };
 
 

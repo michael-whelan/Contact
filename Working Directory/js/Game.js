@@ -93,7 +93,6 @@ Game.prototype.touchEnd = function(e){
 
 Game.prototype.playBackgroundLoop = function(){
 	//an alternative method 
-	console.log("hit");
 	createjs.Sound.play(backTrack);
 };
 /*

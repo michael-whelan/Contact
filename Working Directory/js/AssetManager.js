@@ -171,7 +171,7 @@ AssetManager.prototype.loadSounds = function(loadCallback) {
         {id:"gunshot", src:"sfx/gun_pew.mp3"}
     ];
     createjs.Sound.alternateExtensions = ["ogg"];
-    createjs.Sound.addEventListener("fileload", loadCallback);
+    createjs.Sound.addEventListener("fileload", loadCallback());
     createjs.Sound.registerManifest(manifest, audioPath);
 
 }
