@@ -97,6 +97,7 @@ SceneManager.prototype.queueLvl1Assets = function(){
 	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/gun_pew.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/gun_empty.mp3");
 }
 
 
@@ -124,6 +125,7 @@ SceneManager.prototype.setLvl1Sounds = function(){
 	backTrack = assetManager.getAsset("sounds/music/gameplay_theme_idea.mp3");
 	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.mp3");
 	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.mp3");
+	emptySnd = assetManager.getAsset("sounds/sfx/gun_empty.mp3");
 	loadedSounds = true;
 }
 

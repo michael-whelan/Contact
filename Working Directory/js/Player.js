@@ -8,6 +8,9 @@ var spawnSnd = new Audio();
 var reloadSnd = new Audio();
 //reloadSnd.src = "sounds/sfx/Gun_CRecharge.mp3";
 
+var emptySnd = new Audio();
+//emptySnd.src = "sounds/sfx/Gun_Empty.mp3";
+
 var Player=function (){
 	this.bullets =[];
 
@@ -78,7 +81,7 @@ Player.prototype.shoot = function(){
 			this.bulletTimer=0;
 			}
 		else if(this.numBullets<=0){
-			reloadSnd.play();
+			emptySnd.play();
 			this.reload();
 		}
 	//}//end Space
