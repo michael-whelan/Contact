@@ -126,27 +126,30 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
         var path = this.loadQueueSnd[i];
         var snd = new Audio();
         var that = this;
-
-        snd.addEventListener("canplaythrough", function() {
+        console.log("len: " +this.loadQueueSnd.length);
+        snd.addEventListener("loadeddata", function() {
             console.log("i= "+i, "len = "+that.loadQueueSnd.length);
+
             that.successCount += 1;
+            console.log("success1: "+that.successCount);
             if (that.isDone(that.loadQueueSnd)) {
+                
                 that.successCount = 0;
                 that.errorCount=0;
                  while(that.loadQueueSnd.length > 0) {
                     that.loadQueueSnd.pop();
                 }
                 loadCallback();
-              //console.log("hit");
+                console.log("isDone");
             }
         },false);
         snd.addEventListener("error", function() {
+            console.log("Error: "+snd.src);
             that.errorCount += 1;
             if (that.isDone(that.loadQueueSnd)) {
                 loadCallback();
             }
         }, false);
-       // console.log(snd);
         snd.src = path;
         this.cache[path] = snd;
     }

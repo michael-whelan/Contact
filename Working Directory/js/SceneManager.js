@@ -95,9 +95,9 @@ SceneManager.prototype.queueLvl1Assets = function(){
 	assetManager.queueLoadImg("images/Bullet.png");
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
-	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.mp3");
-	assetManager.queueLoadSnd("sounds/sfx/gun_pew.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/gun_empty.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/gun_pew.mp3");
+	//assetManager.queueLoadSnd("sounds/sfx/gun_empty.mp3");
 }
 
 
@@ -123,9 +123,9 @@ SceneManager.prototype.setLvl1Images = function(){
 SceneManager.prototype.setLvl1Sounds = function(){
 	spawnSnd = assetManager.getAsset("sounds/sfx/player_spawn.mp3");
 	backTrack = assetManager.getAsset("sounds/music/gameplay_theme_idea.mp3");
-	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.mp3");
+	reloadSnd = assetManager.getAsset("sounds/sfx/gun_empty.mp3");
 	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.mp3");
-	emptySnd = assetManager.getAsset("sounds/sfx/gun_empty.mp3");
+	//emptySnd = assetManager.getAsset("sounds/sfx/gun_empty.mp3");
 	loadedSounds = true;
 }
 

@@ -81,7 +81,8 @@ Player.prototype.shoot = function(){
 			this.bulletTimer=0;
 			}
 		else if(this.numBullets<=0){
-			emptySnd.play();
+			//emptySnd.play();
+			reloadSnd.play();
 			this.reload();
 		}
 	//}//end Space
