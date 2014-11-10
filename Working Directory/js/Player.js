@@ -82,8 +82,8 @@ Player.prototype.shoot = function(){
 			}
 		else if(this.numBullets<=0){
 			//emptySnd.play();
-			reloadSnd.play();
-			this.reload();
+			emptySnd.play();
+		//	this.reload();
 		}
 	//}//end Space
 		/*if(this.numBullets<=0){

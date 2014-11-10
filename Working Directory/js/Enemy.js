@@ -49,10 +49,12 @@ Enemy.prototype.reset = function(){
 	this.startReload = false; 
 }
 
-Enemy.prototype.spawnEnemy = function(){
+Enemy.prototype.spawnEnemy = function(x,y){
 	this.alive = true;
 	this.angle = Math.random()*(8-1) +1;
 	//Math.floor(Math.random()*(this.max-this.min) +this.min);
+	this.x =x;
+	this.y = y;
 }
 
 Enemy.prototype.targetPos = function(px,py){

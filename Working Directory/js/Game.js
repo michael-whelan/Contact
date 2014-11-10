@@ -251,7 +251,9 @@ Game.prototype.draw =function (){
     //the numbers offset the background so that it centres with the map
     ctx.drawImage(imgBack, -(300 + (this.mapWidth-1450)),-(200+this.mapHeight-845),this.mapWidth, this.mapHeight);
 	player.draw();
+	enemyManager.draw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
+		
 		enemyManager.enemy[i].draw();
 	}
 	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative
