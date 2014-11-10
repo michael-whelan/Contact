@@ -27,8 +27,6 @@ EnemyManager.prototype.setSpawn = function(lvl){
 
 		this.spawnPos4[0] = 200;
 		this.spawnPos4[1] = -300;
-
-
 	}
 }
 
@@ -115,7 +113,6 @@ EnemyManager.prototype.collision = function(e)
 };
 
 EnemyManager.prototype.draw =function(){
-	console.log("hit");
 	ctx.drawImage(imgViewRad, this.spawnPos1[0]-this.spawnRad,this.spawnPos1[1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
 	ctx.drawImage(imgViewRad, this.spawnPos2[0]-this.spawnRad,this.spawnPos2[1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
 	ctx.drawImage(imgViewRad, this.spawnPos3[0]-this.spawnRad,this.spawnPos3[1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
