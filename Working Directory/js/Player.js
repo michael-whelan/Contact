@@ -1,15 +1,12 @@
 var imgPlayer= new Image();
-//imgPlayer.src = "images/character_01.png"
-
 
 var spawnSnd = new Audio();
-//spawnSnd.src = "sounds/sfx/Player_Spawn.mp3";
 
 var reloadSnd = new Audio();
-//reloadSnd.src = "sounds/sfx/Gun_CRecharge.mp3";
 
 var emptySnd = new Audio();
-//emptySnd.src = "sounds/sfx/Gun_Empty.mp3";
+
+var loseHealthSnd = new Audio();
 
 var Player=function (){
 	this.bullets =[];

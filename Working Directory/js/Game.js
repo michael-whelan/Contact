@@ -194,7 +194,8 @@ Game.prototype.collisionCall = function(){
 			if(collisionManager.circleOnCircle(enemyManager.enemy[j].bullets[i].radius,enemyManager.enemy[j].bullets[i].x,
 				enemyManager.enemy[j].bullets[i].y,player.radius,player.x,player.y) && player.flash === false){
 				
-				player.health-=10;
+				player.health-=2;
+				loseHealthSnd.play();
 				player.lastHitTime = Date.now();
 				enemyManager.enemy[j].bullets[i].kill();
 			}

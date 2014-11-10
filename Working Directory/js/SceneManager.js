@@ -98,6 +98,7 @@ SceneManager.prototype.queueLvl1Assets = function(){
 	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/gun_pew.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/gun_empty.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/health_lost.mp3");
 }
 
 
@@ -126,6 +127,7 @@ SceneManager.prototype.setLvl1Sounds = function(){
 	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.mp3");
 	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.mp3");
 	emptySnd = assetManager.getAsset("sounds/sfx/gun_empty.mp3");
+	loseHealthSnd = assetManager.getAsset("sounds/sfx/health_lost.mp3");
 	loadedSounds = true;
 }
 
