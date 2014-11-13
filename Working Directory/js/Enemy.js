@@ -5,8 +5,7 @@ var imgViewRad= new Image();
 //imgViewRad.src = "images/ViewRange.png"
 
 
-var Enemy=function ()
-{
+var Enemy=function (){
 	
 	
 	this.centreX =0;

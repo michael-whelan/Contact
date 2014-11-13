@@ -11,7 +11,8 @@ var enemy;
 var collisionManager;
 var textManager;
 var enemyManager;
-
+var mapWidth;
+var mapHeight;
 //stick stuff
 var sticks;
 var limitSize = 36;
@@ -34,8 +35,8 @@ function Game (){
 	enemyManager = new EnemyManager();
 	collisionManager = new CollisionManager();
 	textManager = new TextManager();
-	this.mapWidth = 2000;
-	this.mapHeight = 1300;
+	mapWidth = 2000;
+	mapHeight = 1300;
 }
 
 
@@ -246,11 +247,11 @@ Game.prototype.draw =function (){
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 
 	//this clamp sets the limits to the world size.
-	var camX = clamp(-player.x + canvas.width/2, 0, this.mapWidth - canvas.width);
-    var camY = clamp(-player.y + canvas.height/2, 0, this.mapHeight - canvas.height);
+	var camX = clamp(-player.x + canvas.width/2, 0, mapWidth - canvas.width);
+    var camY = clamp(-player.y + canvas.height/2, 0, mapHeight - canvas.height);
     ctx.translate( camX, camY ); 
     //the numbers offset the background so that it centres with the map
-    ctx.drawImage(imgBack, -(300 + (this.mapWidth-1450)),-(200+this.mapHeight-845),this.mapWidth, this.mapHeight);
+    ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
 	player.draw();
 	enemyManager.draw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {

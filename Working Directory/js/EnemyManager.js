@@ -99,9 +99,22 @@ EnemyManager.prototype.moveControl = function(j,b,px,py){
 
 EnemyManager.prototype.spawnSwarm = function(){
 	//spawns a group of enemies.
+	var rand = Math.floor(Math.random()*(5-0) +0);
+	console.log(rand);
 	for(var i = 0; i< this.totalEnemies/this.totalSwarms; i++){
 		var enemySingle = new Enemy();
-		enemySingle.spawnEnemy(this.spawnPos1[0],this.spawnPos1[1]);
+		if(rand===0){
+			enemySingle.spawnEnemy(this.spawnPos1[0],this.spawnPos1[1]);
+		}
+		else if(rand ===1){
+			enemySingle.spawnEnemy(this.spawnPos2[0],this.spawnPos2[1]);
+		}
+		else if(rand ===2){
+			enemySingle.spawnEnemy(this.spawnPos3[0],this.spawnPos3[1]);
+		}
+		else{
+			enemySingle.spawnEnemy(this.spawnPos4[0],this.spawnPos4[1]);
+		}
 		this.enemy.push(enemySingle);
 	}
 }

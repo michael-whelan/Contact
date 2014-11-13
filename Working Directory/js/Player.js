@@ -22,9 +22,9 @@ var Player=function (){
 	this.lastShotTime = 0;
 	this.reloadTimer = 100;
 	this.reloadDelay =100;
-
+	this.enemyPointX=0;
+	this.enemyPointY=0;
 	this.healDelay =15;
-
 	this.reset();
 };
 
@@ -101,6 +101,13 @@ Player.prototype.rechargeHealth = function(){
 		this.health++;
 		this.healthTimer =0;
 	}
+}
+
+Player.prototype.pointToEnemy = function(targX,targY){
+	var posDifferenceX = targX - this.x; // finds the vector for the difference in positions
+	var posDifferenceY = targY - this.y;
+	var rotation = Math.atan2(posDifferenceY, posDifferenceX);
+	this.enemyPointX = 
 }
 
 Player.prototype.controller = function(b1,b2){
