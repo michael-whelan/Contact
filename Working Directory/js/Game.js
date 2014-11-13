@@ -133,6 +133,9 @@ Game.prototype.update = function(){
 	var stick = sticks[0];
 	var stick2 = sticks[1];
 	player.update(stick.normal.x,stick.normal.y,stick2.normal.x,stick2.normal.y,stick.active,stick2.active);
+	for (var j = 0; j < enemyManager.enemy.length; ++j) {
+	player.pointToEnemy(enemyManager.enemy[j].x,enemyManager.enemy[j].y);
+	}
 	enemyManager.update();
 	this.collisionCall();
 	

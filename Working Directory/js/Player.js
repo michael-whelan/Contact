@@ -107,7 +107,8 @@ Player.prototype.pointToEnemy = function(targX,targY){
 	var posDifferenceX = targX - this.x; // finds the vector for the difference in positions
 	var posDifferenceY = targY - this.y;
 	var rotation = Math.atan2(posDifferenceY, posDifferenceX);
-	this.enemyPointX = 
+	//this.enemyPointX = this.x *rotation;
+	//this.enemyPointY = this.y *rotation;
 }
 
 Player.prototype.controller = function(b1,b2){
@@ -231,6 +232,7 @@ Player.prototype.draw = function(){
 	for(var i = 0; i <this.bullets.length; i++){
 		this.bullets[i].draw();
 	}
+	//ctx.drawImage(imgViewRad,this.enemyPointX,this.enemyPointY,30,10);
 	ctx.translate(this.x, this.y); //let's translate
 	ctx.rotate(this.angle); //increment the angle and rotate the image 
 	if(this.alive){
@@ -241,9 +243,9 @@ Player.prototype.draw = function(){
 
 	this.bulletX = rotate_point(this.x+30,this.y+20,this.x,this.y,this.angle).x;
 	this.bulletY = rotate_point(this.x+30,this.y+20,this.x,this.y,this.angle).y;
-//	ctx.drawImage(imgViewRad,this.x- this.radius, this.y - this.radius, this.radius*2, this.radius*2);
+	//ctx.drawImage(imgViewRad,this.x- this.radius, this.y - this.radius, this.radius*2, this.radius*2);
 	//ctx.drawImage(imgBullet,Math.cos(this.angle) + (this.x-40) - Math.sin(this.angle) * (this.y+50-this.y) +(this.x - this.width/2), 
-	//	Math.sin(this.angle) + (this.x-40) + Math.cos(this.angle) * (this.y+30-this.y) + (this.y+50 - this.height/2), 10, 10);
+	//Math.sin(this.angle) + (this.x-40) + Math.cos(this.angle) * (this.y+30-this.y) + (this.y+50 - this.height/2), 10, 10);
 };
 
 function rotate_point(pointX, pointY, originX, originY, angle) {
