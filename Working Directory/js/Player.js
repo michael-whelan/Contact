@@ -25,6 +25,8 @@ var Player=function (){
 	this.enemyPointX=0;
 	this.enemyPointY=0;
 	this.healDelay =15;
+	this.bigX=0;
+	this.bigY = 0;
 	this.reset();
 };
 
@@ -225,13 +227,18 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 }
 
 Player.prototype.draw = function(){
-
-	
 	ctx.save();//save the state of canvas before rotation wrecks the place.
 
 	for(var i = 0; i <this.bullets.length; i++){
 		this.bullets[i].draw();
 	}
+	ctx.beginPath();
+	ctx.moveTo(innerX1,innerY1);
+	ctx.lineTo(innerX2,innerY1);
+	ctx.lineTo(innerX2,innerY2);
+	ctx.lineTo(innerX1,innerY2);
+	ctx.lineTo(innerX1,innerY1);
+	ctx.stroke();
 	//ctx.drawImage(imgViewRad,this.enemyPointX,this.enemyPointY,30,10);
 	ctx.translate(this.x, this.y); //let's translate
 	ctx.rotate(this.angle); //increment the angle and rotate the image 

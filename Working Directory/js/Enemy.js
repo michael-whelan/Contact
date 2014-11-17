@@ -61,6 +61,9 @@ Enemy.prototype.targetPos = function(px,py){
 	this.targetPosY = py;
 }
 
+
+
+
 Enemy.prototype.update = function(){
  	if(this.alive){
  		this.xDirect = Math.cos(this.angle);
@@ -115,7 +118,6 @@ Enemy.prototype.draw = function(){
     	ctx.lineTo(rotate_point(this.x+350,this.y-140,this.x,this.y,this.angle).x,rotate_point(this.x+350,this.y-140,this.x,this.y,this.angle).y);//c
     	ctx.lineTo(rotate_point(this.x,this.y,this.x,this.y,this.angle).x,rotate_point(this.x,this.y,this.x,this.y,this.angle).y);
     	ctx.stroke();
-
 		if(this.drawLast){
 			ctx.drawImage(imgBullet,this.targetPosX, this.targetPosY, 8, 8);
 		}

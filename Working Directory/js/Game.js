@@ -5,7 +5,8 @@ var backTrack = new Audio();
 //backTrack.src = "sounds/music/Gameplay_Theme_Idea.mp3";
 
 var fsm;
-
+var innerX1,innerY1,innerX2,innerY2;
+var intersect = false;
 var player;
 var enemy;
 var collisionManager;
@@ -139,9 +140,9 @@ Game.prototype.update = function(){
 	enemyManager.update();
 	this.collisionCall();
 	
-	calculateFps(Date.now());
 
-	
+
+	calculateFps(Date.now());
 
 	if (stick.active && (stick.length > threshold)) {
 		point.x += (
@@ -224,7 +225,7 @@ Game.prototype.collisionCall = function(){
 }
 
 
-var fps = 0,
+	var fps = 0,
     lastFpsUpdateTime = 0,
     lastAnimationFrameTime = 0;
 
@@ -242,9 +243,33 @@ function calculateFps(now) {
 }
 
 
+Game.prototype.enemyToPlayerLine = function(){
+	for (var j = 0; j < enemyManager.enemy.length; ++j) {
+		ctx.beginPath();
+		ctx.moveTo(player.x,player.y);
+		ctx.lineTo(enemyManager.enemy[j].x,enemyManager.enemy[j].y);
+		console.log(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y);
+		ctx.stroke();
+	
+
+		if((lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
+			innerX1,innerY1,innerX2,innerY1))||
+			(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
+			innerX2,innerY1,innerX2,innerY2))||
+			(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
+			innerX2,innerY2,innerX1,innerY2))||
+			(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
+			innerX1,innerY2,innerX1,innerY1))){
+			return true;
+		}
+		//else{
+			return false;
+	//	}
+	}
+}
+
 Game.prototype.draw =function (){
 	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative 
-
 
 	//wipes the screen at the start of each draw frame;
 	ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -252,9 +277,24 @@ Game.prototype.draw =function (){
 	//this clamp sets the limits to the world size.
 	var camX = clamp(-player.x + canvas.width/2, 0, mapWidth - canvas.width);
     var camY = clamp(-player.y + canvas.height/2, 0, mapHeight - canvas.height);
+
+    //temp
+    innerX1 = (clamp(player.x, -800+canvas.width/2 -40, mapWidth - (canvas.width)-270)-WIDTH/2)+20;
+    innerY1 =(clamp(player.y, -620+290, mapHeight - (canvas.height)-330) - HEIGHT/2)+20;
+    innerX2 =(clamp(player.x, -800+canvas.width/2 -40, mapWidth - (canvas.width)-270)+WIDTH/2)-20;
+    innerY2= (clamp(player.y, -620+290, mapHeight - (canvas.height)-330)+ HEIGHT/2)-20;
+    //end temp
+
+
+
+    player.bigX = clamp(player.x, -800+canvas.width/2 -40, mapWidth - (canvas.width)-270);
+    player.bigY = clamp(player.y, -620+290, mapHeight - (canvas.height)-330);
     ctx.translate( camX, camY ); 
     //the numbers offset the background so that it centres with the map
     ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
+    if(this.enemyToPlayerLine()){
+    	ctx.drawImage(imgViewRad,this.x- this.viewRadius, this.y - this.viewRadius, this.viewRadius*2, this.viewRadius*2);
+    }
 	player.draw();
 	enemyManager.draw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
@@ -276,4 +316,34 @@ function clamp(value, min, max){//used to clamp the cam if the player gets near 
     	return max;
 	}
     return value;
+}
+
+function lineIntersect(x1,y1,x2,y2, x3,y3,x4,y4) {
+    var x=((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
+    var y=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
+    if (isNaN(x)||isNaN(y)) {
+        return false;
+    } else {
+        if (x1>=x2) {
+            if (!(x2<=x&&x<=x1)) {return false;}
+        } else {
+            if (!(x1<=x&&x<=x2)) {return false;}
+        }
+        if (y1>=y2) {
+            if (!(y2<=y&&y<=y1)) {return false;}
+        } else {
+            if (!(y1<=y&&y<=y2)) {return false;}
+        }
+        if (x3>=x4) {
+            if (!(x4<=x&&x<=x3)) {return false;}
+        } else {
+            if (!(x3<=x&&x<=x4)) {return false;}
+        }
+        if (y3>=y4) {
+            if (!(y4<=y&&y<=y3)) {return false;}
+        } else {
+            if (!(y3<=y&&y<=y4)) {return false;}
+        }
+    }
+    return true;
 }
