@@ -232,13 +232,7 @@ Player.prototype.draw = function(){
 	for(var i = 0; i <this.bullets.length; i++){
 		this.bullets[i].draw();
 	}
-	ctx.beginPath();
-	ctx.moveTo(innerX1,innerY1);
-	ctx.lineTo(innerX2,innerY1);
-	ctx.lineTo(innerX2,innerY2);
-	ctx.lineTo(innerX1,innerY2);
-	ctx.lineTo(innerX1,innerY1);
-	ctx.stroke();
+	
 	//ctx.drawImage(imgViewRad,this.enemyPointX,this.enemyPointY,30,10);
 	ctx.translate(this.x, this.y); //let's translate
 	ctx.rotate(this.angle); //increment the angle and rotate the image 

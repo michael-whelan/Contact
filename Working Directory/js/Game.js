@@ -245,11 +245,6 @@ function calculateFps(now) {
 
 Game.prototype.enemyToPlayerLine = function(j){
 	//for (var j = 0; j < enemyManager.enemy.length; ++j) {
-		ctx.beginPath();
-		ctx.moveTo(player.x,player.y);
-		ctx.lineTo(enemyManager.enemy[j].x,enemyManager.enemy[j].y);
-	//	console.log(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y);
-		ctx.stroke();
 
 		if((lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
 			innerX1,innerY1,innerX2,innerY1,j))||
@@ -263,6 +258,30 @@ Game.prototype.enemyToPlayerLine = function(j){
 		}
 			return false;
 	//}
+}
+
+
+Game.prototype.debugDraw = function(){
+	ctx.beginPath();
+	ctx.moveTo(innerX1,innerY1);
+	ctx.lineTo(innerX2,innerY1);
+	ctx.lineTo(innerX2,innerY2);
+	ctx.lineTo(innerX1,innerY2);
+	ctx.lineTo(innerX1,innerY1);
+	ctx.stroke();
+
+
+	for (var i = 0; i < enemyManager.enemy.length; ++i) {
+		ctx.beginPath();
+		ctx.moveTo(player.x,player.y);
+		ctx.lineTo(enemyManager.enemy[i].x,enemyManager.enemy[i].y);
+	//	console.log(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y);
+		ctx.stroke();
+
+		if(this.enemyToPlayerLine(i)){
+    		ctx.drawImage(imgViewRad,enemyManager.enemy[i].interX , enemyManager.enemy[i].interY, 50, 50);
+    	}
+    }
 }
 
 Game.prototype.draw =function (){
@@ -282,8 +301,6 @@ Game.prototype.draw =function (){
     innerY2= (clamp(player.y, -620+290, mapHeight - (canvas.height)-330)+ HEIGHT/2)-40;
     //end temp
 
-
-
     player.bigX = clamp(player.x, -800+canvas.width/2 -40, mapWidth - (canvas.width)-270);
     player.bigY = clamp(player.y, -620+290, mapHeight - (canvas.height)-330);
     ctx.translate( camX, camY ); 
@@ -292,11 +309,9 @@ Game.prototype.draw =function (){
 	player.draw();
 	enemyManager.draw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
-		if(this.enemyToPlayerLine(i)){
-    		ctx.drawImage(imgViewRad,enemyManager.enemy[i].interX , enemyManager.enemy[i].interY, 50, 50);
-    	}
 		enemyManager.enemy[i].draw();
 	}
+	this.debugDraw();
 	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].draw();
@@ -329,13 +344,11 @@ function lineIntersect(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y,enemy_id) 
 
  	var x=((p0_x*p1_y-p0_y*p1_x)*(p2_x-p3_x)-(p0_x-p1_x)*(p2_x*p3_y-p2_y*p3_x))/((p0_x-p1_x)*(p2_y-p3_y)-(p0_y-p1_y)*(p2_x-p3_x));
     var y=((p0_x*p1_y-p0_y*p1_x)*(p2_y-p3_y)-(p0_y-p1_y)*(p2_x*p3_y-p2_y*p3_x))/((p0_x-p1_x)*(p2_y-p3_y)-(p0_y-p1_y)*(p2_x-p3_x));
-    if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
-    {
+    if (s >= 0 && s <= 1 && t >= 0 && t <= 1){
         // Collision detected
-        enemyManager.enemy[enemy_id].interX = x;
-        enemyManager.enemy[enemy_id].interY = y;
+        enemyManager.enemy[enemy_id].interX = x-25;
+        enemyManager.enemy[enemy_id].interY = y-25;
         return true;
     }
- 
     return false; // No collision
 }
