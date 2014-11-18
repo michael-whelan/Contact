@@ -6,7 +6,7 @@ var backTrack = new Audio();
 
 var fsm;
 var innerX1,innerY1,innerX2,innerY2;
-var intersect = false;
+var intersect = false,interX = 0,interY =0;
 var player;
 var enemy;
 var collisionManager;
@@ -102,7 +102,7 @@ Game.prototype.playBackgroundLoop = function(){
 };
 
 function getDistance(x1,y1,x2,y2){
-	console.log(x1,y1,x2,y2);
+//	console.log(x1,y1,x2,y2);
 	var xs = 0;
   	var ys = 0;
  
@@ -243,29 +243,26 @@ function calculateFps(now) {
 }
 
 
-Game.prototype.enemyToPlayerLine = function(){
-	for (var j = 0; j < enemyManager.enemy.length; ++j) {
+Game.prototype.enemyToPlayerLine = function(j){
+	//for (var j = 0; j < enemyManager.enemy.length; ++j) {
 		ctx.beginPath();
 		ctx.moveTo(player.x,player.y);
 		ctx.lineTo(enemyManager.enemy[j].x,enemyManager.enemy[j].y);
-		console.log(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y);
+	//	console.log(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y);
 		ctx.stroke();
-	
 
 		if((lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-			innerX1,innerY1,innerX2,innerY1))||
+			innerX1,innerY1,innerX2,innerY1,j))||
 			(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-			innerX2,innerY1,innerX2,innerY2))||
+			innerX2,innerY1,innerX2,innerY2,j))||
 			(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-			innerX2,innerY2,innerX1,innerY2))||
+			innerX2,innerY2,innerX1,innerY2,j))||
 			(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-			innerX1,innerY2,innerX1,innerY1))){
+			innerX1,innerY2,innerX1,innerY1,j))){
 			return true;
 		}
-		//else{
 			return false;
-	//	}
-	}
+	//}
 }
 
 Game.prototype.draw =function (){
@@ -279,10 +276,10 @@ Game.prototype.draw =function (){
     var camY = clamp(-player.y + canvas.height/2, 0, mapHeight - canvas.height);
 
     //temp
-    innerX1 = (clamp(player.x, -800+canvas.width/2 -40, mapWidth - (canvas.width)-270)-WIDTH/2)+20;
-    innerY1 =(clamp(player.y, -620+290, mapHeight - (canvas.height)-330) - HEIGHT/2)+20;
-    innerX2 =(clamp(player.x, -800+canvas.width/2 -40, mapWidth - (canvas.width)-270)+WIDTH/2)-20;
-    innerY2= (clamp(player.y, -620+290, mapHeight - (canvas.height)-330)+ HEIGHT/2)-20;
+    innerX1 = (clamp(player.x, -800+canvas.width/2 -40, mapWidth - (canvas.width)-270)-WIDTH/2)+40;
+    innerY1 =(clamp(player.y, -620+290, mapHeight - (canvas.height)-330) - HEIGHT/2)+40;
+    innerX2 =(clamp(player.x, -800+canvas.width/2 -40, mapWidth - (canvas.width)-270)+WIDTH/2)-40;
+    innerY2= (clamp(player.y, -620+290, mapHeight - (canvas.height)-330)+ HEIGHT/2)-40;
     //end temp
 
 
@@ -292,13 +289,12 @@ Game.prototype.draw =function (){
     ctx.translate( camX, camY ); 
     //the numbers offset the background so that it centres with the map
     ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
-    if(this.enemyToPlayerLine()){
-    	ctx.drawImage(imgViewRad,this.x- this.viewRadius, this.y - this.viewRadius, this.viewRadius*2, this.viewRadius*2);
-    }
 	player.draw();
 	enemyManager.draw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
-		
+		if(this.enemyToPlayerLine(i)){
+    		ctx.drawImage(imgViewRad,enemyManager.enemy[i].interX , enemyManager.enemy[i].interY, 50, 50);
+    	}
 		enemyManager.enemy[i].draw();
 	}
 	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative
@@ -318,32 +314,28 @@ function clamp(value, min, max){//used to clamp the cam if the player gets near 
     return value;
 }
 
-function lineIntersect(x1,y1,x2,y2, x3,y3,x4,y4) {
-    var x=((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
-    var y=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
-    if (isNaN(x)||isNaN(y)) {
-        return false;
-    } else {
-        if (x1>=x2) {
-            if (!(x2<=x&&x<=x1)) {return false;}
-        } else {
-            if (!(x1<=x&&x<=x2)) {return false;}
-        }
-        if (y1>=y2) {
-            if (!(y2<=y&&y<=y1)) {return false;}
-        } else {
-            if (!(y1<=y&&y<=y2)) {return false;}
-        }
-        if (x3>=x4) {
-            if (!(x4<=x&&x<=x3)) {return false;}
-        } else {
-            if (!(x3<=x&&x<=x4)) {return false;}
-        }
-        if (y3>=y4) {
-            if (!(y4<=y&&y<=y3)) {return false;}
-        } else {
-            if (!(y3<=y&&y<=y4)) {return false;}
-        }
+function lineIntersect(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y,enemy_id) {
+ 
+    var s1_x, s1_y, s2_x, s2_y;
+    s1_x = p1_x - p0_x;
+    s1_y = p1_y - p0_y;
+    s2_x = p3_x - p2_x;
+    s2_y = p3_y - p2_y;
+ 
+    var s, t;
+    s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / (-s2_x * s1_y + s1_x * s2_y);
+    t = ( s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y);
+ 
+
+ 	var x=((p0_x*p1_y-p0_y*p1_x)*(p2_x-p3_x)-(p0_x-p1_x)*(p2_x*p3_y-p2_y*p3_x))/((p0_x-p1_x)*(p2_y-p3_y)-(p0_y-p1_y)*(p2_x-p3_x));
+    var y=((p0_x*p1_y-p0_y*p1_x)*(p2_y-p3_y)-(p0_y-p1_y)*(p2_x*p3_y-p2_y*p3_x))/((p0_x-p1_x)*(p2_y-p3_y)-(p0_y-p1_y)*(p2_x-p3_x));
+    if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+    {
+        // Collision detected
+        enemyManager.enemy[enemy_id].interX = x;
+        enemyManager.enemy[enemy_id].interY = y;
+        return true;
     }
-    return true;
+ 
+    return false; // No collision
 }

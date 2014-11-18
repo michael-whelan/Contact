@@ -6,7 +6,8 @@ var imgViewRad= new Image();
 
 
 var Enemy=function (){
-	
+	this.interX=0;//used to display thir position on the screen radar.
+	this.interY =0;
 	
 	this.centreX =0;
 	this.centreY =0;
