@@ -116,8 +116,6 @@ AssetManager.prototype.loadLvl1Images = function(loadCallback) {
     }
 }
 
-
-
 AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
     if (this.loadQueueSnd.length === 0) {
         loadCallback();
@@ -128,7 +126,7 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
         var that = this;
         console.log("len: " +this.loadQueueSnd.length);
         snd.addEventListener("loadeddata", function() {
-            console.log("i= "+i, "len = "+that.loadQueueSnd.length);
+         //   console.log("i= "+i, "len = "+that.loadQueueSnd.length);
 
             that.successCount += 1;
             console.log("success1: "+that.successCount);

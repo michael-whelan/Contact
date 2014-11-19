@@ -1,9 +1,6 @@
 var imgEnemy= new Image();
-//imgEnemy.src = "images/Enemy.png"
-
 var imgViewRad= new Image();
-//imgViewRad.src = "images/ViewRange.png"
-
+var goToImg = new Image();
 
 var Enemy=function (){
 	this.interX=0;//used to display thir position on the screen radar.
@@ -98,7 +95,18 @@ Enemy.prototype.update = function(){
     	this.bX=rotate_point(this.x+350,this.y+160,this.x,this.y,this.angle).x, this.bY =rotate_point(this.x+350,this.y+160,this.x,this.y,this.angle).y;
     	this.cX=rotate_point(this.x+350,this.y-140,this.x,this.y,this.angle).x,this.cY=rotate_point(this.x+350,this.y-140,this.x,this.y,this.angle).y;
 
-
+    	if(this.x>1060){
+			this.x = 1060;
+		}
+		else if(this.x<-764){
+			this.x = -764;
+		}
+		else if(this.y<-604){
+			this.y = -604;
+		}
+		else if(this.y>590){
+			this.y = 590;
+		}
 		this.x+= this.xVel;
 		this.y+= this.yVel;
 		this.xVel = 0;
@@ -124,8 +132,8 @@ Enemy.prototype.draw = function(){
 		}
 		ctx.save();//save the state of canvas before rotation wrecks the place.
 		for(var i = 0; i <this.bullets.length; i++){
-		this.bullets[i].draw();
-	}
+			this.bullets[i].draw();
+		}
 		ctx.translate(this.x, this.y); //let's translate
 		ctx.rotate(this.angle); //increment the angle and rotate the image 
 		ctx.drawImage(imgEnemy,-this.width/2, -this.height/2, this.width, this.height);

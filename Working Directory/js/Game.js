@@ -44,7 +44,7 @@ function Game (){
 Game.prototype.reset = function(){
 	player.reset();
 	enemyManager.reset(1);
-		//player.init();
+	//player.init();
 	textManager.init();
 	this.playBackgroundLoop();
 	for (var i = 0; i < sticks.length; ++i) {
@@ -198,8 +198,7 @@ Game.prototype.collisionCall = function(){
 		for(var i = 0; i < enemyManager.enemy[j].bullets.length; ++i){
 			if(collisionManager.circleOnCircle(enemyManager.enemy[j].bullets[i].radius,enemyManager.enemy[j].bullets[i].x,
 				enemyManager.enemy[j].bullets[i].y,player.radius,player.x,player.y) && player.flash === false){
-				
-				player.health-=2;
+				player.health-=1;
 				loseHealthSnd.play();
 				player.lastHitTime = Date.now();
 				enemyManager.enemy[j].bullets[i].kill();
@@ -230,7 +229,7 @@ Game.prototype.collisionCall = function(){
     lastAnimationFrameTime = 0;
 
 function calculateFps(now) {
-    fps = 1000 / (now - lastAnimationFrameTime);
+   fps = 1000 / (now - lastAnimationFrameTime);
    lastAnimationFrameTime = now;
   // console.log(now - lastAnimationFrameTime);
 
@@ -239,13 +238,11 @@ function calculateFps(now) {
       //fpsElement.innerHTML = fps.toFixed(0) + ' fps';
    }
    //console.log(fps);
-   return fps; 
+   return fps;
 }
 
 
 Game.prototype.enemyToPlayerLine = function(j){
-	//for (var j = 0; j < enemyManager.enemy.length; ++j) {
-
 		if((lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
 			innerX1,innerY1,innerX2,innerY1,j))||
 			(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
@@ -256,8 +253,7 @@ Game.prototype.enemyToPlayerLine = function(j){
 			innerX1,innerY2,innerX1,innerY1,j))){
 			return true;
 		}
-			return false;
-	//}
+		return false;
 }
 
 

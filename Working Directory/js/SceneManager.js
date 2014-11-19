@@ -31,8 +31,8 @@ SceneManager.prototype.initCanvas=function () {
 	ctx = canvas.getContext('2d'); 
 	document.body.appendChild(canvas);
 	//set canvas to size of the screen.
-	canvas.width = 1152;//1024
-	canvas.height = 648;//768 
+	canvas.width = 1152;//1152
+	canvas.height = 648;//648 
 	resizeGame();
 	canvas.addEventListener("touchstart",touchStart,false);
 	canvas.addEventListener("touchmove",touchMove,false);

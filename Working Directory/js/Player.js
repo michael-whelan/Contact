@@ -10,7 +10,7 @@ var loseHealthSnd = new Audio();
 
 var Player=function (){
 	this.bullets =[];
-
+	this.rotSpeed = 0.01;
 	this.width = 128;
 	this.height = 101;//135
 
@@ -118,10 +118,19 @@ Player.prototype.controller = function(b1,b2){
 		this.angle+=x*0.2;
 	}*/
 	if(KeyController.isKeyDown(Key.RIGHT)){
-		this.angle += 0.1;
+		if(this.rotSpeed< 0.09){
+			this.rotSpeed+=0.001;
+		}
+		this.angle += this.rotSpeed;
 	}
-	if(KeyController.isKeyDown(Key.LEFT)){
-		this.angle -= 0.1;
+	else if(KeyController.isKeyDown(Key.LEFT)){
+		if(this.rotSpeed< 0.09){
+			this.rotSpeed+=0.001;
+		}
+		this.angle -=this.rotSpeed;
+	}
+	else {
+		this.rotSpeed = 0.01;
 	}
 	if(this.angle<0){
 		this.angle = 6.3;
@@ -138,13 +147,13 @@ Player.prototype.controller = function(b1,b2){
 	if(b1){
 		this.move("forward");
 	}
-
+	console.log(mapWidth,this.y);
 	if(KeyController.isKeyDown(Key.UP)){
-		this.move("forward");
+			this.move("forward");
 	}
 	else if(KeyController.isKeyDown(Key.DOWN)){
-		this.move("backward");
-	}
+			this.move("backward");
+	}	
 }
 
 Player.prototype.respawn = function(){
@@ -261,7 +270,19 @@ Player.prototype.move= function(dir){
 
 	this.centreX = this.x+this.width/2
 	this.centreY = this.y+this.height/2;
-	if(dir == "forward"){
+	if(this.x>1060){
+		this.x = 1060;
+	}
+	else if(this.x<-764){
+		this.x = -764;
+	}
+	else if(this.y<-604){
+		this.y = -604;
+	}
+	else if(this.y>590){
+		this.y = 590;
+	}
+	else if(dir == "forward"){
 		this.xVel = this.xDirect*this.speed;
 		this.yVel = this.yDirect*this.speed;
 	}
