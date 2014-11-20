@@ -60,8 +60,6 @@ Enemy.prototype.targetPos = function(px,py){
 }
 
 
-
-
 Enemy.prototype.update = function(){
  	if(this.alive){
  		this.xDirect = Math.cos(this.angle);
@@ -117,19 +115,22 @@ Enemy.prototype.update = function(){
 	}
 }
 
-Enemy.prototype.draw = function(){
-	if(this.alive){
-		ctx.drawImage(imgViewRad,this.x- this.viewRadius, this.y - this.viewRadius, this.viewRadius*2, this.viewRadius*2);
-
+Enemy.prototype.debugDraw = function(){
+	ctx.drawImage(imgViewRad,this.x- this.viewRadius, this.y - this.viewRadius, this.viewRadius*2, this.viewRadius*2);
+	if(this.drawLast){
+		ctx.drawImage(imgBullet,this.targetPosX, this.targetPosY, 8, 8);
+	}
 		ctx.beginPath();
     	ctx.moveTo(rotate_point(this.x,this.y,this.x,this.y,this.angle).x,rotate_point(this.x,this.y,this.x,this.y,this.angle).y);//a
     	ctx.lineTo(rotate_point(this.x+350,this.y+160,this.x,this.y,this.angle).x,rotate_point(this.x+350,this.y+160,this.x,this.y,this.angle).y);//b
     	ctx.lineTo(rotate_point(this.x+350,this.y-140,this.x,this.y,this.angle).x,rotate_point(this.x+350,this.y-140,this.x,this.y,this.angle).y);//c
     	ctx.lineTo(rotate_point(this.x,this.y,this.x,this.y,this.angle).x,rotate_point(this.x,this.y,this.x,this.y,this.angle).y);
     	ctx.stroke();
-		if(this.drawLast){
-			ctx.drawImage(imgBullet,this.targetPosX, this.targetPosY, 8, 8);
-		}
+}
+
+Enemy.prototype.draw = function(){
+	if(this.alive){
+		
 		ctx.save();//save the state of canvas before rotation wrecks the place.
 		for(var i = 0; i <this.bullets.length; i++){
 			this.bullets[i].draw();
@@ -250,6 +251,11 @@ Enemy.prototype.closeToPos = function(xPos,yPos){
 
 Enemy.prototype.kill = function(){
 	this.alive = false;
+	var rand= Math.floor(Math.random()*(10-1) +1);
+	if(rand === 2){
+		return 1;
+	}
+	return 0;
 }
 
 

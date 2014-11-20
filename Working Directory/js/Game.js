@@ -28,11 +28,18 @@ var point = {
 	y: (648 / 2)
 };
 
+var pickUp;
+
+var pause= false;
+var debugDrawer = false;
+var timer =0;
+
 function Game (){
 	//assetManager = new AssetManager();
 	player = new Player();
 	sticks = [new Stick(inputSize), new Stick(inputSize)];
 	fsm = new FSM();
+	pickUp = new Pickup();
 	enemyManager = new EnemyManager();
 	collisionManager = new CollisionManager();
 	textManager = new TextManager();
@@ -43,6 +50,7 @@ function Game (){
 
 Game.prototype.reset = function(){
 	player.reset();
+	pause = false;
 	enemyManager.reset(1);
 	//player.init();
 	textManager.init();
@@ -127,6 +135,7 @@ function sqrt(x) {
 
 
 Game.prototype.update = function(){
+	if(!pause){
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].update();
 	}
@@ -140,7 +149,9 @@ Game.prototype.update = function(){
 	enemyManager.update();
 	this.collisionCall();
 	
-
+	if(player.lives<=0){
+		pause = true;
+	}
 
 	calculateFps(Date.now());
 
@@ -167,11 +178,37 @@ Game.prototype.update = function(){
 			point.y = (HEIGHT - point.radius);
 		}
 	}
+}
+else{
+	if(KeyController.isKeyDown(Key.N)){
+		backTrack.pause();
+		backTrack.currentTime=0;
+		return "menu";
+	}
+	if(KeyController.isKeyDown(Key.Y)){
+		this.reset();
+	}
 
+
+
+}
 	if(KeyController.isKeyDown(Key.ESC)){
 		backTrack.pause();
 		backTrack.currentTime=0;
 		return "menu";
+	}
+timer++;
+	if(KeyController.isKeyDown(Key.ENTER)){
+		if(timer>20){	
+			if(debugDrawer){
+				debugDrawer = false;
+				timer =0;
+			}
+			else{
+				debugDrawer = true;
+				timer =0;
+			}
+		}
 	}
 
 
@@ -206,11 +243,20 @@ Game.prototype.collisionCall = function(){
 		}
 	}
 
+	//temp only one pick up will become a list
+	if(collisionManager.circleOnCircle(player.radius, player.x,player.y,pickUp.radius,pickUp.x,pickUp.y)&&
+		pickUp.alive){
+		pickUp.alive = false;
+		player.radar = true;
+	}
+
 	for(var i = 0;i< player.bullets.length;++i){
 		if(player.bullets[i].alive){
 			for (var j = 0; j < enemyManager.enemy.length; ++j) {//enemy.length
 				if(collisionManager.circleOnCircle(player.bullets[i].radius,player.bullets[i].x,player.bullets[i].y,enemyManager.enemy[j].hitRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y)){
-					enemyManager.enemy[j].kill();
+					if(enemyManager.enemy[j].kill()===1 && !pickUp.alive && !player.radar){
+						pickUp.spawn("radar",enemyManager.enemy[j].x,enemyManager.enemy[j].y);
+					}
 				}
 				if(!enemyManager.enemy[j].alive){
     				var index = enemyManager.enemy.indexOf(j);
@@ -271,9 +317,18 @@ Game.prototype.debugDraw = function(){
 		ctx.beginPath();
 		ctx.moveTo(player.x,player.y);
 		ctx.lineTo(enemyManager.enemy[i].x,enemyManager.enemy[i].y);
-	//	console.log(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y);
 		ctx.stroke();
 
+		enemyManager.enemy[i].debugDraw();
+
+		if(this.enemyToPlayerLine(i)){
+    		//ctx.drawImage(imgViewRad,enemyManager.enemy[i].interX , enemyManager.enemy[i].interY, 50, 50);
+    	}
+    }
+}
+
+Game.prototype.radarDraw = function(){
+	for (var i = 0; i < enemyManager.enemy.length; ++i) {
 		if(this.enemyToPlayerLine(i)){
     		ctx.drawImage(imgViewRad,enemyManager.enemy[i].interX , enemyManager.enemy[i].interY, 50, 50);
     	}
@@ -302,17 +357,28 @@ Game.prototype.draw =function (){
     ctx.translate( camX, camY ); 
     //the numbers offset the background so that it centres with the map
     ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
+	pickUp.draw();
 	player.draw();
 	enemyManager.draw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
 		enemyManager.enemy[i].draw();
 	}
-	this.debugDraw();
+	if(debugDrawer){
+		this.debugDraw();
+	}
+	if(player.radar){
+		this.radarDraw();
+	}
 	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].draw();
 	}
-	textManager.controller();
+	if(!pause){
+		textManager.controller();
+	}
+	else{
+		textManager.end(enemyManager.swarmsSurvived);	
+	}
 }
 
 function clamp(value, min, max){//used to clamp the cam if the player gets near the edge of the world

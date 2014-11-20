@@ -19,7 +19,13 @@ TextManager.prototype.init = function(){
 TextManager.prototype.drawInstruc =function (){
 
 }
-
+TextManager.prototype.end = function(txt){
+     ctx.strokeStyle = "#003300";
+        ctx.font = '40px san-serif';
+        ctx.textBaseline = 'bottom';
+        //txtAmmo = txtAmmo + numBullets.toString();
+        ctx.strokeText("Swarms Survived: "+txt+". "+"Continue  Y/N", 300, 100);
+}
 
 TextManager.prototype.controller = function(){
     if(player.numBullets>0){
@@ -32,6 +38,7 @@ TextManager.prototype.controller = function(){
         //txtAmmo = txtAmmo + numBullets.toString();
         ctx.strokeText("R to Reload", 300, 100);
     }
+    ctx.strokeText(strHealth+ player.health.toString()+"%", 30, 50);
         ctx.strokeStyle = "#003300";
         ctx.font = '40px san-serif';
         ctx.textBaseline = 'bottom';
@@ -50,7 +57,7 @@ TextManager.prototype.gameText=function(){
     ctx.textBaseline = 'bottom';
     //txtAmmo = txtAmmo + numBullets.toString();
     ctx.strokeText(strAmmo+ player.numBullets.toString(), 300, 100);
-    ctx.strokeText(strHealth+ player.health.toString()+"%", 30, 50);
+    
 }
 
 // This represents the main game Title

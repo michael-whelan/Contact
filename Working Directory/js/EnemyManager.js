@@ -11,6 +11,7 @@ var EnemyManager=function (){
 	this.spawnPos3 = [];
 	this.spawnPos4 = [];
 	this.spawnPos5 = [];
+	this.swarmsSurvived = 0;
 };
 
 
@@ -46,6 +47,8 @@ EnemyManager.prototype.reset = function(lvl){
 	this.playerPosY = 0;
 	this.spawnTimer= 0;
 	this.setUp();
+	//temp
+	this.swarmsSurvived = 0;
 }
 
 
@@ -64,8 +67,8 @@ EnemyManager.prototype.hearShot = function(px,py){
 
 EnemyManager.prototype.setUp = function(){
 	if(this.currentLvl == 1){
-		this.totalEnemies = 10;
-		this.totalSwarms = 2;
+		this.totalEnemies = 150;
+		this.totalSwarms = 30;
 	}
 	this.enemySwarms = this.totalSwarms;
 }
@@ -78,6 +81,7 @@ EnemyManager.prototype.update = function(){
 		this.spawnSwarm();
 		this.enemySwarms--;
 		this.spawnTimer=0;
+		this.swarmsSurvived++;
 	}
 
 	for (var j = 0; j < this.enemy.length; ++j) {

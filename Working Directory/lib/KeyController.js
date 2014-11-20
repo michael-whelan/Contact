@@ -9,6 +9,8 @@ Key = new (function() {
 	this.R = 82;
 	this.ENTER = 13;
 	this.ESC = 27;
+	this.Y = 89;
+	this.N = 78;
 })(); 
 
 

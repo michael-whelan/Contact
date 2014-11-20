@@ -27,7 +27,13 @@ var Player=function (){
 	this.healDelay =15;
 	this.bigX=0;
 	this.bigY = 0;
+
 	this.reset();
+
+
+	//pickup Bools
+	this.radar = false;
+
 };
 
 Player.prototype.reload = function(){
@@ -54,6 +60,8 @@ Player.prototype.reset = function(){
 	this.alive = true;
 	this.angle = 2.87;
 	
+		//temp
+	this.lives=3;
 
 	this.xFacing = 0;
 	this.yFacing = 0;
@@ -93,7 +101,7 @@ Player.prototype.shoot = function(){
     		var index = this.bullets.indexOf(i);
     		this.bullets.splice(i, 1);
     		i--;
-   	}
+   		}
 	}
 }
 
@@ -147,7 +155,7 @@ Player.prototype.controller = function(b1,b2){
 	if(b1){
 		this.move("forward");
 	}
-	console.log(mapWidth,this.y);
+	//console.log(mapWidth,this.y);
 	if(KeyController.isKeyDown(Key.UP)){
 			this.move("forward");
 	}
@@ -157,6 +165,8 @@ Player.prototype.controller = function(b1,b2){
 }
 
 Player.prototype.respawn = function(){
+	this.lives--;
+	console.log("lives: "+this.lives);
 	this.health = 100;
 	this.x = 100;
 	this.y = 100;
@@ -166,6 +176,12 @@ Player.prototype.respawn = function(){
 
 Player.prototype.getAngle = function(x,y){
 	return Math.atan2(y,x);//*180/Math.PI;
+}
+
+Player.prototype.setPickup = function(id){
+	if(id === "radar"){
+		this.radar = true;
+	}
 }
 
 Player.prototype.update = function(x1,y1,x2,y2,b1,b2){

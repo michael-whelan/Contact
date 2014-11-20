@@ -93,6 +93,7 @@ SceneManager.prototype.queueLvl1Assets = function(){
 	assetManager.queueLoadImg("images/Enemy.png");
 	assetManager.queueLoadImg("images/character_05.png");
 	assetManager.queueLoadImg("images/Bullet.png");
+	assetManager.queueLoadImg("images/GoTo.png");
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.mp3");
@@ -118,6 +119,7 @@ SceneManager.prototype.setLvl1Images = function(){
 	imgEnemy = assetManager.getAsset("images/Enemy.png");
 	imgViewRad = assetManager.getAsset("images/ViewRange.png");
 	imgBullet = assetManager.getAsset("images/Bullet.png");
+	imgRadarPUp = assetManager.getAsset("images/GoTo.png");
 	loadedImages = true;
 }
 
