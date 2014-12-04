@@ -61,7 +61,7 @@ Game.prototype.reset = function(){
 }
 
 Game.prototype.touchMove= function(e){
-	e.preventDefault();
+	//e.preventDefault();
 	for (var i = 0; i < e.touches.length; ++i) {
 		var touch = e.touches[i];
 		if(touch.pageX<canvas.width/2){
@@ -75,7 +75,7 @@ Game.prototype.touchMove= function(e){
 
 
 Game.prototype.touchStart = function(e){ 
-	e.preventDefault();
+	//e.preventDefault();
 	for (var i = 0; i < e.touches.length; ++i) {
 			var touch = e.touches[i];
 			if(touch.pageX<canvas.width/2){
