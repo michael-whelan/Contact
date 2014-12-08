@@ -94,15 +94,16 @@ SceneManager.prototype.queueLvl1Assets = function(){
 	assetManager.queueLoadImg("images/Back.png");
 	assetManager.queueLoadImg("images/ViewRange.png");
 	assetManager.queueLoadImg("images/Enemy.png");
+	assetManager.queueLoadImg("images/Enemy_Commander.png");
 	assetManager.queueLoadImg("images/character_05.png");
 	assetManager.queueLoadImg("images/Bullet.png");
 	assetManager.queueLoadImg("images/GoTo.png");
-	//assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
-	//assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
-	//assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.mp3");
-	//assetManager.queueLoadSnd("sounds/sfx/gun_pew.mp3");
-	//assetManager.queueLoadSnd("sounds/sfx/gun_empty.mp3");
-	//assetManager.queueLoadSnd("sounds/sfx/health_lost.mp3");
+	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/gun_pew.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/gun_empty.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/health_lost.mp3");
 }
 
 
@@ -119,7 +120,8 @@ SceneManager.prototype.setTitleImages = function(){
 SceneManager.prototype.setLvl1Images = function(){
 	imgBack = assetManager.getAsset("images/Back.png");
 	imgPlayer = assetManager.getAsset("images/character_05.png");
-	imgEnemy = assetManager.getAsset("images/Enemy.png");
+	imgGrunt = assetManager.getAsset("images/Enemy.png");
+	imgComdr = assetManager.getAsset("images/Enemy_Commander.png");
 	imgViewRad = assetManager.getAsset("images/ViewRange.png");
 	imgBullet = assetManager.getAsset("images/Bullet.png");
 	imgRadarPUp = assetManager.getAsset("images/GoTo.png");
@@ -127,12 +129,12 @@ SceneManager.prototype.setLvl1Images = function(){
 }
 
 SceneManager.prototype.setLvl1Sounds = function(){
-	//spawnSnd = assetManager.getAsset("sounds/sfx/player_spawn.mp3");
-	//backTrack = assetManager.getAsset("sounds/music/gameplay_theme_idea.mp3");
-	//reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.mp3");
-	//gunshot = assetManager.getAsset("sounds/sfx/gun_pew.mp3");
-	//emptySnd = assetManager.getAsset("sounds/sfx/gun_empty.mp3");
-	//loseHealthSnd = assetManager.getAsset("sounds/sfx/health_lost.mp3");
+	spawnSnd = assetManager.getAsset("sounds/sfx/player_spawn.mp3");
+	backTrack = assetManager.getAsset("sounds/music/gameplay_theme_idea.mp3");
+	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.mp3");
+	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.mp3");
+	emptySnd = assetManager.getAsset("sounds/sfx/gun_empty.mp3");
+	loseHealthSnd = assetManager.getAsset("sounds/sfx/health_lost.mp3");
 	loadedSounds = true;
 }
 

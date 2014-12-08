@@ -1,11 +1,11 @@
-var imgEnemy= new Image();
+var imgGrunt= new Image();
+var imgComdr = new Image();
 var imgViewRad= new Image();
 var goToImg = new Image();
 
-var Enemy=function (){
+var Enemy=function (rank){
+	this.rank = rank;
 	this.interX=0;//used to display thir position on the screen radar.
-	this.interY =0;
-	
 	this.centreX =0;
 	this.centreY =0;
 	this.width = 50;
@@ -80,6 +80,7 @@ Enemy.prototype.update = function(){
 		}
 		else if(this.state === "moveToPos"){
 			this.goToPos(this.targetPosX,this.targetPosY);
+			//this.runFromPos(this.targetPosX,this.targetPosY);
 		}
 		//end state control
 
@@ -137,8 +138,12 @@ Enemy.prototype.draw = function(){
 		}
 		ctx.translate(this.x, this.y); //let's translate
 		ctx.rotate(this.angle); //increment the angle and rotate the image 
-		ctx.drawImage(imgEnemy,-this.width/2, -this.height/2, this.width, this.height);
-
+		if(this.rank === "grunt"){
+			ctx.drawImage(imgGrunt,-this.width/2, -this.height/2, this.width, this.height);
+		}
+		else if(this.rank === "cmdr"){
+			ctx.drawImage(imgComdr,-this.width/2, -this.height/2, this.width, this.height);
+		}
 		ctx.restore(); //restore the state of canvas
 
 		this.lastX = this.x;
@@ -235,6 +240,20 @@ Enemy.prototype.goToPos = function(xPos,yPos){
 		this.state = fsm.stateControl(this.state,"complete");
 		this.drawLast = false;
 	}
+}
+
+Enemy.prototype.runFromPos = function(xPos,yPos){
+	this.rotateToDirection(xPos,yPos,0.08,0.01);
+	
+	//turn to face a specific point
+	this.xDirect = Math.cos(this.angle);
+	this.yDirect = Math.sin(this.angle);
+	this.xVel = -this.xDirect*this.speed;
+	this.yVel = -this.yDirect*this.speed;
+	/*if(this.closeToPos(xPos,yPos)){
+		this.state = fsm.stateControl(this.state,"complete");
+		this.drawLast = false;
+	}*/
 }
 
 Enemy.prototype.closeToPos = function(xPos,yPos){

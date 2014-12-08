@@ -312,7 +312,7 @@ Game.prototype.debugDraw = function(){
 	ctx.lineTo(innerX1,innerY1);
 	ctx.stroke();
 
-
+	enemyManager.debugDraw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
 		ctx.beginPath();
 		ctx.moveTo(player.x,player.y);
@@ -359,7 +359,6 @@ Game.prototype.draw =function (){
     ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
 	pickUp.draw();
 	player.draw();
-	enemyManager.draw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
 		enemyManager.enemy[i].draw();
 	}

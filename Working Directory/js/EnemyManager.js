@@ -40,7 +40,6 @@ EnemyManager.prototype.reset = function(lvl){
 	this.setSpawn(lvl);
 
 	this.currentLvl = lvl;
-	this.totalEnemies = 0;
 	this.enemySwarms = 0;
 	this.totalSwarms=0;
 	this.playerPosX = 0;
@@ -67,8 +66,7 @@ EnemyManager.prototype.hearShot = function(px,py){
 
 EnemyManager.prototype.setUp = function(){
 	if(this.currentLvl == 1){
-		this.totalEnemies = 150;
-		this.totalSwarms = 30;
+		this.totalSwarms = 3;
 	}
 	this.enemySwarms = this.totalSwarms;
 }
@@ -77,14 +75,14 @@ EnemyManager.prototype.setUp = function(){
 EnemyManager.prototype.update = function(){
 	this.spawnTimer++;
 	//controls the number of swarms and the size of each and when they are spawned.
-	if(this.spawnTimer> 150 && this.enemySwarms>0&&this.enemy.length == 0){
-		this.spawnSwarm();
+	if(this.spawnTimer> 150 && this.enemySwarms>0&&this.enemy.length === 0){
+		this.spawnSwarm(5,5);
 		this.enemySwarms--;
 		this.spawnTimer=0;
 		this.swarmsSurvived++;
 	}
 
-	for (var j = 0; j < this.enemy.length; ++j) {
+	for (var j = 0; j < this.enemy.length; ++j){
 		this.enemy[j].update();
 	}
 }
@@ -101,12 +99,16 @@ EnemyManager.prototype.moveControl = function(j,b,px,py){
 }
 
 
-EnemyManager.prototype.spawnSwarm = function(){
+EnemyManager.prototype.spawnSwarm = function(min,max){
 	//spawns a group of enemies.
 	var rand = Math.floor(Math.random()*(5-0) +0);
-	console.log(rand);
-	for(var i = 0; i< this.totalEnemies/this.totalSwarms; i++){
-		var enemySingle = new Enemy();
+	var numEnemiesNeeded = Math.floor(Math.random()*(max-min) +min);
+	for(var i = 0; i< numEnemiesNeeded; i++){
+		if(i===0){
+			var enemySingle = new Enemy("cmdr");
+		}else{
+			var enemySingle = new Enemy("grunt");
+		}
 		if(rand===0){
 			enemySingle.spawnEnemy(this.spawnPos1[0],this.spawnPos1[1]);
 		}
@@ -129,7 +131,7 @@ EnemyManager.prototype.collision = function(e)
  
 };
 
-EnemyManager.prototype.draw =function(){
+EnemyManager.prototype.debugDraw =function(){
 	ctx.drawImage(imgViewRad, this.spawnPos1[0]-this.spawnRad,this.spawnPos1[1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
 	ctx.drawImage(imgViewRad, this.spawnPos2[0]-this.spawnRad,this.spawnPos2[1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
 	ctx.drawImage(imgViewRad, this.spawnPos3[0]-this.spawnRad,this.spawnPos3[1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
