@@ -83,6 +83,41 @@ AssetManager.prototype.loadTitleImages = function(loadCallback) {
     }
 }
 
+AssetManager.prototype.loadLvlSelectImages = function(loadCallback) {
+    if (this.loadQueueImg.length === 0) {
+      loadCallback();
+    }
+    for (var i = 0; i < this.loadQueueImg.length; i++) {
+        var path = this.loadQueueImg[i];
+        var img = new Image();
+        var that = this;
+        img.addEventListener("load", function() {
+            that.successCount += 1;
+            //console.log(that.isDone(that.loadQueueImg));
+            if (that.isDone(that.loadQueueImg)) {
+                that.successCount = 0;
+                that.errorCount=0;
+                while(that.loadQueueImg.length > 0) {
+                    that.loadQueueImg.pop();
+                }
+                loadCallback();
+
+            }
+        }, false);
+        img.addEventListener("error", function() {
+            that.errorCount += 1;
+            console.log("Error file: "+path);
+            if (that.isDone(that.loadQueueImg)) {
+                loadCallback();
+            }
+    }, false);
+
+        img.src = path;
+        this.cache[path] = img;
+    }
+}
+
+
 AssetManager.prototype.loadLvl1Images = function(loadCallback) {
     if (this.loadQueueImg.length === 0) {
       loadCallback();

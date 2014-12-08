@@ -22,3 +22,10 @@ function main()
 			
 }
 
+/*States
+menu
+gameplay
+//Scenes
+titleScreen
+levelSelect
+*/

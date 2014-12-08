@@ -20,8 +20,9 @@ function SceneManager(){
 	loadedImages = false;
 	loadedSounds = false;
 	//loading = true;
-	this.onceMenu = false;
+	this.onceTitle = false;
 	this.onceLvl1 = false;
+	this.onceLvlSel = false;
 	scaleRatio = canvas.height/ parseInt(canvas.style.height, 10);
 	canvas.style.width = canvas.width/scaleRatio;
 };
@@ -52,7 +53,6 @@ function resizeGame(){
   	canvas.style.width = window.parent.document.getElementById("getWidth").style.width;
 	scaleRatio = canvas.height/ parseInt(canvas.style.height, 10);
 	canvas.style.width = canvas.width/scaleRatio;
-	console.log(canvas.style.height);
 	
 }
 
@@ -111,11 +111,22 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/menuLayout_01.png");
 }
 
+SceneManager.prototype.queueLvlSelectAssets = function(){
+	assetManager.queueLoadImg("images/worldSelectFloat_01.png");
+	assetManager.queueLoadImg("images/world1.png");
+}
+
+
 SceneManager.prototype.setTitleImages = function(){
 	imgTitleScreen = assetManager.getAsset("images/menuLayout_01.png");
 	loadedImages=true;
 }
 
+SceneManager.prototype.setLvlSelectImages = function(){
+	imgLvlSelBack = assetManager.getAsset("images/worldSelectFloat_01.png");
+	imgLvlSel1 = assetManager.getAsset("images/world1.png");
+	loadedImages=true;
+}
 
 SceneManager.prototype.setLvl1Images = function(){
 	imgBack = assetManager.getAsset("images/Back.png");
@@ -154,31 +165,38 @@ SceneManager.prototype.gameLoop = function (){
    	//no updateing or drawing allowed until loading is complete
    	if(loading){
    		sc.loadScreen();
-   		
    	}
    	else if(sc.gameState === "gameplay"){
  		sc.gameState = game.update();
- 		if(sc.gameState !== "gameplay"){
+ 		if(sc.gameState === "menu"){
  			sc.gameScene = "titleScreen";
- 			if(!sc.onceMenu){
+ 			if(!sc.onceTitle){
  				sc.loadScene(sc.gameState,sc.gameScene);
  			}
  		}
 		game.draw();
-		sc.onceLvl1 = true;
+		//sc.onceLvl1 = true;
 		//check for change and call load scene.
 	}
 	else if(sc.gameState === "menu"){
-		sc.gameState = menu.update();
-		if(sc.gameState !=="menu"){
-			sc.gameScene = "level1";
+		var temp = menu.update();
+		sc.gameState = temp[0];
+		sc.gameScene = temp[1];
+		if(sc.gameState ==="gameplay"){
 			game.reset();
-			if(!sc.onceLvl1){
+			//if(!sc.onceLvl1){
 				sc.loadScene(sc.gameState,sc.gameScene);
+		//	}
+		}
+		if(sc.gameScene==="levelSelect"){
+			//game.reset();
+			if(!sc.onceLvlSel){
+				sc.loadScene(sc.gameState,sc.gameScene);
+				sc.onceLvlSel = true;
 			}
 		}
-		menu.draw();
-		sc.onceMenu = true;
+		menu.draw(sc.gameScene);
+		sc.onceTitle = true;
 	}
 	window.requestAnimFrame(sc.gameLoop);
 }
@@ -202,7 +220,14 @@ SceneManager.prototype.loadScene = function(state,scene){
 			});
 			loadedSounds=true;
 		}
-		else if(scene ==="LevelSelect"){}
+		else if(scene ==="levelSelect"){
+			
+			this.queueLvlSelectAssets();
+			assetManager.loadLvlSelectImages(function() {
+    			sc.setLvlSelectImages()
+			});
+			loadedSounds=true;
+		}
 	}
 	else if(state === "gameplay"){
 		if(scene === "level1"){
