@@ -98,6 +98,32 @@ EnemyManager.prototype.moveControl = function(j,b,px,py){
 		}
 }
 
+EnemyManager.prototype.kill = function(j){
+	this.enemy[j].alive = false;
+	var tempRank = this.enemy[j].rank;
+	if (j > -1) {
+    	this.enemy.splice(j, 1);
+	}
+	if(tempRank === "cmdr"){
+		this.possibleFear();
+	}
+	var rand= Math.floor(Math.random()*(10-1) +1);
+	if(rand === 2){
+		return 1;
+	}
+	return 0;
+}
+
+EnemyManager.prototype.possibleFear = function(){
+	var rand= Math.floor(Math.random()*(5-1) +1);
+	console.log(rand);
+	if(rand === 1){
+		for (var i = 0; i < this.enemy.length; i++) {
+			this.enemy[i].state = fsm.stateControl(this.enemy[i].state,"getScared");
+			console.log(this.enemy[i].state);
+		};
+	}
+}
 
 EnemyManager.prototype.spawnSwarm = function(min,max){
 	//spawns a group of enemies.

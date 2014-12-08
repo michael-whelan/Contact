@@ -80,7 +80,11 @@ Enemy.prototype.update = function(){
 		}
 		else if(this.state === "moveToPos"){
 			this.goToPos(this.targetPosX,this.targetPosY);
-			//this.runFromPos(this.targetPosX,this.targetPosY);
+			//this.scatter(this.targetPosX,this.targetPosY);	
+		}
+		else if(this.state === "scared"){
+			//this.scatter(this.targetPosX,this.targetPosY);
+			this.moveBasic();
 		}
 		//end state control
 
@@ -226,6 +230,25 @@ Enemy.prototype.rotateToDirection = function(targX,targY,speed,leeWay){
 	}
 	return false;
 }
+Enemy.prototype.rotateToDirection2 = function(targX,targY,speed,leeWay){
+	var posDifferenceX = targX - this.x; // finds the vector for the difference in positions
+	var posDifferenceY = targY - this.y;
+	var rotation = Math.atan2(-posDifferenceY, -posDifferenceX);
+	//checks which direction of rotation is the correct one
+	if(((this.angle* (180/Math.PI))-(rotation* (180/Math.PI))+360)%360>180){
+		this.angle += speed;//0.08
+	}
+	else{
+		this.angle -= speed;
+	}
+	//stop the arrow vibrating when its close to perfect.
+	if(((this.angle* (180/Math.PI))-(rotation* (180/Math.PI))+360)%360>180 >-leeWay&&
+		((this.angle* (180/Math.PI))-(rotation* (180/Math.PI))+360)%360>180 <leeWay){
+		this.angle = rotation;
+		return true;
+	}
+	return false;
+}
 
 
 Enemy.prototype.goToPos = function(xPos,yPos){
@@ -242,22 +265,23 @@ Enemy.prototype.goToPos = function(xPos,yPos){
 	}
 }
 
-Enemy.prototype.runFromPos = function(xPos,yPos){
-	this.rotateToDirection(xPos,yPos,0.08,0.01);
+Enemy.prototype.scatter = function(xPos,yPos){
+	this.rotateToDirection2(xPos,yPos,0.08,0.01);
 	
-	//turn to face a specific point
-	this.xDirect = Math.cos(this.angle);
-	this.yDirect = Math.sin(this.angle);
-	this.xVel = -this.xDirect*this.speed;
-	this.yVel = -this.yDirect*this.speed;
-	/*if(this.closeToPos(xPos,yPos)){
-		this.state = fsm.stateControl(this.state,"complete");
-		this.drawLast = false;
-	}*/
+	this.moveDirection = "forward";
+	//causes regular changes in direction
+	if(this.timeSinceDirectChange>40){
+		this.angle = Math.random()*(8-1) +1;
+		this.timeSinceDirectChange = 0;
+	}
+	if(this.moveDirection == "forward"){
+		this.xVel = this.xDirect*this.speed;
+		this.yVel = this.yDirect*this.speed;
+	}
+	this.timeSinceDirectChange++;
 }
 
 Enemy.prototype.closeToPos = function(xPos,yPos){
-
 	var marginGap = 8;
 	if(this.x > xPos -marginGap &&this.x < xPos +marginGap){
 		if(this.y > yPos -marginGap &&this.y < yPos +marginGap){
@@ -268,14 +292,6 @@ Enemy.prototype.closeToPos = function(xPos,yPos){
 }
 
 
-Enemy.prototype.kill = function(){
-	this.alive = false;
-	var rand= Math.floor(Math.random()*(10-1) +1);
-	if(rand === 2){
-		return 1;
-	}
-	return 0;
-}
 
 
 Enemy.prototype.moveBasic = function(){

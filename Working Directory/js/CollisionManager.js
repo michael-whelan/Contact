@@ -22,6 +22,65 @@ CollisionManager.prototype.update = function(){
  	
 }
 
+
+
+CollisionManager.prototype.collisionCall = function(enemyManager,player){
+	for (var j = 0; j < enemyManager.enemy.length; ++j) {
+		enemyManager.moveControl(j,collisionManager.circleOnCircle(player.radius,player.x,player.y,enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y),
+			player.x,player.y);
+		
+		enemyManager.moveControl(j,collisionManager.circleOnTriangle(player.x,player.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
+			enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
+			enemyManager.enemy[j].cX,enemyManager.enemy[j].cY),
+			player.x,player.y);
+
+		if(player.shot){
+			enemyManager.hearShot(player.x,player.y);
+			player.shot = false;
+		}
+	}
+	
+	for (var j = 0; j < enemyManager.enemy.length; ++j) {
+		for(var i = 0; i < enemyManager.enemy[j].bullets.length; ++i){
+			if(collisionManager.circleOnCircle(enemyManager.enemy[j].bullets[i].radius,enemyManager.enemy[j].bullets[i].x,
+				enemyManager.enemy[j].bullets[i].y,player.radius,player.x,player.y) && player.flash === false){
+				player.health-=1;
+				loseHealthSnd.play();
+				player.lastHitTime = Date.now();
+				enemyManager.enemy[j].bullets[i].kill();
+			}
+		}
+	}
+
+	//temp only one pick up will become a list
+	if(collisionManager.circleOnCircle(player.radius, player.x,player.y,pickUp.radius,pickUp.x,pickUp.y)&&
+		pickUp.alive){
+		pickUp.alive = false;
+		player.radar = true;
+	}
+
+	for(var i = 0;i< player.bullets.length;++i){
+		if(player.bullets[i].alive){
+			for (var j = 0; j < enemyManager.enemy.length; ++j) {//enemy.length
+				if(collisionManager.circleOnCircle(player.bullets[i].radius,player.bullets[i].x,player.bullets[i].y,enemyManager.enemy[j].hitRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y)){
+					var x = enemyManager.enemy[j].x; var y = enemyManager.enemy[j].y;
+					if(enemyManager.kill(j)===1 && !pickUp.alive && !player.radar){
+						pickUp.spawn("radar",x,y);
+					}
+					player.bullets[i].kill();
+				}
+				/*if(!enemyManager.enemy[j].alive){
+    				var index = enemyManager.enemy.indexOf(j);
+    				enemyManager.enemy.splice(j, 1);
+    				j--;
+    				
+   				}*/
+			}
+		}
+	}
+}
+
+
 CollisionManager.prototype.circleOnCircle = function(r1,x1,y1,r2,x2,y2){
 	var radius1 = r1;
 	var radius2 = r2;

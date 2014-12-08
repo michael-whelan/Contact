@@ -25,6 +25,9 @@ FSM.prototype.stateControl = function(currState, evt){
 		else if(evt === "seeTarget"){//if the player is sighted
 			return "attack";//attack the player
 		}
+		else if(evt === "getScared"){//if the player is sighted
+			return "scared";//attack the player
+		}
 		else{
 			return "wander";//without the interrupt just continue idle
 		}
@@ -40,20 +43,24 @@ FSM.prototype.stateControl = function(currState, evt){
 		else if(evt === "seeTarget"){//if the player is sighted
 			return "attack";//attack the player
 		}
+		else if(evt === "getScared"){//if the player is sighted
+			return "scared";//attack the player
+		}
 		return "moveToPos";
 	}
-
 
 	if(currState ==="attack"){
 		if(evt === "seeTarget"){//if the player is sighted
 			return "attack";
 		}
-		else{
-			return "moveToPos";
+		else if(evt === "getScared"){//if the player is sighted
+			return "scared";//attack the player
 		}
+			return "moveToPos";
 	}
-
-
+	if(currState==="scared"){
+		return "scared";
+	}
 
 	return "wander";
 }
