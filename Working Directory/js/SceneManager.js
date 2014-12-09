@@ -92,8 +92,9 @@ function touchEnd(e){
 }
 
 
-SceneManager.prototype.queueLvl1Assets = function(){
+SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/Back.png");
+	assetManager.queueLoadImg("images/Back_Tutorial.png");
 	assetManager.queueLoadImg("images/ViewRange.png");
 	assetManager.queueLoadImg("images/Enemy.png");
 	assetManager.queueLoadImg("images/Enemy_Commander.png");
@@ -132,8 +133,9 @@ SceneManager.prototype.setLvlSelectImages = function(){
 	loadedImages=true;
 }
 
-SceneManager.prototype.setLvl1Images = function(){
+SceneManager.prototype.setGameImages = function(){
 	imgBack = assetManager.getAsset("images/Back.png");
+	imgTutorialBack = assetManager.getAsset("images/Back_Tutorial.png");
 	imgPlayer = assetManager.getAsset("images/character_05.png");
 	imgGrunt = assetManager.getAsset("images/Enemy.png");
 	imgComdr = assetManager.getAsset("images/Enemy_Commander.png");
@@ -143,7 +145,7 @@ SceneManager.prototype.setLvl1Images = function(){
 	loadedImages = true;
 }
 
-SceneManager.prototype.setLvl1Sounds = function(){
+SceneManager.prototype.setGameSounds = function(){
 	spawnSnd = assetManager.getAsset("sounds/sfx/player_spawn.mp3");
 	backTrack = assetManager.getAsset("sounds/music/gameplay_theme_idea.mp3");
 	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.mp3");
@@ -189,12 +191,13 @@ SceneManager.prototype.gameLoop = function (){
 		sc.gameScene = temp[1];
 		if(sc.gameState ==="gameplay"){
 			game.reset();
-			if(!contains(loadedScenes,"level1")){
+			if(!contains(loadedScenes,"level1")&&!contains(loadedScenes,"tutorial")){
+				sc.loadScene(sc.gameState,sc.gameScene);
 				sc.loadScene(sc.gameState,sc.gameScene);
 			}
-			if(!contains(loadedScenes,"tutorial")){
-				sc.loadScene(sc.gameState,sc.gameScene);
-			}
+			//if(!contains(loadedScenes,"tutorial")){
+				
+			//}
 		}
 		if(sc.gameScene==="levelSelect"){
 			//game.reset();
@@ -238,7 +241,7 @@ SceneManager.prototype.loadScene = function(state,scene){
 		}
 	}
 	else if(state === "gameplay"){
-		if(scene === "tutorial"){
+		/*if(scene === "tutorial"){
 			this.queueTutAssets();
 			assetManager.loadTutImages(function() {
     			sc.setTutImages()
@@ -247,19 +250,16 @@ SceneManager.prototype.loadScene = function(state,scene){
     			sc.setTutSounds()
 			});
 		}
-		else if(scene === "level1"){
-			this.queueLvl1Assets();
+		else if(scene === "level1"){*/
+			this.queueGameAssets();
 			assetManager.loadLvl1Images(function() {
-    			sc.setLvl1Images()
+    			sc.setGameImages()
 			});
 			assetManager.loadLvl1Sounds(function() {
-    			sc.setLvl1Sounds()
+    			sc.setGameSounds()
 			});
 
-		}
-		else if(scene === "level2"){
-
-		}
+		//}
 	}
 	else if(state === "credits"){
 

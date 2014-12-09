@@ -1,4 +1,5 @@
 var imgBack = new Image();
+var imgTutorialBack = new Image();
 var backTrack = new Audio();
 
 
@@ -16,7 +17,7 @@ LevelManager.prototype.setLevel = function(lvl){
 
 LevelManager.prototype.draw = function() {
 	if(this.currentLevel ==="tutorial"){
-		ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
+		ctx.drawImage(imgTutorialBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
 	}
 	else if(this.currentLevel === "level1"){
 		ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
