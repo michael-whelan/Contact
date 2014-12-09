@@ -9,6 +9,7 @@ var loadedImages;
 var loadedSounds;
 var sc;
 var scaleRatio;
+var loadedScenes;
 function SceneManager(){
 	game = new Game();
 	menu = new Menu();
@@ -17,6 +18,7 @@ function SceneManager(){
 	this.gameState="0";
 	this.gameScene = "0";
 	sc = this;
+	loadedScenes = [];
 	loadedImages = false;
 	loadedSounds = false;
 	//loading = true;
@@ -114,6 +116,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 SceneManager.prototype.queueLvlSelectAssets = function(){
 	assetManager.queueLoadImg("images/worldSelectFloat_01.png");
 	assetManager.queueLoadImg("images/world1.png");
+	assetManager.queueLoadImg("images/worldTutorial.png");
 }
 
 
@@ -125,6 +128,7 @@ SceneManager.prototype.setTitleImages = function(){
 SceneManager.prototype.setLvlSelectImages = function(){
 	imgLvlSelBack = assetManager.getAsset("images/worldSelectFloat_01.png");
 	imgLvlSel1 = assetManager.getAsset("images/world1.png");
+	imgLvlSelTut = assetManager.getAsset("images/worldTutorial.png");
 	loadedImages=true;
 }
 
@@ -160,22 +164,23 @@ SceneManager.prototype.gameLoop = function (){
    			loading = false;
    			loadedImages = false;
    			loadedSounds =false;
-   			game.reset();
+   			game.reset(sc.gameScene);
    	}
    	//no updateing or drawing allowed until loading is complete
    	if(loading){
    		sc.loadScreen();
    	}
    	else if(sc.gameState === "gameplay"){
- 		sc.gameState = game.update();
+ 		sc.gameState = game.update(sc.gameScene);
  		if(sc.gameState === "menu"){
  			sc.gameScene = "titleScreen";
- 			if(!sc.onceTitle){
+ 			if(!contains(loadedScenes,"titleScreen")){
  				sc.loadScene(sc.gameState,sc.gameScene);
  			}
  		}
 		game.draw();
 		//sc.onceLvl1 = true;
+		loadedScenes.push(sc.gameScene);
 		//check for change and call load scene.
 	}
 	else if(sc.gameState === "menu"){
@@ -184,19 +189,22 @@ SceneManager.prototype.gameLoop = function (){
 		sc.gameScene = temp[1];
 		if(sc.gameState ==="gameplay"){
 			game.reset();
-			//if(!sc.onceLvl1){
+			if(!contains(loadedScenes,"level1")){
 				sc.loadScene(sc.gameState,sc.gameScene);
-		//	}
+			}
+			if(!contains(loadedScenes,"tutorial")){
+				sc.loadScene(sc.gameState,sc.gameScene);
+			}
 		}
 		if(sc.gameScene==="levelSelect"){
 			//game.reset();
-			if(!sc.onceLvlSel){
+			if(!contains(loadedScenes,"levelSelect")){
 				sc.loadScene(sc.gameState,sc.gameScene);
-				sc.onceLvlSel = true;
+				loadedScenes.push(sc.gameScene);
 			}
 		}
 		menu.draw(sc.gameScene);
-		sc.onceTitle = true;
+		loadedScenes.push(sc.gameScene);
 	}
 	window.requestAnimFrame(sc.gameLoop);
 }
@@ -230,7 +238,16 @@ SceneManager.prototype.loadScene = function(state,scene){
 		}
 	}
 	else if(state === "gameplay"){
-		if(scene === "level1"){
+		if(scene === "tutorial"){
+			this.queueTutAssets();
+			assetManager.loadTutImages(function() {
+    			sc.setTutImages()
+			});
+			assetManager.loadTutSounds(function() {
+    			sc.setTutSounds()
+			});
+		}
+		else if(scene === "level1"){
 			this.queueLvl1Assets();
 			assetManager.loadLvl1Images(function() {
     			sc.setLvl1Images()
@@ -251,4 +268,14 @@ SceneManager.prototype.loadScene = function(state,scene){
 	sc.gameScene = scene;
 	console.log(Date.now()-timeSpent);
 	
+}
+
+
+function contains(a, obj) {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i] === obj) {
+            return true;
+        }
+    }
+    return false;
 }

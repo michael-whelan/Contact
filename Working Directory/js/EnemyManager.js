@@ -16,7 +16,7 @@ var EnemyManager=function (){
 
 
 EnemyManager.prototype.setSpawn = function(lvl){
-	if(lvl ===1){
+	if(lvl ==="level1"){
 		this.spawnPos1[0] = 100;
 		this.spawnPos1[1] = 500;
 
@@ -38,7 +38,6 @@ EnemyManager.prototype.reset = function(lvl){
 		this.enemy.pop();
 	};
 	this.setSpawn(lvl);
-
 	this.currentLvl = lvl;
 	this.enemySwarms = 0;
 	this.totalSwarms=0;
@@ -65,7 +64,7 @@ EnemyManager.prototype.hearShot = function(px,py){
 };
 
 EnemyManager.prototype.setUp = function(){
-	if(this.currentLvl == 1){
+	if(this.currentLvl === "level1"){
 		this.totalSwarms = 3;
 	}
 	this.enemySwarms = this.totalSwarms;

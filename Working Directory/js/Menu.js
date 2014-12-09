@@ -1,14 +1,17 @@
 var imgTitleScreen = new Image();
 var imgLvlSelBack = new Image();
 var imgLvlSel1 = new Image();
+var imgLvlSelTut = new Image();
 
 function Menu (){
 	this.play=false;
 	this.lvlSel = false;
+	this.tut = false;
 	this.scene;
 	this.scrollX = 0;
-	this.lvl1X = 0;
-
+	this.lvl1X = 1152;
+	this.lvlTutX=0;
+	this.allowScroll = false;
 }
 
 Menu.prototype.update = function() {
@@ -16,6 +19,11 @@ Menu.prototype.update = function() {
 		this.play=false;
 		this.lvlSel = false;
 		return ["gameplay","level1"];
+	}
+	else if (this.tut){
+		this.tut=false;
+		this.lvlSel = false;
+		return ["gameplay","tutorial"];
 	}
 	else if(this.lvlSel){
 		this.updateScroll();
@@ -36,22 +44,27 @@ Menu.prototype.mouseDown= function(e){
 		if(e.clientX >  this.lvl1X+300  && e.clientX <this.lvl1X+700&&e.clientY>300&&e.clientY<500){//770,190,955,375
 			this.play = true;
 		}
+		else if(e.clientX >  this.lvlTutX+300  && e.clientX <this.lvlTutX+700&&e.clientY>300&&e.clientY<500){//770,190,955,375
+			this.tut = true;
+		}
 		else if(e.clientX < 300){
 			//scroll left
-			this.scrollX = 0;
+			this.scrollX += 1152;
 		}	
 		else if(e.clientX > 700){
 			//scroll right
-			this.scrollX = 1152;
+			this.scrollX -=1152;
 		}
 	}
 }
 //end temp
 
 Menu.prototype.updateScroll = function(){
-	if(this.lvl1X < this.scrollX){
+	if(this.lvlTutX < this.scrollX){
+		this.lvlTutX+=10;
 		this.lvl1X+=10;
-	}else if(this.lvl1X > this.scrollX){
+	}else if(this.lvlTutX > this.scrollX){
+		this.lvlTutX-=10;
 		this.lvl1X-=10;
 	}
 }
@@ -91,5 +104,6 @@ Menu.prototype.draw = function(scene){
 	else if(scene === "levelSelect"){
 		ctx.drawImage(imgLvlSelBack, 0,0,1152,648);
 		ctx.drawImage(imgLvlSel1, this.lvl1X,0,1152,648);
+		ctx.drawImage(imgLvlSelTut,this.lvlTutX,0,1152,648);
 	}
 }

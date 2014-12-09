@@ -1,7 +1,7 @@
-var imgBack = new Image();
+
 //imgBack.src = "images/Back.png"
 
-var backTrack = new Audio();
+
 //backTrack.src = "sounds/music/Gameplay_Theme_Idea.mp3";
 
 var fsm;
@@ -10,6 +10,7 @@ var intersect = false,interX = 0,interY =0;
 var player;
 var enemy;
 var collisionManager;
+var lvlManager;
 var textManager;
 var enemyManager;
 var mapWidth;
@@ -40,6 +41,7 @@ function Game (){
 	sticks = [new Stick(inputSize), new Stick(inputSize)];
 	fsm = new FSM();
 	pickUp = new Pickup();
+	lvlManager = new LevelManager();
 	enemyManager = new EnemyManager();
 	collisionManager = new CollisionManager();
 	textManager = new TextManager();
@@ -48,10 +50,10 @@ function Game (){
 }
 
 
-Game.prototype.reset = function(){
+Game.prototype.reset = function(lvl){
 	player.reset();
 	pause = false;
-	enemyManager.reset(1);
+	enemyManager.reset(lvl);
 	//player.init();
 	textManager.init();
 	this.playBackgroundLoop();
@@ -133,13 +135,12 @@ function sqrt(x) {
     return s;
 }
 
-
-Game.prototype.update = function(){
+Game.prototype.update = function(lvl){
+	lvlManager.setLevel(lvl);
 	if(!pause){
 		for (var i = 0; i < sticks.length; ++i) {
 			sticks[i].update();
 		}
-
 		var stick = sticks[0];
 		var stick2 = sticks[1];
 		player.update(stick.normal.x,stick.normal.y,stick2.normal.x,stick2.normal.y,stick.active,stick2.active);
@@ -299,7 +300,8 @@ Game.prototype.draw =function (){
     player.bigY = clamp(player.y, -620+290, mapHeight - (canvas.height)-330);
     ctx.translate( camX, camY ); 
     //the numbers offset the background so that it centres with the map
-    ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
+  	lvlManager.draw();
+  	//ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
 	pickUp.draw();
 	player.draw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
