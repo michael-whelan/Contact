@@ -60,6 +60,7 @@ function Game (){
 
 Game.prototype.reset = function(lvl){
 	player.reset();
+	lvlManager.setLevel(lvl);
 	pause = false;
 	enemyManager.reset(lvl);
 	this.currentLvl = lvl;
@@ -88,16 +89,10 @@ Game.prototype.touchMove= function(e){
 
 Game.prototype.mouseDown= function(e){
 	console.log(e.clientX, e.clientY);
+	if(pause){
+		this.updateOverlay(e);
+	}
 
-	if(e.clientX> 475 && e.clientX < 540 && e.clientY >260&&e.clientY <320){
-		this.reset(this.currentLvl);
-	}
-	else if(e.clientX> 600 && e.clientX < 670 && e.clientY >260&&e.clientY <320){
-		this.goMenu = true;
-	}
-	else if(e.clientX> 725 && e.clientX < 800 && e.clientY >260&&e.clientY <320){
-		pause = false;
-	}
 }
 
 
@@ -166,22 +161,42 @@ function sqrt(x) {
     return s;
 }
 
-Game.prototype.updateOverlay = function(){
+Game.prototype.updateOverlay = function(e){
 	if(this.overlayType=== "pause"){
-		//if(){
-
-		//}
+		if(e.clientX> 475 && e.clientX < 540 && e.clientY >260&&e.clientY <320){
+			this.reset(this.currentLvl);
+		}
+		else if(e.clientX> 600 && e.clientX < 670 && e.clientY >260&&e.clientY <320){
+			this.goMenu = true;
+		}
+		else if(e.clientX> 725 && e.clientX < 800 && e.clientY >260&&e.clientY <320){
+			pause = false;
+		}
 	}
 	else if(this.overlayType === "win"){
-
+		if(e.clientX> 475 && e.clientX < 540 && e.clientY >260&&e.clientY <320){
+			this.reset(this.currentLvl);
+		}
+		else if(e.clientX> 600 && e.clientX < 670 && e.clientY >260&&e.clientY <320){
+			this.goMenu = true;
+		}
+		else if(e.clientX> 725 && e.clientX < 800 && e.clientY >260&&e.clientY <320){
+			//lvlManager.setLevel();
+			this.reset(lvlManager.getNextLevel());
+			
+		}	
 	}
 	else if(this.overlayType === "lose"){
-
+		if(e.clientX> 540 && e.clientX < 600 && e.clientY >260&&e.clientY <325){
+			this.reset(this.currentLvl);
+		}
+		else if(e.clientX> 680 && e.clientX < 744 && e.clientY >260&&e.clientY <320){
+			this.goMenu = true;
+		}
 	}
 }
 
 Game.prototype.update = function(lvl){
-	lvlManager.setLevel(lvl);
 	if(!pause){
 		this.overlayed = false;
 		for (var i = 0; i < sticks.length; ++i) {
@@ -346,10 +361,10 @@ Game.prototype.drawOverlay = function(){
 		ctx.drawImage(imgPauseMenu, -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
 	}
 	else if(this.overlayType=== "win"){
-		ctx.drawImage(imgPauseMenu, -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
+		ctx.drawImage(imgWinMenu, -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
 	}
 	else if(this.overlayType === "lose"){
-		ctx.drawImage(imgPauseMenu,  -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
+		ctx.drawImage(imgLoseMenu,  -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
 	}
 	this.overlayed = true;
 }

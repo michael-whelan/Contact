@@ -81,7 +81,7 @@ EnemyManager.prototype.update = function(){
 		this.swarmsSurvived++;
 	}
 	if(this.enemySwarms<=0){
-		//levelWin = true;
+		levelWin = true;
 	}
 	
 	for (var j = 0; j < this.enemy.length; ++j){

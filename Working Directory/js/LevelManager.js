@@ -15,6 +15,13 @@ LevelManager.prototype.setLevel = function(lvl){
 	this.currentLevel = lvl;
 }
 
+LevelManager.prototype.getNextLevel = function(){
+	if(this.currentLevel === "tutorial"){
+		return "level1";
+	}
+	return this.currentLevel;
+}
+
 LevelManager.prototype.draw = function() {
 	if(this.currentLevel ==="tutorial"){
 		ctx.drawImage(imgTutorialBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);

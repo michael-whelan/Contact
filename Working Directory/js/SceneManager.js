@@ -107,6 +107,8 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/Bullet.png");
 	assetManager.queueLoadImg("images/GoTo.png");
 	assetManager.queueLoadImg("images/pause_menu.png");
+	assetManager.queueLoadImg("images/win_menu.png");
+	assetManager.queueLoadImg("images/lose_menu.png");
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.mp3");
@@ -149,6 +151,8 @@ SceneManager.prototype.setGameImages = function(){
 	imgBullet = assetManager.getAsset("images/Bullet.png");
 	imgRadarPUp = assetManager.getAsset("images/GoTo.png");
 	imgPauseMenu = assetManager.getAsset("images/pause_menu.png");
+	imgWinMenu= assetManager.getAsset("images/win_menu.png");
+	imgLoseMenu= assetManager.getAsset("images/lose_menu.png");
 	loadedImages = true;
 }
 
