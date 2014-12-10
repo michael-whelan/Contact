@@ -80,7 +80,10 @@ EnemyManager.prototype.update = function(){
 		this.spawnTimer=0;
 		this.swarmsSurvived++;
 	}
-
+	if(this.enemySwarms<=0){
+		//levelWin = true;
+	}
+	
 	for (var j = 0; j < this.enemy.length; ++j){
 		this.enemy[j].update();
 	}
@@ -106,6 +109,7 @@ EnemyManager.prototype.kill = function(j){
 	if(tempRank === "cmdr"){
 		this.possibleFear();
 	}
+
 	var rand= Math.floor(Math.random()*(10-1) +1);
 	if(rand === 2){
 		return 1;

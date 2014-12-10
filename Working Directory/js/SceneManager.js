@@ -59,7 +59,12 @@ function resizeGame(){
 }
 
 function mouseDown(e){
-	menu.mouseDown(e);
+	if(sc.gameState ==="menu"){
+		menu.mouseDown(e);
+	}
+	else{
+		game.mouseDown(e);
+	}
 	//console.log(e.clientX,e.clientY);
 }
 
@@ -101,6 +106,7 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/character_05.png");
 	assetManager.queueLoadImg("images/Bullet.png");
 	assetManager.queueLoadImg("images/GoTo.png");
+	assetManager.queueLoadImg("images/pause_menu.png");
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.mp3");
@@ -142,6 +148,7 @@ SceneManager.prototype.setGameImages = function(){
 	imgViewRad = assetManager.getAsset("images/ViewRange.png");
 	imgBullet = assetManager.getAsset("images/Bullet.png");
 	imgRadarPUp = assetManager.getAsset("images/GoTo.png");
+	imgPauseMenu = assetManager.getAsset("images/pause_menu.png");
 	loadedImages = true;
 }
 
@@ -190,7 +197,7 @@ SceneManager.prototype.gameLoop = function (){
 		sc.gameState = temp[0];
 		sc.gameScene = temp[1];
 		if(sc.gameState ==="gameplay"){
-			game.reset();
+			game.reset(sc.gameScene);
 			if(!contains(loadedScenes,"level1")&&!contains(loadedScenes,"tutorial")){
 				sc.loadScene(sc.gameState,sc.gameScene);
 				sc.loadScene(sc.gameState,sc.gameScene);
@@ -211,7 +218,6 @@ SceneManager.prototype.gameLoop = function (){
 	}
 	window.requestAnimFrame(sc.gameLoop);
 }
-
 
 SceneManager.prototype.loadScene = function(state,scene){
 	loading = true;

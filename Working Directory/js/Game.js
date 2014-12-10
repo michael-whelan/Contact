@@ -1,7 +1,8 @@
 
 //imgBack.src = "images/Back.png"
-
-
+imgPauseMenu = new Image();
+imgWinMenu = new Image();
+imgLoseMenu = new Image();
 //backTrack.src = "sounds/music/Gameplay_Theme_Idea.mp3";
 
 var fsm;
@@ -11,10 +12,12 @@ var player;
 var enemy;
 var collisionManager;
 var lvlManager;
+var levelWin;
 var textManager;
 var enemyManager;
 var mapWidth;
 var mapHeight;
+var overlayType = "pause";
 //stick stuff
 var sticks;
 var limitSize = 36;
@@ -34,6 +37,7 @@ var pickUp;
 var pause= false;
 var debugDrawer = false;
 var timer =0;
+var pauseTimer;
 
 function Game (){
 	//assetManager = new AssetManager();
@@ -47,6 +51,10 @@ function Game (){
 	textManager = new TextManager();
 	mapWidth = 2000;
 	mapHeight = 1300;
+	this.currentLvl;
+	this.goMenu = false;
+	this.overlayed = false;
+	this.activeOverlay = "null";
 }
 
 
@@ -54,7 +62,10 @@ Game.prototype.reset = function(lvl){
 	player.reset();
 	pause = false;
 	enemyManager.reset(lvl);
+	this.currentLvl = lvl;
 	//player.init();
+	this.goMenu = false;
+	levelWin = false;
 	textManager.init();
 	this.playBackgroundLoop();
 	for (var i = 0; i < sticks.length; ++i) {
@@ -75,20 +86,39 @@ Game.prototype.touchMove= function(e){
 	}
 }
 
+Game.prototype.mouseDown= function(e){
+	console.log(e.clientX, e.clientY);
+
+	if(e.clientX> 475 && e.clientX < 540 && e.clientY >260&&e.clientY <320){
+		this.reset(this.currentLvl);
+	}
+	else if(e.clientX> 600 && e.clientX < 670 && e.clientY >260&&e.clientY <320){
+		this.goMenu = true;
+	}
+	else if(e.clientX> 725 && e.clientX < 800 && e.clientY >260&&e.clientY <320){
+		pause = false;
+	}
+}
+
 
 Game.prototype.touchStart = function(e){ 
 	//e.preventDefault();
 	for (var i = 0; i < e.touches.length; ++i) {
 			var touch = e.touches[i];
-			if(touch.pageX<canvas.width/2){
-				sticks[0].setLimitXY(touch.pageX, touch.pageY);
-				sticks[0].setInputXY(touch.pageX, touch.pageY);
-				sticks[0].active = true;
+			if(pause){
+				this.updateOverlay(overlayType,touch.pageX, touch.pageY);
 			}
 			else{
-				sticks[1].setLimitXY(touch.pageX, touch.pageY);
-				sticks[1].setInputXY(touch.pageX, touch.pageY);
-				sticks[1].active = true;	
+				if(touch.pageX<canvas.width/2){
+					sticks[0].setLimitXY(touch.pageX, touch.pageY);
+					sticks[0].setInputXY(touch.pageX, touch.pageY);
+					sticks[0].active = true;
+				}
+				else{
+					sticks[1].setLimitXY(touch.pageX, touch.pageY);
+					sticks[1].setInputXY(touch.pageX, touch.pageY);
+					sticks[1].active = true;	
+				}		
 			}
 		//	console.log(e.touches[0].pageX,e.touches[0].pageY);
 		}
@@ -131,13 +161,29 @@ function sqrt(x) {
     s=((x/2)+x/(x/2)) / 2; /*first guess*/
     for(i=1;i<=4;i++) { /*average of guesses*/
         s=(s+x/s)/2;
+        console.log("s,",s);
     }
     return s;
+}
+
+Game.prototype.updateOverlay = function(){
+	if(this.overlayType=== "pause"){
+		//if(){
+
+		//}
+	}
+	else if(this.overlayType === "win"){
+
+	}
+	else if(this.overlayType === "lose"){
+
+	}
 }
 
 Game.prototype.update = function(lvl){
 	lvlManager.setLevel(lvl);
 	if(!pause){
+		this.overlayed = false;
 		for (var i = 0; i < sticks.length; ++i) {
 			sticks[i].update();
 		}
@@ -152,6 +198,13 @@ Game.prototype.update = function(lvl){
 		
 		if(player.lives<=0){
 			pause = true;
+			//this.drawOverlay("lose");
+			this.overlayType = "lose";
+		}
+		if(levelWin){
+			pause = true;
+			this.overlayType = "win";
+			//this.drawOverlay("win");	
 		}
 
 		calculateFps(Date.now());
@@ -181,18 +234,30 @@ Game.prototype.update = function(lvl){
 		}
 	}//pause
 	else{
-		if(KeyController.isKeyDown(Key.N)){
+
+		/*if(KeyController.isKeyDown(Key.N)){
 			backTrack.pause();
 			backTrack.currentTime=0;
 			return "menu";
 		}
 		if(KeyController.isKeyDown(Key.Y)){
 			this.reset();
-		}
+		}*/
 	}	
 	if(KeyController.isKeyDown(Key.ESC)){
 		backTrack.pause();
 		backTrack.currentTime=0;
+		if(timer>20){
+			if(!pause){
+				pause = true;
+				timer=0;
+				this.overlayType = "pause";
+			}
+			else {pause=false;timer =0;this.overlayType = "null";}
+			//return "menu";
+		}
+	}
+	if(this.goMenu){
 		return "menu";
 	}
 	timer++;
@@ -208,12 +273,8 @@ Game.prototype.update = function(lvl){
 			}
 		}
 	}
-
-
 	return "gameplay";
 }
-
-
 	var fps = 0,
     lastFpsUpdateTime = 0,
     lastAnimationFrameTime = 0;
@@ -279,6 +340,20 @@ Game.prototype.radarDraw = function(){
     }
 }
 
+Game.prototype.drawOverlay = function(){
+	console.log("overlay type: ",this.overlayType);
+	if(this.overlayType === "pause"){
+		ctx.drawImage(imgPauseMenu, -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
+	}
+	else if(this.overlayType=== "win"){
+		ctx.drawImage(imgPauseMenu, -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
+	}
+	else if(this.overlayType === "lose"){
+		ctx.drawImage(imgPauseMenu,  -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
+	}
+	this.overlayed = true;
+}
+
 Game.prototype.draw =function (){
 	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative 
 
@@ -320,10 +395,14 @@ Game.prototype.draw =function (){
 	if(!pause){
 		textManager.controller();
 	}
-	else{
-		textManager.end(enemyManager.swarmsSurvived);	
+	else {
+		//textManager.end(enemyManager.swarmsSurvived);	
+		//ctx.drawImage(imgPauseMenu, -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
+		this.drawOverlay();
 	}
 }
+
+
 
 function clamp(value, min, max){//used to clamp the cam if the player gets near the edge of the world
     if(value < min){
