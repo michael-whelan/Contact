@@ -356,7 +356,7 @@ Game.prototype.radarDraw = function(){
 }
 
 Game.prototype.drawOverlay = function(){
-	console.log("overlay type: ",this.overlayType);
+	//console.log("overlay type: ",this.overlayType);
 	if(this.overlayType === "pause"){
 		ctx.drawImage(imgPauseMenu, -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
 	}

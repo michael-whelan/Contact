@@ -5,6 +5,7 @@ var AssetManager=function (){
     this.cache = {};
     this.successCount = 0;
     this.errorCount = 0;
+
 };
 
 AssetManager.prototype.queueLoadImg = function(path) {
@@ -232,7 +233,7 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
          //   console.log("i= "+i, "len = "+that.loadQueueSnd.length);
 
             that.successCount += 1;
-            console.log("success1: "+that.successCount);
+ //           console.log("success1: "+that.successCount);
             if (that.isDone(that.loadQueueSnd)) {
                 
                 that.successCount = 0;

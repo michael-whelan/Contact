@@ -120,6 +120,7 @@ SceneManager.prototype.queueGameAssets = function(){
 
 SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/menuLayout_01.png");
+	assetManager.queueLoadImg("images/back_arrow.png");
 }
 
 SceneManager.prototype.queueLvlSelectAssets = function(){
@@ -131,6 +132,7 @@ SceneManager.prototype.queueLvlSelectAssets = function(){
 
 SceneManager.prototype.setTitleImages = function(){
 	imgTitleScreen = assetManager.getAsset("images/menuLayout_01.png");
+	imgBackArrow = assetManager.getAsset("images/back_arrow.png");
 	loadedImages=true;
 }
 
@@ -203,7 +205,7 @@ SceneManager.prototype.gameLoop = function (){
 		if(sc.gameState ==="gameplay"){
 			game.reset(sc.gameScene);
 			if(!contains(loadedScenes,"level1")&&!contains(loadedScenes,"tutorial")){
-				sc.loadScene(sc.gameState,sc.gameScene);
+				//sc.loadScene(sc.gameState,sc.gameScene);
 				sc.loadScene(sc.gameState,sc.gameScene);
 			}
 			//if(!contains(loadedScenes,"tutorial")){
@@ -218,6 +220,7 @@ SceneManager.prototype.gameLoop = function (){
 			}
 		}
 		menu.draw(sc.gameScene);
+		console.log("current scene: "+ sc.gameScene);
 		loadedScenes.push(sc.gameScene);
 	}
 	window.requestAnimFrame(sc.gameLoop);
