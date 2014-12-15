@@ -408,7 +408,10 @@ Game.prototype.draw =function (){
 		sticks[i].draw();
 	}
 	if(!pause){
-		textManager.controller();
+		textManager.controller(this.currentLvl);
+		if(this.currentLvl === "tutorial"){
+			textManager.controlTutorial();
+		}
 	}
 	else {
 		//textManager.end(enemyManager.swarmsSurvived);	

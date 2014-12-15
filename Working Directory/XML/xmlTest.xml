@@ -1,1 +1,10 @@
-
+<xmlTest>
+<txtHealth>Health: </txtHealth>
+<txtAmmo>Ammo:</txtAmmo>
+<tutorialMsg1>Press the LEFT and RIGHT</tutorialMsg1>
+<tutorialMsg2>arrows to rotate</tutorialMsg2>
+<tutorialMsg3>Press the UP and DOWN</tutorialMsg3>
+<tutorialMsg4>arrows to move</tutorialMsg4>
+<tutorialMsg5>Press SPACE to shoot</tutorialMsg5>
+<tutorialMsg6>and the R key to reload</tutorialMsg6>
+</xmlTest>

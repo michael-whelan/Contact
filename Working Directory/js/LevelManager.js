@@ -15,6 +15,10 @@ LevelManager.prototype.setLevel = function(lvl){
 	this.currentLevel = lvl;
 }
 
+
+LevelManager.prototype.tutorialController = function(){
+}
+
 LevelManager.prototype.getNextLevel = function(){
 	if(this.currentLevel === "tutorial"){
 		return "level1";

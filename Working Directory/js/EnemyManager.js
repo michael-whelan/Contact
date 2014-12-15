@@ -80,7 +80,7 @@ EnemyManager.prototype.update = function(){
 		this.spawnTimer=0;
 		this.swarmsSurvived++;
 	}
-	if(this.enemySwarms<=0){
+	if(this.enemySwarms<=0 &&this.currentLvl !== "tutorial"){
 		levelWin = true;
 	}
 	

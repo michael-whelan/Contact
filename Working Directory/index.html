@@ -5,7 +5,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="apple-touch-icon" href="images/app-icon.png">
 <!--<script src="http://localhost:8080/target/target-script-min.js#windows"></script>-->
-
+<meta charset="UTF-8">
 <script src="./lib/util.js"></script>
 <script src="./lib/KeyController.js"></script>
 <script src="js/jquery.js"></script>
@@ -24,7 +24,7 @@
 <script src="js/AssetManager.js"></script>
 <script src="js/TextManager.js"></script>
 <script src="js/FSM.js"></script>
-<script src="XML/xmlTest.xml"></script>
+
 
 
 <link href='http://fonts.googleapis.com/css?family=Shadows+Into+Light|Dosis'>
@@ -51,8 +51,35 @@
 	</script>
 
 
+
 <!--This is where all of the game text can be written and pulled onto the gamescreen-->
 <noembed id="txtAmmo">Ammo: </noembed>
-<noembed id="txtHealth">Health: </noembed>
+<noembed id="txtHealth"></noembed>
+<noembed id="tutorialMsg1"></noembed>
+<noembed id="tutorialMsg2"></noembed>
+<noembed id="tutorialMsg3"></noembed>
+<noembed id="tutorialMsg4"></noembed>
+<noembed id="tutorialMsg5"></noembed>
+<noembed id="tutorialMsg6"></noembed>
+
+<script>
+	if(window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+xmlhttp.open("GET","xml/xmlTest.xml",false);
+xmlhttp.send();
+xmlDoc=xmlhttp.responseXML;
+document.getElementById("txtAmmo").innerHTML= xmlDoc.getElementsByTagName("txtAmmo")[0].childNodes[0].nodeValue;
+document.getElementById("txtHealth").innerHTML= xmlDoc.getElementsByTagName("txtHealth")[0].childNodes[0].nodeValue;
+document.getElementById("tutorialMsg1").innerHTML= xmlDoc.getElementsByTagName("tutorialMsg1")[0].childNodes[0].nodeValue;
+document.getElementById("tutorialMsg2").innerHTML= xmlDoc.getElementsByTagName("tutorialMsg2")[0].childNodes[0].nodeValue;
+document.getElementById("tutorialMsg3").innerHTML= xmlDoc.getElementsByTagName("tutorialMsg3")[0].childNodes[0].nodeValue;
+document.getElementById("tutorialMsg4").innerHTML= xmlDoc.getElementsByTagName("tutorialMsg4")[0].childNodes[0].nodeValue;
+document.getElementById("tutorialMsg5").innerHTML= xmlDoc.getElementsByTagName("tutorialMsg5")[0].childNodes[0].nodeValue;
+document.getElementById("tutorialMsg6").innerHTML= xmlDoc.getElementsByTagName("tutorialMsg6")[0].childNodes[0].nodeValue;
+</script>
 </body>
 </html>

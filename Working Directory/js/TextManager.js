@@ -6,6 +6,11 @@ var TextManager=function(){
     var strHealth;
     var iAmmo;
     this.lowestFps = 100;
+    this.level;
+    this.tutorialMsgNum = 0;
+
+    this.check1 = false;
+    this.check2 = false;
 };
 
 
@@ -27,7 +32,8 @@ TextManager.prototype.end = function(txt){
         ctx.strokeText("Swarms Survived: "+txt+". "+"Continue  Y/N", 300, 100);
 }
 
-TextManager.prototype.controller = function(){
+TextManager.prototype.controller = function(level){
+    this.level = level;
     if(player.numBullets>0){
         this.gameText();
     }
@@ -38,6 +44,7 @@ TextManager.prototype.controller = function(){
         //txtAmmo = txtAmmo + numBullets.toString();
         ctx.strokeText("R to Reload", 300, 100);
     }
+     ctx.font = '40px san-serif';
     ctx.strokeText(strHealth+ player.health.toString()+"%", 30, 50);
         ctx.strokeStyle = "#003300";
         ctx.font = '40px san-serif';
@@ -57,7 +64,68 @@ TextManager.prototype.gameText=function(){
     ctx.textBaseline = 'bottom';
     //txtAmmo = txtAmmo + numBullets.toString();
     ctx.strokeText(strAmmo+ player.numBullets.toString(), 300, 100);
-    
+
+    if(this.level === "tutorial"){
+        //this.controlTutorial();
+    }
+}
+
+
+TextManager.prototype.controlTutorial = function(player){
+    ctx.font = '25px san-serif';
+    if(this.tutorialMsgNum === 0){
+        ctx.strokeText(document.getElementById("tutorialMsg1").innerHTML, 200, 300);
+        ctx.strokeText(document.getElementById("tutorialMsg2").innerHTML, 200, 350);
+    }
+    else if(this.tutorialMsgNum === 1){
+        ctx.strokeText(document.getElementById("tutorialMsg3").innerHTML, 200, 300);
+        ctx.strokeText(document.getElementById("tutorialMsg4").innerHTML, 200, 350);
+    }
+    else if(this.tutorialMsgNum === 2){
+        ctx.strokeText(document.getElementById("tutorialMsg5").innerHTML, 200, 300);
+
+    }
+    else if(this.tutorialMsgNum === 3){
+        ctx.strokeText(document.getElementById("tutorialMsg6").innerHTML, 200, 300);
+    }
+
+    if(this.tutorialMsgNum===4){
+        levelWin = true;
+        this.check1 = false;this.check2 = false;
+        this.tutorialMsgNum =0;
+    }
+
+    if(this.tutorialMsgNum ===0){
+        if(KeyController.isKeyDown(Key.RIGHT)){
+            this.check1 = true;
+        }
+        else if(KeyController.isKeyDown(Key.LEFT)){
+            this.check2 = true;
+        }
+    }
+
+    else if(this.tutorialMsgNum ===1){
+        if(KeyController.isKeyDown(Key.UP)){
+            this.check1 = true;
+        }
+        else if(KeyController.isKeyDown(Key.DOWN)){
+            this.check2 = true;
+        }
+    }
+    else if(this.tutorialMsgNum ===2){
+        if(KeyController.isKeyDown(Key.SPACE)){
+            this.check1 = true; this.check2 = true;
+        }
+    }
+    else if(this.tutorialMsgNum ===3){
+        if(KeyController.isKeyDown(Key.R)){
+            this.check1 = true; this.check2 = true;
+        }
+    }
+    if(this.check1&& this.check2){
+        this.tutorialMsgNum++;
+        this.check1 = false;this.check2 = false;
+    }
 }
 
 // This represents the main game Title
