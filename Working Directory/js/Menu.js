@@ -5,6 +5,10 @@ var imgLvlSelTut = new Image();
 var imgBackArrow = new Image();
 var imgMultiplayerBack = new Image();
 var imgStashBack = new Image();
+var imgArmoryBack = new Image();
+var imgCustomBack = new Image();
+var imgExitPrompt = new Image();
+
 
 function Menu (){
 	this.returnVals = ["null","null"]; //[state,scene]
@@ -16,6 +20,7 @@ function Menu (){
     this.backY=15;
     this.backW = 50;
     this.backH=50;
+    this.drawExit = false;
 }
 
 Menu.prototype.update = function() {
@@ -26,32 +31,36 @@ Menu.prototype.update = function() {
 		this.updateScroll();
 	}
 	return this.returnVals;
-
 }
-
 
 //temp
 Menu.prototype.mouseDown= function(e){
 	if(this.scene=== "titleScreen"){
-		if(e.clientX >  860  && e.clientX <1075&&e.clientY>160&&e.clientY<315){//770,190,955,375
-			//this.lvlSel = true;
-			console.log("Play");
-			this.returnVals = ["menu","levelSelect"];
+		console.log(e.clientX ,e.clientY);
+		if(this.drawExit){
+			if(e.clientX >  350  && e.clientX <585&&e.clientY>330&&e.clientY<400){//770,190,955,375
+				console.log("Exit");
+			}
+			else if(e.clientX >  600  && e.clientX <825&&e.clientY>330&&e.clientY<400){//770,190,955,375
+				this.drawExit = false;
+			}
 		}
-		else if(e.clientX >  820  && e.clientX <1100&&e.clientY>350&&e.clientY<410){//770,190,955,375
-			//Multiplayer
-			console.log("Multiplayer");
-			this.returnVals = ["menu","multiplayer"];
-		}
-		else if(e.clientX >  820  && e.clientX <1100&&e.clientY>450&&e.clientY<510){//770,190,955,375
-			//Stash
-			console.log("Stash");
+		else {
+			if(e.clientX >  860  && e.clientX <1075&&e.clientY>160&&e.clientY<315){//770,190,955,375
+				this.returnVals = ["menu","levelSelect"];
+			}
+			else if(e.clientX >  820  && e.clientX <1100&&e.clientY>350&&e.clientY<410){//770,190,955,375
+				this.returnVals = ["menu","multiplayer"];
+			}
+			else if(e.clientX >  820  && e.clientX <1100&&e.clientY>450&&e.clientY<510){//770,190,955,375
 				this.returnVals = ["menu","stash"];
-		}
-		else if(e.clientX >  820  && e.clientX <1100&&e.clientY>550&&e.clientY<610){//770,190,955,375
-			//Exit
-			console.log("Exit");
-		}
+			}
+			else if(e.clientX >  820  && e.clientX <1100&&e.clientY>550&&e.clientY<610){//770,190,955,375
+				//Exit
+				console.log("Exit");
+				this.drawExit = true;
+			}
+	}
 	}
 	else if(this.scene=== "levelSelect"){
 		console.log(e.clientX ,e.clientY);
@@ -78,17 +87,30 @@ Menu.prototype.mouseDown= function(e){
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","titleScreen"];
 		}
-	}else if(this.scene ==="stash"){
+	}
+	else if(this.scene ==="stash"){
 		console.log(e.clientX ,e.clientY);
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","titleScreen"];
 		}
 		else if(e.clientX > 70  && e.clientX <580&&e.clientY>75&&e.clientY<630){
 			console.log("custom");
+			this.returnVals = ["menu","custom"];	
 
 		}
 		else if(e.clientX > 630  && e.clientX <1120&&e.clientY>75&&e.clientY<630){
 			console.log("upgrade");
+			this.returnVals = ["menu","armory"];
+		}
+	}
+	else if(this.scene === "armory"){
+		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
+			this.returnVals = ["menu","stash"];
+		}
+	}
+	else if(this.scene === "custom"){
+		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
+			this.returnVals = ["menu","stash"];
 		}
 	}
 }
@@ -135,6 +157,9 @@ Menu.prototype.draw = function(scene){
 	
 	if(scene ==="titleScreen"){
 		ctx.drawImage(imgTitleScreen, 0,0,1152,648);
+		if(this.drawExit){
+			ctx.drawImage(imgExitPrompt, 0,0,1152,648);
+		}
 	}
 	else if(scene === "levelSelect"){
 		ctx.drawImage(imgLvlSelBack, 0,0,1152,648);
@@ -146,6 +171,12 @@ Menu.prototype.draw = function(scene){
 	}
 	else if(scene ==="stash"){
 		ctx.drawImage(imgStashBack, 0,0,1152,648);
+	}
+	else if(scene ==="armory"){
+		ctx.drawImage(imgArmoryBack, 0,0,1152,648);
+	}
+	else if(scene ==="custom"){
+		ctx.drawImage(imgCustomBack, 0,0,1152,648);
 	}
 	if(scene !=="titleScreen"){
 		ctx.drawImage(imgBackArrow, this.backX,this.backY,this.backW,this.backH);

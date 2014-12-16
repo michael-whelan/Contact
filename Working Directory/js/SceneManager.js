@@ -123,6 +123,9 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/back_arrow.png");
 	assetManager.queueLoadImg("images/multiplayer_temp.png");
 	assetManager.queueLoadImg("images/stash_temp.png");
+	assetManager.queueLoadImg("images/choose_temp.png");
+	assetManager.queueLoadImg("images/armory_temp.png");
+	assetManager.queueLoadImg("images/exit_temp.png");
 }
 
 SceneManager.prototype.queueLvlSelectAssets = function(){
@@ -137,6 +140,9 @@ SceneManager.prototype.setTitleImages = function(){
 	imgBackArrow = assetManager.getAsset("images/back_arrow.png");
 	imgMultiplayerBack = assetManager.getAsset("images/multiplayer_temp.png");
 	imgStashBack = assetManager.getAsset("images/stash_temp.png");
+	imgCustomBack = assetManager.getAsset("images/choose_temp.png");
+	imgArmoryBack = assetManager.getAsset("images/armory_temp.png");
+	imgExitPrompt = assetManager.getAsset("images/exit_temp.png");
 	loadedImages=true;
 }
 
