@@ -70,20 +70,20 @@ function mouseDown(e){
 
 function touchStart(e){
 	//e.preventDefault(); 
-	if(this.gameState ==="menu"){
-		menu.touchStart(e);
+	if(sc.gameState ==="menu"){
+		//menu.touchStart(e);
 	}
-	else if(this.gameScene === "gameplay"){
+	else if(sc.gameState === "gameplay"){
 		game.touchStart(e);
 	}	
 	//
 }
 function touchMove(e){
 	e.preventDefault(); 
-	if(this.gameState ==="menu"){
+	if(sc.gameState ==="menu"){
 		menu.touchMove(e);
 	}
-	else if(this.gameScene === "gameplay"){
+	else if(sc.gameState === "gameplay"){
 		game.touchMove(e);
 	}	
 }
@@ -91,7 +91,7 @@ function touchEnd(e){
 	if(this.gameState ==="menu"){
 		menu.touchEnd(e);
 	}
-	else if(this.gameScene === "gameplay"){
+	else if(sc.gameState === "gameplay"){
 		game.touchEnd(e);
 	}	
 }
@@ -107,6 +107,8 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/Bullet.png");
 	assetManager.queueLoadImg("images/GoTo.png");
 	assetManager.queueLoadImg("images/pause_menu.png");
+	assetManager.queueLoadImg("images/pause_button.png");
+	assetManager.queueLoadImg("images/reload_button.png");
 	assetManager.queueLoadImg("images/win_menu.png");
 	assetManager.queueLoadImg("images/lose_menu.png");
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
@@ -165,6 +167,8 @@ SceneManager.prototype.setGameImages = function(){
 	imgPauseMenu = assetManager.getAsset("images/pause_menu.png");
 	imgWinMenu= assetManager.getAsset("images/win_menu.png");
 	imgLoseMenu= assetManager.getAsset("images/lose_menu.png");
+	imgPauseBtn = assetManager.getAsset("images/pause_button.png");
+	imgReloadBtn = assetManager.getAsset("images/reload_button.png");
 	loadedImages = true;
 }
 
@@ -199,6 +203,7 @@ SceneManager.prototype.gameLoop = function (){
  		sc.gameState = game.update(sc.gameScene);
  		if(sc.gameState === "menu"){
  			sc.gameScene = "titleScreen";
+ 			menu.reset();
  			if(!contains(loadedScenes,"titleScreen")){
  				sc.loadScene(sc.gameState,sc.gameScene);
  			}

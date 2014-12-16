@@ -23,6 +23,15 @@ function Menu (){
     this.drawExit = false;
 }
 
+Menu.prototype.reset = function() {
+	this.returnVals = ["null","null"]; //[state,scene]
+	this.scene;
+	this.scrollX = 0;
+	this.lvl1X = 1152;
+	this.lvlTutX=0;
+    this.drawExit = false;
+}
+
 Menu.prototype.update = function() {
 	if(this.returnVals[0] === "null"){
 		return ["menu","titleScreen"];
@@ -30,7 +39,9 @@ Menu.prototype.update = function() {
 	if(this.returnVals[1] === "levelSelect"){
 		this.updateScroll();
 	}
-	return this.returnVals;
+	var temp = this.returnVals;
+	//this.returnVals = ["null","null"];
+	return temp;
 }
 
 //temp
@@ -123,6 +134,10 @@ Menu.prototype.updateScroll = function(){
 	}else if(this.lvlTutX > this.scrollX){
 		this.lvlTutX-=10;
 		this.lvl1X-=10;
+	}
+	if(this.lvlTutX<this.scrollX+8 &&this.lvlTutX>this.scrollX-8){
+		this.lvlTutX=this.scrollX;
+		//this.lvl1X-=10;
 	}
 }
 

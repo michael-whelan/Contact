@@ -55,6 +55,9 @@ function Game (){
 	this.goMenu = false;
 	this.overlayed = false;
 	this.activeOverlay = "null";
+	this.btnScale = 50;
+	this.pauseX = 1050;
+	this.pauseY = 50;
 }
 
 
@@ -92,7 +95,6 @@ Game.prototype.mouseDown= function(e){
 	if(pause){
 		this.updateOverlay(e);
 	}
-
 }
 
 
@@ -103,7 +105,7 @@ Game.prototype.touchStart = function(e){
 			if(pause){
 				this.updateOverlay(overlayType,touch.pageX, touch.pageY);
 			}
-			else{
+			else if(touch.pageY>canvas.height/2){
 				if(touch.pageX<canvas.width/2){
 					sticks[0].setLimitXY(touch.pageX, touch.pageY);
 					sticks[0].setInputXY(touch.pageX, touch.pageY);
@@ -115,12 +117,18 @@ Game.prototype.touchStart = function(e){
 					sticks[1].active = true;	
 				}		
 			}
-		//	console.log(e.touches[0].pageX,e.touches[0].pageY);
+			else {
+				this.updateGUI(touch.pageX, touch.pageY);
+			}
+			console.log(e.touches[0].pageX,e.touches[0].pageY);
 		}
 }
 
 Game.prototype.touchEnd = function(e){ 
 	var touches = e.changedTouches;
+	for (var i = 0; i < e.changedTouches.length; ++i){
+		e.changedTouches[i];
+	}
 	for (var i = 0; i < touches.length; ++i) {
 		sticks[0].active=false;
 		sticks[1].active=false;
@@ -168,6 +176,7 @@ Game.prototype.updateOverlay = function(e){
 		}
 		else if(e.clientX> 600 && e.clientX < 670 && e.clientY >260&&e.clientY <320){
 			this.goMenu = true;
+			console.log("go to menu");
 		}
 		else if(e.clientX> 725 && e.clientX < 800 && e.clientY >260&&e.clientY <320){
 			pause = false;
@@ -195,6 +204,20 @@ Game.prototype.updateOverlay = function(e){
 		}
 	}
 }
+
+Game.prototype.updateGUI = function(tX,tY){
+	if(tX< this.pauseX+this.btnScale && tX > this.pauseX &&
+		tY> this.pauseY && tY < this.pauseY+this.btnScale){
+		pause = true;
+		this.overlayType = "pause";
+	}
+	else if(tX> 1100&& tX < 1100 + this.btnScale &&
+		tY > 250 && tY < 250 + this.btnScale){
+		player.startReload = true;
+	}
+	//1106.699951171875 252.48899841308594 
+}
+
 
 Game.prototype.update = function(lvl){
 	if(!pause){
@@ -369,6 +392,11 @@ Game.prototype.drawOverlay = function(){
 	this.overlayed = true;
 }
 
+Game.prototype.drawBtns = function(){
+	ctx.drawImage(imgPauseBtn,this.pauseX, this.pauseY, this.btnScale, this.btnScale);
+	ctx.drawImage(imgReloadBtn,1100, 250, this.btnScale, this.btnScale);
+}
+
 Game.prototype.draw =function (){
 	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative 
 
@@ -408,6 +436,7 @@ Game.prototype.draw =function (){
 		sticks[i].draw();
 	}
 	if(!pause){
+		this.drawBtns();
 		textManager.controller(this.currentLvl);
 		if(this.currentLvl === "tutorial"){
 			textManager.controlTutorial();
