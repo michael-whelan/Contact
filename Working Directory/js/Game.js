@@ -107,14 +107,20 @@ Game.prototype.touchStart = function(e){
 			}
 			else if(touch.pageY>canvas.height/2){
 				if(touch.pageX<canvas.width/2){
-					sticks[0].setLimitXY(touch.pageX, touch.pageY);
-					sticks[0].setInputXY(touch.pageX, touch.pageY);
-					sticks[0].active = true;
+					if(sticks[0].active != true)
+					{
+						sticks[0].setLimitXY(touch.pageX, touch.pageY);
+						sticks[0].setInputXY(touch.pageX, touch.pageY);
+						sticks[0].active = true;
+					}
 				}
 				else{
-					sticks[1].setLimitXY(touch.pageX, touch.pageY);
-					sticks[1].setInputXY(touch.pageX, touch.pageY);
-					sticks[1].active = true;	
+					if(sticks[1].active != true)
+					{
+						sticks[1].setLimitXY(touch.pageX, touch.pageY);
+						sticks[1].setInputXY(touch.pageX, touch.pageY);
+						sticks[1].active = true;	
+					}
 				}		
 			}
 			else {
@@ -125,13 +131,33 @@ Game.prototype.touchStart = function(e){
 }
 
 Game.prototype.touchEnd = function(e){ 
-	var touches = e.changedTouches;
-	for (var i = 0; i < e.changedTouches.length; ++i){
-		e.changedTouches[i];
+	
+	if(this.currentLvl === "tutorial"){
+		if(sticks[1].active){
+			textManager.upTutorial(0);
+		}
+		if(sticks[0].active){
+			textManager.upTutorial(1);
+		}
 	}
-	for (var i = 0; i < touches.length; ++i) {
-		sticks[0].active=false;
-		sticks[1].active=false;
+
+	var touches = e.changedTouches;
+	for(var i = 0; i < touches.length; ++i) {
+		var touch = touches[i];
+		if(touch.pageX<canvas.width/2)
+		{
+			//sticks[0].setLimitXY(touch.pageX, touch.pageY);
+			//sticks[0].setInputXY(touch.pageX, touch.pageY);
+			sticks[0].active = false;
+		}
+		else
+		{
+			//sticks[1].setLimitXY(touch.pageX, touch.pageY);
+			//sticks[1].setInputXY(touch.pageX, touch.pageY);
+			sticks[1].active = false;	
+		}		
+			//sticks[i].active=false;
+			//sticks[1].active=false;
 	}
 }
 
@@ -214,6 +240,9 @@ Game.prototype.updateGUI = function(tX,tY){
 	else if(tX> 1100&& tX < 1100 + this.btnScale &&
 		tY > 250 && tY < 250 + this.btnScale){
 		player.startReload = true;
+		if(this.currentLvl === "tutorial"){
+			textManager.upTutorial(2);
+		}
 	}
 	//1106.699951171875 252.48899841308594 
 }
@@ -332,17 +361,17 @@ function calculateFps(now) {
 
 
 Game.prototype.enemyToPlayerLine = function(j){
-		if((lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-			innerX1,innerY1,innerX2,innerY1,j))||
-			(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-			innerX2,innerY1,innerX2,innerY2,j))||
-			(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-			innerX2,innerY2,innerX1,innerY2,j))||
-			(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-			innerX1,innerY2,innerX1,innerY1,j))){
-			return true;
-		}
-		return false;
+	if((lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
+		innerX1,innerY1,innerX2,innerY1,j))||
+		(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
+		innerX2,innerY1,innerX2,innerY2,j))||
+		(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
+		innerX2,innerY2,innerX1,innerY2,j))||
+		(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
+		innerX1,innerY2,innerX1,innerY1,j))){
+		return true;
+	}
+	return false;
 }
 
 

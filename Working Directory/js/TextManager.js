@@ -70,6 +70,12 @@ TextManager.prototype.gameText=function(){
     }
 }
 
+TextManager.prototype.upTutorial = function(n){
+    if(this.tutorialMsgNum ===n){
+        this.tutorialMsgNum = n+1;
+    }
+}
+
 
 TextManager.prototype.controlTutorial = function(player){
     ctx.font = '25px san-serif';
@@ -85,17 +91,13 @@ TextManager.prototype.controlTutorial = function(player){
         ctx.strokeText(document.getElementById("tutorialMsg5").innerHTML, 200, 300);
 
     }
-    else if(this.tutorialMsgNum === 3){
-        ctx.strokeText(document.getElementById("tutorialMsg6").innerHTML, 200, 300);
-    }
-
-    if(this.tutorialMsgNum===4){
+    if(this.tutorialMsgNum===3){
         levelWin = true;
         this.check1 = false;this.check2 = false;
         this.tutorialMsgNum =0;
     }
 
-    if(this.tutorialMsgNum ===0){
+   /* if(this.tutorialMsgNum ===0){
         if(KeyController.isKeyDown(Key.RIGHT)){
             this.check1 = true;
         }
@@ -125,7 +127,7 @@ TextManager.prototype.controlTutorial = function(player){
     if(this.check1&& this.check2){
         this.tutorialMsgNum++;
         this.check1 = false;this.check2 = false;
-    }
+    }*/
 }
 
 // This represents the main game Title
