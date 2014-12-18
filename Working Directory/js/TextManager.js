@@ -1,3 +1,5 @@
+var imgHighlight = new Image();
+
 var TextManager=function(){
 	//put each piece of text here. rename all you want it will need to be mentioned in the index too.
 	var strAmmo;
@@ -8,12 +10,9 @@ var TextManager=function(){
     this.lowestFps = 100;
     this.level;
     this.tutorialMsgNum = 0;
-
     this.check1 = false;
     this.check2 = false;
 };
-
-
 
 TextManager.prototype.init = function(){
 	strAmmo = document.getElementById("txtAmmo").innerHTML;
@@ -82,13 +81,16 @@ TextManager.prototype.controlTutorial = function(player){
     if(this.tutorialMsgNum === 0){
         ctx.strokeText(document.getElementById("tutorialMsg1").innerHTML, 200, 300);
         ctx.strokeText(document.getElementById("tutorialMsg2").innerHTML, 200, 350);
+        ctx.drawImage(imgHighlight, canvas.width/2,canvas.height/2,canvas.width/2,canvas.height/2);
     }
     else if(this.tutorialMsgNum === 1){
         ctx.strokeText(document.getElementById("tutorialMsg3").innerHTML, 200, 300);
         ctx.strokeText(document.getElementById("tutorialMsg4").innerHTML, 200, 350);
+        ctx.drawImage(imgHighlight, 0, canvas.height/2, canvas.width/2, canvas.height/2);
     }
     else if(this.tutorialMsgNum === 2){
         ctx.strokeText(document.getElementById("tutorialMsg5").innerHTML, 200, 300);
+        ctx.drawImage(imgHighlight,1075, 225, 100, 100);
 
     }
     if(this.tutorialMsgNum===3){

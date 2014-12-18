@@ -51,6 +51,7 @@ Menu.prototype.mouseDown= function(e){
 		if(this.drawExit){
 			if(e.clientX >  350  && e.clientX <585&&e.clientY>330&&e.clientY<400){//770,190,955,375
 				console.log("Exit");
+				window.close();
 			}
 			else if(e.clientX >  600  && e.clientX <825&&e.clientY>330&&e.clientY<400){//770,190,955,375
 				this.drawExit = false;

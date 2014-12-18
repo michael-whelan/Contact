@@ -109,6 +109,7 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/pause_menu.png");
 	assetManager.queueLoadImg("images/pause_button.png");
 	assetManager.queueLoadImg("images/reload_button.png");
+	assetManager.queueLoadImg("images/highlight.png");
 	assetManager.queueLoadImg("images/win_menu.png");
 	assetManager.queueLoadImg("images/lose_menu.png");
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
@@ -163,6 +164,7 @@ SceneManager.prototype.setGameImages = function(){
 	imgComdr = assetManager.getAsset("images/Enemy_Commander.png");
 	imgViewRad = assetManager.getAsset("images/ViewRange.png");
 	imgBullet = assetManager.getAsset("images/Bullet.png");
+	imgHighlight = assetManager.getAsset("images/highlight.png");
 	imgRadarPUp = assetManager.getAsset("images/GoTo.png");
 	imgPauseMenu = assetManager.getAsset("images/pause_menu.png");
 	imgWinMenu= assetManager.getAsset("images/win_menu.png");
@@ -190,6 +192,7 @@ SceneManager.prototype.gameLoop = function (){
    	var GAME_RUNNING=0;
    	//this.update();
 	if(loadedSounds &&loadedImages){
+			console.log("Load Time ",Date.now()-timeSpent);
    			loading = false;
    			loadedImages = false;
    			loadedSounds =false;
@@ -295,10 +298,7 @@ SceneManager.prototype.loadScene = function(state,scene){
 	}
 	sc.gameState = state;
 	sc.gameScene = scene;
-	console.log(Date.now()-timeSpent);
-	
 }
-
 
 function contains(a, obj) {
     for (var i = 0; i < a.length; i++) {

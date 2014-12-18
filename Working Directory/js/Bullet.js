@@ -3,6 +3,7 @@ var imgBullet= new Image();
 
 
 var gunshot = new Audio();
+gunshot.play();
 //gunshot.src = "sounds/sfx/Gun_Pew.mp3";
 
 var Bullet=function ()

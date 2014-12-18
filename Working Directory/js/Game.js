@@ -62,15 +62,18 @@ function Game (){
 
 
 Game.prototype.reset = function(lvl){
+	
 	player.reset();
 	lvlManager.setLevel(lvl);
 	pause = false;
 	enemyManager.reset(lvl);
 	this.currentLvl = lvl;
+	textManager.tutorialMsgNum =0;
 	//player.init();
 	this.goMenu = false;
 	levelWin = false;
 	textManager.init();
+	//lvlManager.mapSetup();
 	this.playBackgroundLoop();
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].active = false;
@@ -91,7 +94,7 @@ Game.prototype.touchMove= function(e){
 }
 
 Game.prototype.mouseDown= function(e){
-	console.log(e.clientX, e.clientY);
+	//console.log(e.clientX, e.clientY);
 	if(pause){
 		this.updateOverlay(e);
 	}
@@ -126,7 +129,7 @@ Game.prototype.touchStart = function(e){
 			else {
 				this.updateGUI(touch.pageX, touch.pageY);
 			}
-			console.log(e.touches[0].pageX,e.touches[0].pageY);
+			//console.log(e.touches[0].pageX,e.touches[0].pageY);
 		}
 }
 
@@ -190,7 +193,7 @@ function sqrt(x) {
     s=((x/2)+x/(x/2)) / 2; /*first guess*/
     for(i=1;i<=4;i++) { /*average of guesses*/
         s=(s+x/s)/2;
-        console.log("s,",s);
+      //console.log("s,",s);
     }
     return s;
 }
@@ -275,7 +278,7 @@ Game.prototype.update = function(lvl){
 		}
 
 		calculateFps(Date.now());
-
+		//this.updateAnalogSticks();
 		if (stick.active && (stick.length > threshold)) {
 			point.x += (
 				(stick.length * stick.normal.x)
@@ -325,6 +328,8 @@ Game.prototype.update = function(lvl){
 		}
 	}
 	if(this.goMenu){
+		backTrack.pause();
+		backTrack.currentTime=0;
 		return "menu";
 	}
 	timer++;

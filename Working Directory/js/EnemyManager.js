@@ -65,7 +65,7 @@ EnemyManager.prototype.hearShot = function(px,py){
 
 EnemyManager.prototype.setUp = function(){
 	if(this.currentLvl === "level1"){
-		this.totalSwarms = 3;
+		this.totalSwarms = 30;
 	}
 	this.enemySwarms = this.totalSwarms;
 }
@@ -119,11 +119,11 @@ EnemyManager.prototype.kill = function(j){
 
 EnemyManager.prototype.possibleFear = function(){
 	var rand= Math.floor(Math.random()*(5-1) +1);
-	console.log(rand);
+	//console.log(rand);
 	if(rand === 1){
 		for (var i = 0; i < this.enemy.length; i++) {
 			this.enemy[i].state = fsm.stateControl(this.enemy[i].state,"getScared");
-			console.log(this.enemy[i].state);
+		//	console.log(this.enemy[i].state);
 		};
 	}
 }
