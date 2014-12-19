@@ -19,7 +19,7 @@ var FSM=function (){
 FSM.prototype.stateControl = function(currState, evt){
 	//console.log(currState,evt);
 	if(currState === "wander"){//the idle function
-		if(evt === "hearShot"){//interrupted by shot taken 
+		if(evt === "hearShot" || evt === "positionOrder"){//interrupted by shot taken 
 			return "moveToPos";//tells the entity to change states to the appropriate
 		}
 		else if(evt === "seeTarget"){//if the player is sighted

@@ -71,11 +71,11 @@ EnemyManager.prototype.setUp = function(){
 }
 
 
-EnemyManager.prototype.update = function(){
+EnemyManager.prototype.update = function(lvlMan){
 	this.spawnTimer++;
 	//controls the number of swarms and the size of each and when they are spawned.
 	if(this.spawnTimer> 150 && this.enemySwarms>0&&this.enemy.length === 0){
-		this.spawnSwarm(5,5);
+		this.spawnSwarm(5,5,lvlMan);
 		this.enemySwarms--;
 		this.spawnTimer=0;
 		this.swarmsSurvived++;
@@ -86,6 +86,11 @@ EnemyManager.prototype.update = function(){
 	
 	for (var j = 0; j < this.enemy.length; ++j){
 		this.enemy[j].update();
+
+		/*if(this.enemy[j].currentGridR != this.gridToSearchR || this.enemy[j].currentGridC != this.gridToSearchC){
+			this.enemy[j].state = fsm.stateControl(this.enemy[j].state,"positionOrder");
+			this.enemy[j].targetPos((this.gridToSearchC*1000)+(1000/2),(this.gridToSearchR*650)+(650/2));
+		}*/
 	}
 }
 
@@ -99,6 +104,19 @@ EnemyManager.prototype.moveControl = function(j,b,px,py){
 			this.enemy[j].state = fsm.stateControl(this.enemy[j].state,0);
 		}
 }
+/*
+EnemyManager.prototype.setGrid = function(){
+	for (var j = 0; j < this.enemy.length; ++j){
+		if(this.enemy[j].rank ==="cmdr"){
+			this.gridToSearchC = lvlMan.getGridPos(this.enemy[j].x,this.enemy[j].y)[0];
+			this.gridToSearchR = lvlMan.getGridPos(this.enemy[j].x,this.enemy[j].y)[1];
+		}
+	}
+	for (var j = 0; j < this.enemy.length; ++j){
+		this.enemy[j].currentGridC =  lvlMan.getGridPos(this.enemy[j].x,this.enemy[j].y)[0];
+		this.enemy[j].gridToSearchR = lvlMan.getGridPos(this.enemy[j].x,this.enemy[j].y)[1];
+	}
+}*/
 
 EnemyManager.prototype.kill = function(j){
 	this.enemy[j].alive = false;
@@ -128,7 +146,7 @@ EnemyManager.prototype.possibleFear = function(){
 	}
 }
 
-EnemyManager.prototype.spawnSwarm = function(min,max){
+EnemyManager.prototype.spawnSwarm = function(min,max,lvlMan){
 	//spawns a group of enemies.
 	var rand = Math.floor(Math.random()*(5-0) +0);
 	var numEnemiesNeeded = Math.floor(Math.random()*(max-min) +min);
@@ -152,6 +170,7 @@ EnemyManager.prototype.spawnSwarm = function(min,max){
 		}
 		this.enemy.push(enemySingle);
 	}
+//	this.setGrid(lvlMan);
 }
 
 

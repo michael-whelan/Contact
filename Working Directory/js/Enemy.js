@@ -22,7 +22,9 @@ var Enemy=function (rank){
 	//AI States
 	this.state = "wander";
 	this.drawLast = false;
-
+	
+	this.currentGridR = 0;
+	this.currentGridC = 0;
 	//bullets and crap
 	this.bullets = [];
 	this.reset();
@@ -53,6 +55,7 @@ Enemy.prototype.spawnEnemy = function(x,y){
 	this.x =x;
 	this.y = y;
 }
+
 
 Enemy.prototype.targetPos = function(px,py){
 	this.targetPosX = px;

@@ -77,6 +77,7 @@ TextManager.prototype.upTutorial = function(n){
 
 
 TextManager.prototype.controlTutorial = function(player){
+    ctx.strokeStyle = "#0041a0";
     ctx.font = '25px san-serif';
     if(this.tutorialMsgNum === 0){
         ctx.strokeText(document.getElementById("tutorialMsg1").innerHTML, 200, 300);
