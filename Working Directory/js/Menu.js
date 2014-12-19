@@ -72,7 +72,7 @@ Menu.prototype.mouseDown= function(e){
 				console.log("Exit");
 				this.drawExit = true;
 			}
-	}
+		}
 	}
 	else if(this.scene=== "levelSelect"){
 		console.log(e.clientX ,e.clientY);
@@ -165,6 +165,7 @@ Menu.prototype.touchEnd = function(e){
 
 	}
 }
+
 Menu.prototype.draw = function(scene){
 	this.scene = scene;
 	//wipes the screen at the start of each draw frame;

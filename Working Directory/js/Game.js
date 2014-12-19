@@ -62,7 +62,6 @@ function Game (){
 
 
 Game.prototype.reset = function(lvl){
-	
 	player.reset();
 	lvlManager.setLevel(lvl);
 	pause = false;
@@ -73,7 +72,7 @@ Game.prototype.reset = function(lvl){
 	this.goMenu = false;
 	levelWin = false;
 	textManager.init();
-	//lvlManager.mapSetup();
+	lvlManager.mapSetup();
 	this.playBackgroundLoop();
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].active = false;
@@ -127,6 +126,7 @@ Game.prototype.touchStart = function(e){
 				}		
 			}
 			else {
+				//console.log("grid pos: ",lvlManager.getGridPos(player.x,player.y));
 				this.updateGUI(touch.pageX, touch.pageY);
 			}
 			//console.log(e.touches[0].pageX,e.touches[0].pageY);
@@ -147,20 +147,12 @@ Game.prototype.touchEnd = function(e){
 	var touches = e.changedTouches;
 	for(var i = 0; i < touches.length; ++i) {
 		var touch = touches[i];
-		if(touch.pageX<canvas.width/2)
-		{
-			//sticks[0].setLimitXY(touch.pageX, touch.pageY);
-			//sticks[0].setInputXY(touch.pageX, touch.pageY);
+		if(touch.pageX<canvas.width/2){
 			sticks[0].active = false;
 		}
-		else
-		{
-			//sticks[1].setLimitXY(touch.pageX, touch.pageY);
-			//sticks[1].setInputXY(touch.pageX, touch.pageY);
+		else{
 			sticks[1].active = false;	
 		}		
-			//sticks[i].active=false;
-			//sticks[1].active=false;
 	}
 }
 
@@ -205,7 +197,7 @@ Game.prototype.updateOverlay = function(e){
 		}
 		else if(e.clientX> 600 && e.clientX < 670 && e.clientY >260&&e.clientY <320){
 			this.goMenu = true;
-			console.log("go to menu");
+			//console.log("go to menu");
 		}
 		else if(e.clientX> 725 && e.clientX < 800 && e.clientY >260&&e.clientY <320){
 			pause = false;
@@ -268,13 +260,11 @@ Game.prototype.update = function(lvl){
 		
 		if(player.lives<=0){
 			pause = true;
-			//this.drawOverlay("lose");
 			this.overlayType = "lose";
 		}
 		if(levelWin){
 			pause = true;
-			this.overlayType = "win";
-			//this.drawOverlay("win");	
+			this.overlayType = "win";	
 		}
 
 		calculateFps(Date.now());
@@ -333,6 +323,7 @@ Game.prototype.update = function(lvl){
 		return "menu";
 	}
 	timer++;
+
 	if(KeyController.isKeyDown(Key.ENTER)){
 		if(timer>20){	
 			if(debugDrawer){
