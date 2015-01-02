@@ -44,10 +44,19 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player){
 		for(var i = 0; i < enemyManager.enemy[j].bullets.length; ++i){
 			if(collisionManager.circleOnCircle(enemyManager.enemy[j].bullets[i].radius,enemyManager.enemy[j].bullets[i].x,
 				enemyManager.enemy[j].bullets[i].y,player.radius,player.x,player.y) && player.flash === false){
-				player.health-=1;
+				//player.health-=1;
 				loseHealthSnd.play();
 				player.lastHitTime = Date.now();
 				enemyManager.enemy[j].bullets[i].kill();
+			}
+		}
+		if(collisionManager.circleOnCircle(player.aimAssistRadius,player.x,player.y,enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y)){
+			player.allowAimAssist = true;
+			var tempArray = [enemyManager.enemy[j].x,enemyManager.enemy[j].y];
+			player.assistPositions.splice(0,5);
+			player.assistPositions.push(tempArray);
+			if(player.assistPositions.length>enemyManager.enemy.length){
+				player.assistPositions.splice(0,1);
 			}
 		}
 	}

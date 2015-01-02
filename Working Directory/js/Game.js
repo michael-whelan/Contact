@@ -256,6 +256,7 @@ Game.prototype.update = function(lvl){
 			player.pointToEnemy(enemyManager.enemy[j].x,enemyManager.enemy[j].y);
 		}
 		enemyManager.update();
+		player.allowAimAssist = false;
 		collisionManager.collisionCall(enemyManager,player);
 		
 		if(player.lives<=0){
@@ -381,10 +382,12 @@ Game.prototype.debugDraw = function(){
 	ctx.stroke();
 
 	enemyManager.debugDraw();
+	player.debugDraw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
 		ctx.beginPath();
 		ctx.moveTo(player.x,player.y);
 		ctx.lineTo(enemyManager.enemy[i].x,enemyManager.enemy[i].y);
+		console.log(player.getAngle(player.x,enemyManager.enemy[i].x,player.y,enemyManager.enemy[i].y));
 		ctx.stroke();
 
 		enemyManager.enemy[i].debugDraw();

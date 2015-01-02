@@ -27,12 +27,17 @@ var Player=function (){
 	this.healDelay =15;
 	this.bigX=0;
 	this.bigY = 0;
-
+	this.aimAssistRadius = 400;
+	this.allowAimAssist = false;
+	this.assistPositions = [];
 	this.reset();
 
 
 	//pickup Bools
 	this.radar = false;
+
+//triangle variables
+	this.aX=0,this.aY=0,this.bX=0,this.bY=0,this.cX=0,this.cY=0;
 
 };
 
@@ -60,7 +65,7 @@ Player.prototype.reset = function(){
 	this.alive = true;
 	this.angle = 2.87;
 	
-		//temp
+	//temp
 	this.lives=3;
 
 	this.xFacing = 0;
@@ -76,6 +81,33 @@ Player.prototype.reset = function(){
 	this.flash = false; this.flashTimer=0;//makes the player flash on respawn;
 	this.healthTimer = 0;
 }
+
+Player.prototype.setAssistPostitions = function(){
+	for (var i = 0; i<this.assistPositions.length; ++i){
+		console.log(this.assistPositions[i]);
+	}
+}
+
+Player.prototype.aimAssist = function(){
+	for (var i = 0; i<this.assistPositions.length; ++i){
+		
+		/*if(this.angle > this.getAngle(this.assistPositions[i][0],this.x,this.assistPositions[i][1],this.y)-0.6 && 
+			this.angle < this.getAngle(this.assistPositions[i][0],this.x,this.assistPositions[i][1],this.y)+0.6){
+			console.log("assist: "+ this.angle+" "+this.getAngle(this.assistPositions[i][0],this.x,this.assistPositions[i][1],this.y));
+			return this.getAngle(this.assistPositions[i][0],this.x,this.assistPositions[i][1],this.y);
+		}*/
+	var posDifferenceX = this.assistPositions[i][0] - this.x; // finds the vector for the difference in positions
+	var posDifferenceY = this.assistPositions[i][1] - this.y;
+	var rotation = Math.atan2(posDifferenceY, posDifferenceX);
+	console.log("attempt: "+ this.angle+" "+rotation);
+	if(this.angle > rotation-0.5 &&this.angle < rotation+0.5){
+		console.log("assisted");
+		return rotation;
+		}
+	}
+	return this.angle;
+}
+
 
 Player.prototype.shoot = function(){	
 	//if(KeyController.isKeyDown(Key.SPACE)){
@@ -146,7 +178,9 @@ Player.prototype.controller = function(b1,b2){
 	if(this.angle>6.3){
 		this.angle = 0;
 	}
+	
 	if(KeyController.isKeyDown(Key.R) &&this.numBullets<30){
+		this.setAssistPostitions();
 		//console.log("Reloading...");
 		this.startReload = true;
 		reloadSnd.play();
@@ -174,8 +208,9 @@ Player.prototype.respawn = function(){
 	spawnSnd.play();
 }
 
-Player.prototype.getAngle = function(x,y){
-	return Math.atan2(y,x);//*180/Math.PI;
+
+Player.prototype.getAngle = function(x,x2,y,y2){
+	return Math.atan2(y2-y,x2-x);//*180/Math.PI;
 }
 
 Player.prototype.setPickup = function(id){
@@ -203,11 +238,13 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 	if(b2){
 		this.xFacing = x2;
 		this.yFacing = y2;
-		this.angle = this.getAngle(this.xFacing,this.yFacing);
+		this.angle = this.getAngle(0,this.xFacing,0,this.yFacing);
+		//this.angle = this.aimAssist();
 		if(this.xFacing!=0 ||this.yFacing!=0)
 		this.shoot();
 	}
 	else if(KeyController.isKeyDown(Key.SPACE)){
+		this.angle = this.aimAssist();
 		this.shoot();
 	}
 
@@ -223,6 +260,11 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 	if(this.health<=0){
 		this.respawn();
 	}	
+
+	 this.aX=rotate_point(this.x,this.y,this.x,this.y,this.angle).x,this.aY = rotate_point(this.x,this.y,this.x,this.y,this.angle).y;
+    	this.bX=rotate_point(this.x+350,this.y+100,this.x,this.y,this.angle).x, this.bY =rotate_point(this.x+350,this.y+100,this.x,this.y,this.angle).y;
+    	this.cX=rotate_point(this.x+350,this.y-90,this.x,this.y,this.angle).x,this.cY=rotate_point(this.x+350,this.y-90,this.x,this.y,this.angle).y;
+
 
 
 	if(this.flash){
@@ -251,12 +293,22 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 	this.centreY = this.y+this.height/2;
 }
 
+Player.prototype.debugDraw = function(){
+		ctx.beginPath();
+    	ctx.moveTo(this.aX,this.aY);//a
+    	ctx.lineTo(this.bX,this.bY);//b
+    	ctx.lineTo(this.cX,this.cY);//c
+    	ctx.lineTo(this.aX,this.aY);
+    	ctx.stroke();
+}
+
 Player.prototype.draw = function(){
 	ctx.save();//save the state of canvas before rotation wrecks the place.
 
 	for(var i = 0; i <this.bullets.length; i++){
 		this.bullets[i].draw();
 	}
+	//ctx.drawImage(imgViewRad ,this.x-this.aimAssistRadius, this.y-this.aimAssistRadius,this.aimAssistRadius*2,this.aimAssistRadius*2); 
 	
 	//ctx.drawImage(imgViewRad,this.enemyPointX,this.enemyPointY,30,10);
 	ctx.translate(this.x, this.y); //let's translate
