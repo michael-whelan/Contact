@@ -31,7 +31,7 @@ var point = {
 	x: (1152 / 2),
 	y: (648 / 2)
 };
-
+var _name;
 var pickUp;
 
 var pause= false;
@@ -255,6 +255,9 @@ Game.prototype.update = function(lvl){
 		for (var j = 0; j < enemyManager.enemy.length; ++j) {
 			player.pointToEnemy(enemyManager.enemy[j].x,enemyManager.enemy[j].y);
 		}
+		if(allowPlay){//multiplayer check
+			//client.update(player.x,player.y);
+		}
 		enemyManager.update();
 		player.allowAimAssist = false;
 		collisionManager.collisionCall(enemyManager,player);
@@ -387,7 +390,7 @@ Game.prototype.debugDraw = function(){
 		ctx.beginPath();
 		ctx.moveTo(player.x,player.y);
 		ctx.lineTo(enemyManager.enemy[i].x,enemyManager.enemy[i].y);
-		console.log(player.getAngle(player.x,enemyManager.enemy[i].x,player.y,enemyManager.enemy[i].y));
+		//console.log(player.getAngle(player.x,enemyManager.enemy[i].x,player.y,enemyManager.enemy[i].y));
 		ctx.stroke();
 
 		enemyManager.enemy[i].debugDraw();

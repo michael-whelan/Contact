@@ -1,10 +1,8 @@
-
+var allowPlay = false;
  var message = {
     pid: "",
     type: "",
-    data:"",
-    array: "",
-    array2: ""
+    data:""
   };
 
 
@@ -25,13 +23,30 @@ function Client(){
  
           this.ws.onclose = function(evt) { console.log("Connection close"); };
  
-          this.ws.onopen = function(evt) { console.log('open connection'); this.join("testname");};
+          this.ws.onopen = function(evt) { console.log('open connection'); };         
 }
 
 Client.prototype.join = function(name){
   message.pid = name;
-  message.type = "test";
-  message.data = "this_is_a_test"
+  message.type = "join";
+  _name = name;
+  var mess = JSON.stringify(message);
+  this.ws.send(mess);
+}
+
+Client.prototype.setLevel = function(level){
+  message.pid = _name;
+  message.type = "setLevel";
+  message.data = level;
+  var mess = JSON.stringify(message);
+  this.ws.send(mess);
+}
+
+Client.prototype.update = function(x,y){
+  //console.log("updating multiplayer");
+  message.pid = name;
+  message.type = "updatePos";
+  message.data = [x,y];
   var mess = JSON.stringify(message);
   this.ws.send(mess);
 }
@@ -39,9 +54,7 @@ Client.prototype.join = function(name){
 Client.prototype.handleMessage = function(evt){
 
 var mess = JSON.parse(evt.data);
-var messA = mess.array;
-var messB = mess.array2;
-
+//console.log(mess);
 if (mess.type ==="state"){
     if(mess.data === WAITING_FOR_PLAYERS){
       
@@ -49,24 +62,14 @@ if (mess.type ==="state"){
   }
   else if(mess.data === STARTING_GAME){
         console.log("Starting Game");
+        allowPlay = true;
   }
-  }
+}
+else if(mess.type = "setLevel"){
+  //lvlManager.setLevel(mess.data);
+  menu.returnVals = ["gameplay",mess.data];
+}
 
-else if(mess.type ==="mouseClick")
-{ 
-    if(mess.data === 1){
-      game.p2Fill();
-      game.setTurn(1);
-    }
-    else if (mess.data ===2){
-  if(game.getArrayIsSet() === false){
- game.setColourArray(messA);
- game.setColourArray2(messB);
-}
-      game.p1Fill();
-       game.setTurn(2);
-    }
-}
 else if(mess.type ==="win")
 {
     game.setWin(mess.data);

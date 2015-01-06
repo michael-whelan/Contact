@@ -125,6 +125,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/menuLayout_01.png");
 	assetManager.queueLoadImg("images/back_arrow.png");
 	assetManager.queueLoadImg("images/multiplayer_temp.png");
+	assetManager.queueLoadImg("images/joinMultiplayerBtn.png");
 	assetManager.queueLoadImg("images/stash_temp.png");
 	assetManager.queueLoadImg("images/choose_temp.png");
 	assetManager.queueLoadImg("images/armory_temp.png");
@@ -142,6 +143,7 @@ SceneManager.prototype.setTitleImages = function(){
 	imgTitleScreen = assetManager.getAsset("images/menuLayout_01.png");
 	imgBackArrow = assetManager.getAsset("images/back_arrow.png");
 	imgMultiplayerBack = assetManager.getAsset("images/multiplayer_temp.png");
+	imgJoinServer = assetManager.getAsset("images/joinMultiplayerBtn.png");
 	imgStashBack = assetManager.getAsset("images/stash_temp.png");
 	imgCustomBack = assetManager.getAsset("images/choose_temp.png");
 	imgArmoryBack = assetManager.getAsset("images/armory_temp.png");
@@ -287,9 +289,10 @@ SceneManager.prototype.loadScene = function(state,scene){
 			assetManager.loadLvl1Images(function() {
     			sc.setGameImages()
 			});
-			assetManager.loadLvl1Sounds(function() {
+			loadedSounds = true;
+			/*assetManager.loadLvl1Sounds(function() {
     			sc.setGameSounds()
-			});
+			});*/
 
 		//}
 	}

@@ -8,7 +8,7 @@ var imgStashBack = new Image();
 var imgArmoryBack = new Image();
 var imgCustomBack = new Image();
 var imgExitPrompt = new Image();
-
+var client;
 
 function Menu (){
 	this.returnVals = ["null","null"]; //[state,scene]
@@ -21,6 +21,7 @@ function Menu (){
     this.backW = 50;
     this.backH=50;
     this.drawExit = false;
+    this.allow1=true;
 }
 
 Menu.prototype.reset = function() {
@@ -39,6 +40,10 @@ Menu.prototype.update = function() {
 	if(this.returnVals[1] === "levelSelect"){
 		this.updateScroll();
 	}
+	if(this.returnVals[1] === "multiplayer"&&this.allow1){
+		client = new Client();
+		this.allow1=false;
+	}
 	var temp = this.returnVals;
 	//this.returnVals = ["null","null"];
 	return temp;
@@ -46,8 +51,8 @@ Menu.prototype.update = function() {
 
 //temp
 Menu.prototype.mouseDown= function(e){
+	//console.log(e.clientX ,e.clientY);
 	if(this.scene=== "titleScreen"){
-		console.log(e.clientX ,e.clientY);
 		if(this.drawExit){
 			if(e.clientX >  350  && e.clientX <585&&e.clientY>330&&e.clientY<400){//770,190,955,375
 				console.log("Exit");
@@ -74,16 +79,18 @@ Menu.prototype.mouseDown= function(e){
 			}
 		}
 	}
-	else if(this.scene=== "levelSelect"){
+	else if(this.scene=== "levelSelect" && (_name==="player1"|| !allowPlay)){
 		console.log(e.clientX ,e.clientY);
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","titleScreen"];
 		}
 		else if(e.clientX >  this.lvl1X+300  && e.clientX <this.lvl1X+700&&e.clientY>300&&e.clientY<500){//770,190,955,375
 			this.returnVals = ["gameplay","level1"];
+			client.setLevel("level1");
 		}
 		else if(e.clientX >  this.lvlTutX+300  && e.clientX <this.lvlTutX+700&&e.clientY>300&&e.clientY<500){//770,190,955,375
 			this.returnVals = ["gameplay","tutorial"];
+			client.setLevel("tutorial");
 		}
 		else if(e.clientX < 300){
 			//scroll left
@@ -94,10 +101,18 @@ Menu.prototype.mouseDown= function(e){
 			//scroll right
 			this.scrollX -=1152;
 		}
+		
 	}
 	else if(this.scene ==="multiplayer"){
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","titleScreen"];
+		}
+		else if(e.clientX>490 && e.clientX < 635&& e.clientY >300 && e.clientY < 380){
+			client.join("player1");
+		}
+		if(allowPlay){
+			this.returnVals = ["menu","levelSelect"];
+			console.log("allowPlay");
 		}
 	}
 	else if(this.scene ==="stash"){
@@ -185,6 +200,7 @@ Menu.prototype.draw = function(scene){
 	}
 	else if(scene ==="multiplayer"){
 		ctx.drawImage(imgMultiplayerBack, 0,0,1152,648);
+		ctx.drawImage(imgJoinServer, canvas.width/2-60, canvas.height/2-40,120,80);
 	}
 	else if(scene ==="stash"){
 		ctx.drawImage(imgStashBack, 0,0,1152,648);

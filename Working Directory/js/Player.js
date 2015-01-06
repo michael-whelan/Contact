@@ -84,7 +84,7 @@ Player.prototype.reset = function(){
 
 Player.prototype.setAssistPostitions = function(){
 	for (var i = 0; i<this.assistPositions.length; ++i){
-		console.log(this.assistPositions[i]);
+		//console.log(this.assistPositions[i]);
 	}
 }
 
@@ -185,7 +185,7 @@ Player.prototype.controller = function(b1,b2){
 		//console.log("Reloading...");
 		this.startReload = true;
 		reloadSnd.play();
-		console.log("reload");
+		//console.log("reload");
 	}
 	if(b1){
 		this.move("forward");
@@ -201,7 +201,7 @@ Player.prototype.controller = function(b1,b2){
 
 Player.prototype.respawn = function(){
 	this.lives--;
-	console.log("lives: "+this.lives);
+//	console.log("lives: "+this.lives);
 	this.health = 100;
 	this.x = 100;
 	this.y = 100;
