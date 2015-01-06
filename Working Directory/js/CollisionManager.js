@@ -50,7 +50,10 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player){
 				enemyManager.enemy[j].bullets[i].kill();
 			}
 		}
-		if(collisionManager.circleOnCircle(player.aimAssistRadius,player.x,player.y,enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y)){
+		if(collisionManager.circleOnTriangle(enemyManager.enemy[j].x ,enemyManager.enemy[j].y, 
+			player.aX,player.aY,
+			player.bX,player.bY,
+			player.cX,player.cY)){
 			player.allowAimAssist = true;
 			var tempArray = [enemyManager.enemy[j].x,enemyManager.enemy[j].y];
 			player.assistPositions.splice(0,5);

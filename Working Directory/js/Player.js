@@ -111,6 +111,7 @@ Player.prototype.aimAssist = function(){
 
 Player.prototype.shoot = function(){	
 	//if(KeyController.isKeyDown(Key.SPACE)){
+		this.angle = this.aimAssist();
 		if(this.numBullets>0 && this.bulletTimer>18){
 			var bullet = new Bullet();
 			bullet.spawnBullet(this.xFacing,this.yFacing,this.bulletX,this.bulletY,this.angle);
