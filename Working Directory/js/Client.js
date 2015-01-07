@@ -26,10 +26,9 @@ function Client(){
   this.ws.onopen = function(evt) { console.log('open connection'); };         
 }
 
-Client.prototype.join = function(name){
-  message.pid = name;
+Client.prototype.join = function(){
+  message.pid = "junk";
   message.type = "join";
-  _name = name;
   var mess = JSON.stringify(message);
   this.ws.send(mess);
 }
@@ -58,11 +57,14 @@ Client.prototype.handleMessage = function(evt){
 
   if (mess.type ==="state"){
     if(mess.data === WAITING_FOR_PLAYERS){
-
       console.log("waiting for players");
+      _name = "player1";
     }
     else if(mess.data === STARTING_GAME){
       console.log("Starting Game");
+      if(_name ==="junk"){
+        _name = "player2";
+      }
       allowPlay = true;
     }
   }

@@ -8,7 +8,7 @@ var imgStashBack = new Image();
 var imgArmoryBack = new Image();
 var imgCustomBack = new Image();
 var imgExitPrompt = new Image();
-var client;
+
 
 function Menu (){
 	this.returnVals = ["null","null"]; //[state,scene]
@@ -108,7 +108,7 @@ Menu.prototype.mouseDown= function(e){
 			this.returnVals = ["menu","titleScreen"];
 		}
 		else if(e.clientX>490 && e.clientX < 635&& e.clientY >300 && e.clientY < 380){
-			client.join("player1");
+			client.join();
 		}
 		if(allowPlay){
 			this.returnVals = ["menu","levelSelect"];

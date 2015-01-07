@@ -10,6 +10,8 @@ var loadedSounds;
 var sc;
 var scaleRatio;
 var loadedScenes;
+
+var client;
 function SceneManager(){
 	game = new Game();
 	menu = new Menu();
@@ -290,9 +292,9 @@ SceneManager.prototype.loadScene = function(state,scene){
     			sc.setGameImages()
 			});
 			loadedSounds = true;
-			/*assetManager.loadLvl1Sounds(function() {
-    			sc.setGameSounds()
-			});*/
+			//assetManager.loadLvl1Sounds(function() {
+    		//	sc.setGameSounds()
+			//});
 
 		//}
 	}

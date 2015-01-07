@@ -112,9 +112,9 @@ Player.prototype.aimAssist = function(){
 	var posDifferenceX = this.assistPositions[i][0] - this.x; // finds the vector for the difference in positions
 	var posDifferenceY = this.assistPositions[i][1] - this.y;
 	var rotation = Math.atan2(posDifferenceY, posDifferenceX);
-	console.log("attempt: "+ this.angle+" "+rotation);
+	//console.log("attempt: "+ this.angle+" "+rotation);
 	if(this.angle > rotation-0.5 &&this.angle < rotation+0.5){
-		console.log("assisted");
+		//console.log("assisted");
 		return rotation;
 		}
 	}

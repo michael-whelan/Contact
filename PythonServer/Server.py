@@ -51,9 +51,19 @@ class MessageHandler:
 
 		if type == "join":
 			#add to connection list
+			
+			print('Session return, '+ str(session.getState()))
+			if(str(session.getState()) == "-1"):
+				print('p1');
+				success = session.addPlayer('player1')
+				data['pid'] = 'player1'
+			else:
+				print('p2')
+				success = session.addPlayer('player2')
+				data['pid'] = 'player2'
+				
 			self.addToConnectionList(socket, data)
-			success = session.addPlayer(data['pid'])
-						
+			
 			if(success):
 				self.sendToAll(data['pid'], "state",str(session.getState()))
 			else:

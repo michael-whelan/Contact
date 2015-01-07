@@ -3,7 +3,7 @@ class Session:
 	STARTING_GAME=1;
 
 	def __init__(self):
-		self.gameState = Session.WAITING_FOR_PLAYERS
+		self.gameState = -1#Session.WAITING_FOR_PLAYERS
 		self.player=list()
 
 	def addPlayer(self, pid):

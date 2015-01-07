@@ -31,7 +31,7 @@ var point = {
 	x: (1152 / 2),
 	y: (648 / 2)
 };
-var _name;
+var _name="junk";
 var pickUp;
 
 var pause= false;
@@ -42,7 +42,7 @@ var pauseTimer;
 function Game (){
 	//assetManager = new AssetManager();
 	player = new Player(100,100);
-	player2 = new Player(200,100);
+	player2 = new Player(100,100);
 	sticks = [new Stick(inputSize), new Stick(inputSize)];
 	fsm = new FSM();
 	pickUp = new Pickup();
@@ -77,7 +77,7 @@ Game.prototype.reset = function(lvl){
 	levelWin = false;
 	textManager.init();
 	lvlManager.mapSetup();
-	this.playBackgroundLoop();
+	//this.playBackgroundLoop();
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].active = false;
 	}
@@ -317,8 +317,8 @@ Game.prototype.update = function(lvl){
 		}*/
 	}	
 	if(KeyController.isKeyDown(Key.ESC)){
-		backTrack.pause();
-		backTrack.currentTime=0;
+		//backTrack.pause();
+		//backTrack.currentTime=0;
 		if(timer>20){
 			if(!pause){
 				pause = true;
@@ -330,8 +330,9 @@ Game.prototype.update = function(lvl){
 		}
 	}
 	if(this.goMenu){
-		backTrack.pause();
-		backTrack.currentTime=0;
+		//backTrack.pause();
+		//backTrack.currentTime=0;
+		allowPlay = false;
 		return "menu";
 	}
 	timer++;
@@ -461,7 +462,9 @@ Game.prototype.draw =function (){
   	//ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
 	pickUp.draw();
 	player.draw();
-	player2.draw();
+	if(allowPlay){
+		player2.draw();
+	}
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
 		enemyManager.enemy[i].draw();
 	}
