@@ -8,12 +8,13 @@ var emptySnd = new Audio();
 
 var loseHealthSnd = new Audio();
 
-var Player=function (){
+var Player=function (x,y){
 	this.bullets =[];
 	this.rotSpeed = 0.01;
 	this.width = 128;
 	this.height = 101;//135
-
+	this.startX = x;
+	this.startY = y;
 	this.speed = 2;
 	//bullet = new Bullet();
 	this.centreX =0;
@@ -30,7 +31,7 @@ var Player=function (){
 	this.aimAssistRadius = 400;
 	this.allowAimAssist = false;
 	this.assistPositions = [];
-	this.reset();
+	this.reset(x,y);
 
 
 	//pickup Bools
@@ -51,11 +52,11 @@ Player.prototype.reload = function(){
 	}
 }
 
-Player.prototype.reset = function(){
+Player.prototype.reset = function(x,y){
 	this.numBullets = 30;
 	this.health=100;
-	this.x = 100;
-	this.y = 100;
+	this.x = x;
+	this.y = y;
 	this.xVel = 0;
 	this.yVel = 0;
 	this.xDirect = 0;
@@ -80,6 +81,18 @@ Player.prototype.reset = function(){
 	this.bulletX = 0,this.bulletY = 0;//this is the initial position of all bullets fired from the player
 	this.flash = false; this.flashTimer=0;//makes the player flash on respawn;
 	this.healthTimer = 0;
+}
+
+Player.prototype.setPos = function(x,y,o,_int){//used for multiplayer for second player
+	this.x = x;
+	this.y = y;
+	this.angle =o;
+	var shootBool = false;
+	if(_int ===1){
+		shootBool = true;
+		//shoot();
+	}
+	//this.update(null,null,null,null,null,shootBool);
 }
 
 Player.prototype.setAssistPostitions = function(){
@@ -203,8 +216,8 @@ Player.prototype.respawn = function(){
 	this.lives--;
 //	console.log("lives: "+this.lives);
 	this.health = 100;
-	this.x = 100;
-	this.y = 100;
+	this.x = this.startX;
+	this.y = this.startY;
 	this.flash = true;
 	spawnSnd.play();
 }

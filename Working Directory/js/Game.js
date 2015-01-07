@@ -8,7 +8,7 @@ imgLoseMenu = new Image();
 var fsm;
 var innerX1,innerY1,innerX2,innerY2;
 var intersect = false,interX = 0,interY =0;
-var player;
+var player,player2;
 var enemy;
 var collisionManager;
 var lvlManager;
@@ -41,7 +41,8 @@ var pauseTimer;
 
 function Game (){
 	//assetManager = new AssetManager();
-	player = new Player();
+	player = new Player(100,100);
+	player2 = new Player(200,100);
 	sticks = [new Stick(inputSize), new Stick(inputSize)];
 	fsm = new FSM();
 	pickUp = new Pickup();
@@ -58,11 +59,14 @@ function Game (){
 	this.btnScale = 50;
 	this.pauseX = 1050;
 	this.pauseY = 50;
+	this.reset();
 }
 
 
 Game.prototype.reset = function(lvl){
 	player.reset();
+	player2.reset();
+	this.sendTimer =0;
 	lvlManager.setLevel(lvl);
 	pause = false;
 	enemyManager.reset(lvl);
@@ -255,8 +259,12 @@ Game.prototype.update = function(lvl){
 		for (var j = 0; j < enemyManager.enemy.length; ++j) {
 			player.pointToEnemy(enemyManager.enemy[j].x,enemyManager.enemy[j].y);
 		}
-		if(allowPlay){//multiplayer check
-			//client.update(player.x,player.y);
+		this.sendTimer++;
+		if(allowPlay && this.sendTimer>5){//multiplayer check
+			var tmpint = 0;
+			if(stick2.active){tmpint = 1;}
+			client.update(player.x,player.y,player.angle,tmpint);
+			this.sendTimer =0;
 		}
 		enemyManager.update();
 		player.allowAimAssist = false;
@@ -453,6 +461,7 @@ Game.prototype.draw =function (){
   	//ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
 	pickUp.draw();
 	player.draw();
+	player2.draw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
 		enemyManager.enemy[i].draw();
 	}

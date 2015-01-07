@@ -62,7 +62,7 @@ class MessageHandler:
 		elif type == "test":
 			self.sendToAll(pid,type,1)
 		elif type == "updatePos":
-			self.sendToAll(pid,type,data)
+			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "setLevel":
 			self.sendToAll(pid,type,str(data1))
 		elif type == "updateState":
