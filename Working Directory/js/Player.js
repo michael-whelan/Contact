@@ -8,7 +8,7 @@ var emptySnd = new Audio();
 
 var loseHealthSnd = new Audio();
 
-var Player=function (x,y){
+var Player=function (x,y,name){
 	this.bullets =[];
 	this.rotSpeed = 0.01;
 	this.width = 128;
@@ -16,6 +16,7 @@ var Player=function (x,y){
 	this.startX = x;
 	this.startY = y;
 	this.speed = 2;
+	this.name = name;
 	//bullet = new Bullet();
 	this.centreX =0;
 	this.centreY =0;
@@ -33,6 +34,8 @@ var Player=function (x,y){
 	this.assistPositions = [];
 	this.reset(x,y);
 
+
+	this.shootBool = false;//multiplayer
 
 	//pickup Bools
 	this.radar = false;
@@ -62,6 +65,7 @@ Player.prototype.reset = function(x,y){
 	this.xDirect = 0;
 	this.yDirect = 0;
 	this.lastHitTime = 0;
+	this.shootBool = false;
 
 	this.alive = true;
 	this.angle = 2.87;
@@ -87,12 +91,14 @@ Player.prototype.setPos = function(x,y,o,_int){//used for multiplayer for second
 	this.x = x;
 	this.y = y;
 	this.angle =o;
-	var shootBool = false;
+	console.log(x,y,o,_int);
+	
 	if(_int ===1){
-		shootBool = true;
+		this.shootBool = true;
 		//shoot();
 	}
-	//this.update(null,null,null,null,null,shootBool);
+	else {this.shootBool = false;}
+	
 }
 
 Player.prototype.setAssistPostitions = function(){
@@ -126,6 +132,9 @@ Player.prototype.shoot = function(){
 	//if(KeyController.isKeyDown(Key.SPACE)){
 		this.angle = this.aimAssist();
 		if(this.numBullets>0 && this.bulletTimer>18){
+			if(this.name === "player2"){
+				console.log("player 2 shoot" +this.numBullets+this.bulletTimer);
+			}
 			var bullet = new Bullet();
 			bullet.spawnBullet(this.xFacing,this.yFacing,this.bulletX,this.bulletY,this.angle);
 			this.shot = true;
@@ -136,6 +145,7 @@ Player.prototype.shoot = function(){
 		else if(this.numBullets<=0){
 			//emptySnd.play();
 			emptySnd.play();
+			this.reload();
 		//	this.reload();
 		}
 	//}//end Space
@@ -234,8 +244,6 @@ Player.prototype.setPickup = function(id){
 }
 
 Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
-	this.controller(b1,b2);
-
 	if(this.startReload){
 		this.reload();
 	}
@@ -243,24 +251,30 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 	if(this.health<100 && Date.now() - this.lastHitTime > 5000){
 		this.rechargeHealth();
 	}
-	this.xDirect= this.xFacing = Math.cos(this.angle);
-	this.yDirect=this.yFacing = Math.sin(this.angle);
-	if(b1){
-		this.xDirect = x1;
-		this.yDirect = y1;
+	
+
+		this.xDirect= this.xFacing = Math.cos(this.angle);
+		this.yDirect=this.yFacing = Math.sin(this.angle);
+	if(this.name ==="player1"){//this is only done for player one.
+		this.controller(b1,b2);
+		if(b1){
+			this.xDirect = x1;
+			this.yDirect = y1;
+		}
+		if(b2){
+			this.xFacing = x2;
+			this.yFacing = y2;
+			this.angle = this.getAngle(0,this.xFacing,0,this.yFacing);
+			//this.angle = this.aimAssist();
+			if(this.xFacing!=0 ||this.yFacing!=0)
+			this.shoot();
+		}
+		else if(KeyController.isKeyDown(Key.SPACE)){
+			this.angle = this.aimAssist();
+			this.shoot();
+		}
 	}
-	if(b2){
-		this.xFacing = x2;
-		this.yFacing = y2;
-		this.angle = this.getAngle(0,this.xFacing,0,this.yFacing);
-		//this.angle = this.aimAssist();
-		if(this.xFacing!=0 ||this.yFacing!=0)
-		this.shoot();
-	}
-	else if(KeyController.isKeyDown(Key.SPACE)){
-		this.angle = this.aimAssist();
-		this.shoot();
-	}
+	else if(b2){this.shoot();}
 
 	this.bulletTimer++;
 	

@@ -41,8 +41,8 @@ var pauseTimer;
 
 function Game (){
 	//assetManager = new AssetManager();
-	player = new Player(100,100);
-	player2 = new Player(100,100);
+	player = new Player(100,100,"player1");
+	player2 = new Player(100,100,"player2");
 	sticks = [new Stick(inputSize), new Stick(inputSize)];
 	fsm = new FSM();
 	pickUp = new Pickup();
@@ -246,6 +246,17 @@ Game.prototype.updateGUI = function(tX,tY){
 	//1106.699951171875 252.48899841308594 
 }
 
+Game.prototype.controlMultiplayer = function(){
+	this.sendTimer++;
+	if(allowPlay && this.sendTimer>5){//multiplayer check
+		var tmpint = 0;
+		if(stick2.active){
+			tmpint = 1;
+		}
+		client.update(player.x,player.y,player.angle,tmpint);
+		this.sendTimer =0;
+	}
+}
 
 Game.prototype.update = function(lvl){
 	if(!pause){
@@ -256,16 +267,14 @@ Game.prototype.update = function(lvl){
 		var stick = sticks[0];
 		var stick2 = sticks[1];
 		player.update(stick.normal.x,stick.normal.y,stick2.normal.x,stick2.normal.y,stick.active,stick2.active);
+		if(allowPlay){
+			player2.update(0,0,0,0,false,player2.shootBool);
+		}
 		for (var j = 0; j < enemyManager.enemy.length; ++j) {
 			player.pointToEnemy(enemyManager.enemy[j].x,enemyManager.enemy[j].y);
 		}
-		this.sendTimer++;
-		if(allowPlay && this.sendTimer>5){//multiplayer check
-			var tmpint = 0;
-			if(stick2.active){tmpint = 1;}
-			client.update(player.x,player.y,player.angle,tmpint);
-			this.sendTimer =0;
-		}
+		this.controlMultiplayer();
+		
 		enemyManager.update();
 		player.allowAimAssist = false;
 		collisionManager.collisionCall(enemyManager,player);
