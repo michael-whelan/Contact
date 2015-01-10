@@ -73,6 +73,10 @@ class MessageHandler:
 			self.sendToAll(pid,type,1)
 		elif type == "updatePos":
 			self.sendToOtherPlayer(pid,type,data1)
+		elif type == "worldUp":
+			self.sendToOtherPlayer(pid,type,data1)
+		elif type == "killEnemy":
+			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "setLevel":
 			self.sendToAll(pid,type,str(data1))
 		elif type == "updateState":
@@ -115,9 +119,9 @@ class MessageHandler:
 	#Assuming two players, sends to the player that isn't my_pid
 	def sendToOtherPlayer(self,my_pid,type,data):
 		for pid in connections:
-			print(my_pid)
-			print(type)
-			print(data)
+			#print(my_pid)
+			#print(type)
+			#print(data)
 			if my_pid != pid:
 				#print("equals")
 				self.sendMessage(pid,type,data)

@@ -26,31 +26,59 @@ CollisionManager.prototype.update = function(){
 
 CollisionManager.prototype.collisionCall = function(enemyManager,player){
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {
-		enemyManager.moveControl(j,collisionManager.circleOnCircle(player.radius,player.x,player.y,enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y),
+		enemyManager.moveControl(j,this.circleOnCircle(player.radius,player.x,player.y,enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y),
 			player.x,player.y);
 		
-		enemyManager.moveControl(j,collisionManager.circleOnTriangle(player.x,player.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
-			enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
-			enemyManager.enemy[j].cX,enemyManager.enemy[j].cY),
-			player.x,player.y);
+		if(this.circleOnTriangle(player.x,player.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
+		enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
+		enemyManager.enemy[j].cX,enemyManager.enemy[j].cY)){
+
+			enemyManager.moveControl(j,true,player.x,player.y);
+		}
+		else if(this.circleOnTriangle(player2.x,player2.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
+		enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
+		enemyManager.enemy[j].cX,enemyManager.enemy[j].cY)){
+
+			enemyManager.moveControl(j,true,player2.x,player2.y);
+		}
 
 		if(player.shot){
 			enemyManager.hearShot(player.x,player.y);
 			player.shot = false;
 		}
+
+		if(allowPlay){
+			/*enemyManager.moveControl(j,this.circleOnTriangle(player2.x,player2.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
+				enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
+				enemyManager.enemy[j].cX,enemyManager.enemy[j].cY),
+				player2.x,player2.y);*/
+			if(player2.shot){
+				enemyManager.hearShot(player2.x,player2.y);
+				player2.shot = false;
+			}
+		}	
 	}
 	
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {
 		for(var i = 0; i < enemyManager.enemy[j].bullets.length; ++i){
-			if(collisionManager.circleOnCircle(enemyManager.enemy[j].bullets[i].radius,enemyManager.enemy[j].bullets[i].x,
+			if(this.circleOnCircle(enemyManager.enemy[j].bullets[i].radius,enemyManager.enemy[j].bullets[i].x,
 				enemyManager.enemy[j].bullets[i].y,player.radius,player.x,player.y) && player.flash === false){
-				//player.health-=1;
+				player.health-=1;
 				loseHealthSnd.play();
 				player.lastHitTime = Date.now();
 				enemyManager.enemy[j].bullets[i].kill();
 			}
+			if(allowPlay){
+				if(this.circleOnCircle(enemyManager.enemy[j].bullets[i].radius,enemyManager.enemy[j].bullets[i].x,
+					enemyManager.enemy[j].bullets[i].y,player2.radius,player2.x,player2.y) && player2.flash === false){
+					//player2.health-=1;
+					//loseHealthSnd.play();
+					player2.lastHitTime = Date.now();
+					enemyManager.enemy[j].bullets[i].kill();
+				}
+			}
 		}
-		if(collisionManager.circleOnTriangle(enemyManager.enemy[j].x ,enemyManager.enemy[j].y, 
+		if(this.circleOnTriangle(enemyManager.enemy[j].x ,enemyManager.enemy[j].y, 
 			player.aX,player.aY,
 			player.bX,player.bY,
 			player.cX,player.cY)){
@@ -65,7 +93,7 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player){
 	}
 
 	//temp only one pick up will become a list
-	if(collisionManager.circleOnCircle(player.radius, player.x,player.y,pickUp.radius,pickUp.x,pickUp.y)&&
+	if(this.circleOnCircle(player.radius, player.x,player.y,pickUp.radius,pickUp.x,pickUp.y)&&
 		pickUp.alive){
 		pickUp.alive = false;
 		player.radar = true;
@@ -74,8 +102,11 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player){
 	for(var i = 0;i< player.bullets.length;++i){
 		if(player.bullets[i].alive){
 			for (var j = 0; j < enemyManager.enemy.length; ++j) {//enemy.length
-				if(collisionManager.circleOnCircle(player.bullets[i].radius,player.bullets[i].x,player.bullets[i].y,enemyManager.enemy[j].hitRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y)){
+				if(this.circleOnCircle(player.bullets[i].radius,player.bullets[i].x,player.bullets[i].y,enemyManager.enemy[j].hitRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y)){
 					var x = enemyManager.enemy[j].x; var y = enemyManager.enemy[j].y;
+					if(allowPlay){
+						client.killEnemy(j);
+					}
 					if(enemyManager.kill(j)===1 && !pickUp.alive && !player.radar){
 						pickUp.spawn("radar",x,y);
 					}

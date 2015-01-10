@@ -49,6 +49,22 @@ Client.prototype.update = function(x,y,o,shootBool){
   var mess = JSON.stringify(message);
   this.ws.send(mess);
 }
+Client.prototype.killEnemy = function(j){
+  //console.log("updating multiplayer");
+  message.pid = _name;
+  message.type = "killEnemy";
+  message.data = j;
+  var mess = JSON.stringify(message);
+  this.ws.send(mess);
+}
+Client.prototype.worldUpdate = function(arr){
+  //console.log("updating multiplayer");
+  message.pid = _name;
+  message.type = "worldUp";
+  message.data = arr;
+  var mess = JSON.stringify(message);
+  this.ws.send(mess);
+}
 
 Client.prototype.handleMessage = function(evt){
 
@@ -75,6 +91,13 @@ Client.prototype.handleMessage = function(evt){
   else if(mess.type === "updatePos"){
     var messA = mess.data;
     player2.setPos(messA[0],messA[1],messA[2],messA[3]);
+  }
+  else if(mess.type === "worldUp"){
+    var messA = mess.data;
+    enemyManager.setEnemyPos(messA);
+  }
+  else if(mess.type === "killEnemy"){
+    enemyManager.kill(mess.data);
   }
   else if(mess.type ==="win")
   {

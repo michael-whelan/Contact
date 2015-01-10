@@ -90,7 +90,7 @@ Enemy.prototype.update = function(){
 			this.moveBasic();
 		}
 		//end state control
-
+		//console.log(this.state);
 		for(var i = 0; i <this.bullets.length; i++){
 			if(this.bullets[i].alive){
 				this.bullets[i].update();

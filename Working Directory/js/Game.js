@@ -67,6 +67,7 @@ Game.prototype.reset = function(lvl){
 	player.reset();
 	player2.reset();
 	this.sendTimer =0;
+	this.worldSendTimer=0;
 	lvlManager.setLevel(lvl);
 	pause = false;
 	enemyManager.reset(lvl);
@@ -246,8 +247,9 @@ Game.prototype.updateGUI = function(tX,tY){
 	//1106.699951171875 252.48899841308594 
 }
 
-Game.prototype.controlMultiplayer = function(){
+Game.prototype.controlMultiplayer = function(stick,stick2){
 	this.sendTimer++;
+	this.worldSendTimer++;
 	if(allowPlay && this.sendTimer>5){//multiplayer check
 		var tmpint = 0;
 		if(stick2.active){
@@ -255,6 +257,21 @@ Game.prototype.controlMultiplayer = function(){
 		}
 		client.update(player.x,player.y,player.angle,tmpint);
 		this.sendTimer =0;
+	}
+	if(_name === "player1" && this.worldSendTimer > 15){//player 1 will be put in control as the authoritive player. His is the correct game world.
+		var tempArr = new Array();
+		for(var i = 0; i < enemyManager.enemy.length; ++i){
+			var temp2 = new Array();
+			temp2.push(enemyManager.enemy[i].x);
+			temp2.push(enemyManager.enemy[i].y);
+			temp2.push(enemyManager.enemy[i].angle);
+			temp2.push(enemyManager.enemy[i].state);
+			temp2.push(enemyManager.enemy[i].targetPosX);
+			temp2.push(enemyManager.enemy[i].targetPosY);
+			tempArr.push(temp2);
+		}
+		this.worldSendTimer =0;
+		client.worldUpdate(tempArr);
 	}
 }
 
@@ -269,12 +286,12 @@ Game.prototype.update = function(lvl){
 		player.update(stick.normal.x,stick.normal.y,stick2.normal.x,stick2.normal.y,stick.active,stick2.active);
 		if(allowPlay){
 			player2.update(0,0,0,0,false,player2.shootBool);
+			this.controlMultiplayer(stick,stick2);
 		}
 		for (var j = 0; j < enemyManager.enemy.length; ++j) {
 			player.pointToEnemy(enemyManager.enemy[j].x,enemyManager.enemy[j].y);
 		}
-		this.controlMultiplayer();
-		
+
 		enemyManager.update();
 		player.allowAimAssist = false;
 		collisionManager.collisionCall(enemyManager,player);

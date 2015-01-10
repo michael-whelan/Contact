@@ -56,6 +56,24 @@ EnemyManager.prototype.allEnemies = function(){
 	}
 }
 
+EnemyManager.prototype.setEnemyPos = function(arr){
+	for(var i = 0; i< arr.length; ++i){
+		try{
+			this.enemy[i].x = arr[i][0];
+			this.enemy[i].y = arr[i][1];
+			this.enemy[i].angle = arr[i][2];
+			this.enemy[i].state = arr[i][3];
+			this.enemy[i].targetPosX= arr[i][4];
+			this.enemy[i].targetPosY= arr[i][5];
+		}
+		catch(err){
+
+		}
+	}
+
+	console.log("enemy Info: "+arr);
+}
+
 EnemyManager.prototype.hearShot = function(px,py){
 	for (var j = 0; j < this.enemy.length; ++j){
 		this.enemy[j].state = fsm.stateControl(this.enemy[j].state,"hearShot");
