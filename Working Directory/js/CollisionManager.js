@@ -38,8 +38,9 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player){
 		else if(this.circleOnTriangle(player2.x,player2.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
 		enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
 		enemyManager.enemy[j].cX,enemyManager.enemy[j].cY)){
-
-			enemyManager.moveControl(j,true,player2.x,player2.y);
+			if(multiplayer){
+				enemyManager.moveControl(j,true,player2.x,player2.y);
+			}
 		}
 
 		if(player.shot){
@@ -47,7 +48,7 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player){
 			player.shot = false;
 		}
 
-		if(allowPlay){
+		if(multiplayer){
 			/*enemyManager.moveControl(j,this.circleOnTriangle(player2.x,player2.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
 				enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
 				enemyManager.enemy[j].cX,enemyManager.enemy[j].cY),
@@ -68,7 +69,7 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player){
 				player.lastHitTime = Date.now();
 				enemyManager.enemy[j].bullets[i].kill();
 			}
-			if(allowPlay){
+			if(multiplayer){
 				if(this.circleOnCircle(enemyManager.enemy[j].bullets[i].radius,enemyManager.enemy[j].bullets[i].x,
 					enemyManager.enemy[j].bullets[i].y,player2.radius,player2.x,player2.y) && player2.flash === false){
 					//player2.health-=1;
@@ -104,7 +105,7 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player){
 			for (var j = 0; j < enemyManager.enemy.length; ++j) {//enemy.length
 				if(this.circleOnCircle(player.bullets[i].radius,player.bullets[i].x,player.bullets[i].y,enemyManager.enemy[j].hitRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y)){
 					var x = enemyManager.enemy[j].x; var y = enemyManager.enemy[j].y;
-					if(allowPlay){
+					if(multiplayer){
 						client.killEnemy(j);
 					}
 					if(enemyManager.kill(j)===1 && !pickUp.alive && !player.radar){

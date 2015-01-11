@@ -79,7 +79,7 @@ Menu.prototype.mouseDown= function(e){
 			}
 		}
 	}
-	else if(this.scene=== "levelSelect" && (_name==="player1"|| !allowPlay)){
+	else if(this.scene=== "levelSelect" && (_name==="player1"|| !multiplayer)){
 		console.log(e.clientX ,e.clientY);
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","titleScreen"];
@@ -110,9 +110,9 @@ Menu.prototype.mouseDown= function(e){
 		else if(e.clientX>490 && e.clientX < 635&& e.clientY >300 && e.clientY < 380){
 			client.join();
 		}
-		if(allowPlay){
+		if(multiplayer){
 			this.returnVals = ["menu","levelSelect"];
-			console.log("allowPlay");
+			console.log("multiplayer");
 		}
 	}
 	else if(this.scene ==="stash"){

@@ -1,5 +1,7 @@
 var imgPlayer= new Image();
 
+var imgPlayerDead = new Image();
+
 var spawnSnd = new Audio();
 
 var reloadSnd = new Audio();
@@ -34,8 +36,7 @@ var Player=function (x,y,name){
 	this.assistPositions = [];
 	this.reset(x,y);
 
-
-	this.shootBool = false;//multiplayer
+	this.shootBool = false;this.dead = false;//multiplayer
 
 	//pickup Bools
 	this.radar = false;
@@ -224,7 +225,7 @@ Player.prototype.controller = function(b1,b2){
 
 Player.prototype.respawn = function(){
 	this.lives--;
-//	console.log("lives: "+this.lives);
+//	console.log("multiplayer: "+this.multiplayer);
 	this.health = 100;
 	this.x = this.startX;
 	this.y = this.startY;
@@ -344,6 +345,9 @@ Player.prototype.draw = function(){
 	ctx.rotate(this.angle); //increment the angle and rotate the image 
 	if(this.alive){
 		ctx.drawImage(imgPlayer,-this.width/2, -this.height/2, this.width, this.height);
+	}
+	else if (this.dead){
+		ctx.drawImage(imgPlayerDead,-this.width/2, -this.height/2, this.width, this.height);
 	}
 	ctx.restore(); //restore the state of canvas
 	//ctx.drawImage(imgBullet,rotate_point(this.x+30,this.y+20,this.x,this.y,this.angle).x, rotate_point(this.x+30,this.y+20,this.x,this.y,this.angle).y, 10, 10);//80 65

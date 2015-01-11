@@ -1,4 +1,4 @@
-var allowPlay = false;
+var multiplayer = false;
 var message = {
   pid: "",
   type: "",
@@ -12,7 +12,7 @@ var STARTING_GAME="1";
 function Client(){
   var that=this;
 
-  var host='192.168.15.13';
+  var host='192.168.15.2';
   var port=8080;
 
 
@@ -66,6 +66,15 @@ Client.prototype.worldUpdate = function(arr){
   this.ws.send(mess);
 }
 
+Client.prototype.deathAlert = function(){
+  //console.log("updating multiplayer");
+  message.pid = _name;
+  message.type = "playerDeath";
+  message.data = 0;
+  var mess = JSON.stringify(message);
+  this.ws.send(mess);
+}
+
 Client.prototype.handleMessage = function(evt){
 
   var mess = JSON.parse(evt.data);
@@ -81,12 +90,13 @@ Client.prototype.handleMessage = function(evt){
       if(_name ==="junk"){
         _name = "player2";
       }
-      allowPlay = true;
+      multiplayer = true;
     }
   }
   else if(mess.type === "setLevel"){
     //lvlManager.setLevel(mess.data);
     menu.returnVals = ["gameplay",mess.data];
+    game.reset(mess.data);
   }
   else if(mess.type === "updatePos"){
     var messA = mess.data;
@@ -98,6 +108,10 @@ Client.prototype.handleMessage = function(evt){
   }
   else if(mess.type === "killEnemy"){
     enemyManager.kill(mess.data);
+  }
+  else if(mess.type === "playerDeath"){
+    textManager.playerDied = true;
+    player2.dead = true;
   }
   else if(mess.type ==="win")
   {

@@ -4,7 +4,6 @@ var TextManager=function(){
 	//put each piece of text here. rename all you want it will need to be mentioned in the index too.
 	var strAmmo;
     var ammoInt;
-
     var strHealth;
     var iAmmo;
     this.lowestFps = 100;
@@ -12,12 +11,22 @@ var TextManager=function(){
     this.tutorialMsgNum = 0;
     this.check1 = false;
     this.check2 = false;
+
+    var strPlayerDiedMessage;
+    this.playerDied = false;//if a teammate has died this will allow a message to be drawn on screen
+    this.deathMessageTimer = 0;
 };
 
 TextManager.prototype.init = function(){
 	strAmmo = document.getElementById("txtAmmo").innerHTML;
     strHealth = document.getElementById("txtHealth").innerHTML;
+    strPlayerDiedMessage = document.getElementById("playerDeathMsg").innerHTML;
 };
+
+TextManager.prototype.reset = function(){
+    this.playerDied = false;
+    this.deathMessageTimer = 0;
+}
 
 // This represents the Instructions Title
 TextManager.prototype.drawInstruc =function (){
@@ -43,18 +52,17 @@ TextManager.prototype.controller = function(level){
         //txtAmmo = txtAmmo + numBullets.toString();
         ctx.strokeText("R to Reload", 300, 100);
     }
-     ctx.font = '40px san-serif';
+    ctx.font = '40px san-serif';
     ctx.strokeText(strHealth+ player.health.toString()+"%", 30, 50);
-        ctx.strokeStyle = "#003300";
-        ctx.font = '40px san-serif';
-        ctx.textBaseline = 'bottom';
-        //txtAmmo = txtAmmo + numBullets.toString();
-       // ctx.strokeText("fps: "+fps.toFixed(), 680, 150);
-        if(fps<60){
-           this.lowestFps = fps;
-        }
-        ctx.strokeText("fps: "+this.lowestFps.toFixed(), 680, 50);
-
+    ctx.strokeStyle = "#003300";
+    ctx.font = '40px san-serif';
+    ctx.textBaseline = 'bottom';
+    //txtAmmo = txtAmmo + numBullets.toString();
+    //ctx.strokeText("fps: "+fps.toFixed(), 680, 150);
+    if(fps<60){
+        this.lowestFps = fps;
+    }
+    ctx.strokeText("fps: "+this.lowestFps.toFixed(), 680, 50);
 }
 
 TextManager.prototype.gameText=function(){
@@ -64,8 +72,14 @@ TextManager.prototype.gameText=function(){
     //txtAmmo = txtAmmo + numBullets.toString();
     ctx.strokeText(strAmmo+ player.numBullets.toString(), 300, 100);
 
-    if(this.level === "tutorial"){
-        //this.controlTutorial();
+    if(this.playerDied){
+        ctx.strokeText(strPlayerDiedMessage.toString(), 30, 120);
+        this.deathMessageTimer++;
+
+        if(this.deathMessageTimer>180){
+            this.playerDied= false;
+            this.deathMessageTimer =0;
+        }
     }
 }
 
@@ -74,7 +88,6 @@ TextManager.prototype.upTutorial = function(n){
         this.tutorialMsgNum = n+1;
     }
 }
-
 
 TextManager.prototype.controlTutorial = function(player){
     ctx.strokeStyle = "#0041a0";

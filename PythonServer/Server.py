@@ -9,6 +9,7 @@ connections={}
 
 session = Session()
 
+
 class WSHandler(tornado.websocket.WebSocketHandler):
 	def check_origin(self, origin):
 		return True
@@ -30,6 +31,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 	    print ("WebSocket closed")
 
 class MessageHandler:
+	numberOfDeaths = 0#this keeps track of whether or not there is still anyone playing
 	def __init__(self):
 		pass
 
@@ -76,6 +78,9 @@ class MessageHandler:
 		elif type == "worldUp":
 			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "killEnemy":
+			self.sendToOtherPlayer(pid,type,data1)
+		elif type == "playerDeath":
+			#numberOfDeaths+=1
 			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "setLevel":
 			self.sendToAll(pid,type,str(data1))

@@ -3,7 +3,7 @@
 <head>
 <link rel="manifest" href="manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="viewport" content="width=device-width, initial-scale=0.85">
+<meta name="viewport" content="width=device-width, initial-scale=0.83">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="images/app-icon.png">
 <!--<script src="http://localhost:8080/target/target-script-min.js#windows"></script>-->
@@ -57,6 +57,7 @@
 <!--This is where all of the game text can be written and pulled onto the gamescreen-->
 <noembed id="txtAmmo">Ammo: </noembed>
 <noembed id="txtHealth"></noembed>
+<noembed id="playerDeathMsg"></noembed>
 <noembed id="tutorialMsg1"></noembed>
 <noembed id="tutorialMsg2"></noembed>
 <noembed id="tutorialMsg3"></noembed>
@@ -75,6 +76,7 @@ xmlhttp.send();
 xmlDoc=xmlhttp.responseXML;
 document.getElementById("txtAmmo").innerHTML= xmlDoc.getElementsByTagName("txtAmmo")[0].childNodes[0].nodeValue;
 document.getElementById("txtHealth").innerHTML= xmlDoc.getElementsByTagName("txtHealth")[0].childNodes[0].nodeValue;
+document.getElementById("playerDeathMsg").innerHTML= xmlDoc.getElementsByTagName("playerDeathMsg")[0].childNodes[0].nodeValue;
 document.getElementById("tutorialMsg1").innerHTML= xmlDoc.getElementsByTagName("tutorialMsg1")[0].childNodes[0].nodeValue;
 document.getElementById("tutorialMsg2").innerHTML= xmlDoc.getElementsByTagName("tutorialMsg2")[0].childNodes[0].nodeValue;
 document.getElementById("tutorialMsg3").innerHTML= xmlDoc.getElementsByTagName("tutorialMsg3")[0].childNodes[0].nodeValue;

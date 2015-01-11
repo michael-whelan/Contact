@@ -77,6 +77,7 @@ Game.prototype.reset = function(lvl){
 	this.goMenu = false;
 	levelWin = false;
 	textManager.init();
+	textManager.reset();
 	lvlManager.mapSetup();
 	//this.playBackgroundLoop();
 	for (var i = 0; i < sticks.length; ++i) {
@@ -211,6 +212,9 @@ Game.prototype.updateOverlay = function(e){
 	else if(this.overlayType === "win"){
 		if(e.clientX> 475 && e.clientX < 540 && e.clientY >260&&e.clientY <320){
 			this.reset(this.currentLvl);
+			if(multiplayer && _name === "player1"){
+				client.setLevel(this.currentLvl);
+			}
 		}
 		else if(e.clientX> 600 && e.clientX < 670 && e.clientY >260&&e.clientY <320){
 			this.goMenu = true;
@@ -218,12 +222,18 @@ Game.prototype.updateOverlay = function(e){
 		else if(e.clientX> 725 && e.clientX < 800 && e.clientY >260&&e.clientY <320){
 			//lvlManager.setLevel();
 			this.reset(lvlManager.getNextLevel());
+			if(multiplayer && _name === "player1"){
+				client.setLevel(lvlManager.getNextLevel());
+			}
 			
 		}	
 	}
 	else if(this.overlayType === "lose"){
 		if(e.clientX> 540 && e.clientX < 600 && e.clientY >260&&e.clientY <325){
 			this.reset(this.currentLvl);
+			if(multiplayer && _name === "player1"){
+				client.setLevel(this.currentLvl);
+			}
 		}
 		else if(e.clientX> 680 && e.clientX < 744 && e.clientY >260&&e.clientY <320){
 			this.goMenu = true;
@@ -250,7 +260,7 @@ Game.prototype.updateGUI = function(tX,tY){
 Game.prototype.controlMultiplayer = function(stick,stick2){
 	this.sendTimer++;
 	this.worldSendTimer++;
-	if(allowPlay && this.sendTimer>5){//multiplayer check
+	if(multiplayer && this.sendTimer>5){//multiplayer check
 		var tmpint = 0;
 		if(stick2.active){
 			tmpint = 1;
@@ -284,7 +294,7 @@ Game.prototype.update = function(lvl){
 		var stick = sticks[0];
 		var stick2 = sticks[1];
 		player.update(stick.normal.x,stick.normal.y,stick2.normal.x,stick2.normal.y,stick.active,stick2.active);
-		if(allowPlay){
+		if(multiplayer){
 			player2.update(0,0,0,0,false,player2.shootBool);
 			this.controlMultiplayer(stick,stick2);
 		}
@@ -298,7 +308,13 @@ Game.prototype.update = function(lvl){
 		
 		if(player.lives<=0){
 			pause = true;
-			this.overlayType = "lose";
+			if(multiplayer){
+				client.deathAlert();
+				//view opponent screen
+			}
+			//else{
+				this.overlayType = "lose";
+			//}
 		}
 		if(levelWin){
 			pause = true;
@@ -358,7 +374,7 @@ Game.prototype.update = function(lvl){
 	if(this.goMenu){
 		//backTrack.pause();
 		//backTrack.currentTime=0;
-		allowPlay = false;
+		multiplayer = false;
 		return "menu";
 	}
 	timer++;
@@ -488,7 +504,7 @@ Game.prototype.draw =function (){
   	//ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
 	pickUp.draw();
 	player.draw();
-	if(allowPlay){
+	if(multiplayer){
 		player2.draw();
 	}
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {

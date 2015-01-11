@@ -1,6 +1,7 @@
 <xmlTest>
 <txtHealth>Health: </txtHealth>
 <txtAmmo>Ammo:</txtAmmo>
+<playerDeathMsg>Teammate has fallen</playerDeathMsg>
 <tutorialMsg1>Touch the bottom right</tutorialMsg1>
 <tutorialMsg2>of the screen to rotate and shoot</tutorialMsg2>
 <tutorialMsg3>Touch the bottom left</tutorialMsg3>

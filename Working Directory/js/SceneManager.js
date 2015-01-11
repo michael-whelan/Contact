@@ -106,6 +106,7 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/Enemy.png");
 	assetManager.queueLoadImg("images/Enemy_Commander.png");
 	assetManager.queueLoadImg("images/character_05.png");
+	assetManager.queueLoadImg("images/character_dead.png");
 	assetManager.queueLoadImg("images/Bullet.png");
 	assetManager.queueLoadImg("images/GoTo.png");
 	assetManager.queueLoadImg("images/pause_menu.png");
@@ -164,6 +165,7 @@ SceneManager.prototype.setGameImages = function(){
 	imgBack = assetManager.getAsset("images/Back.png");
 	imgTutorialBack = assetManager.getAsset("images/Back_Tutorial.png");
 	imgPlayer = assetManager.getAsset("images/character_05.png");
+	imgPlayerDead = assetManager.getAsset("images/character_dead.png");
 	imgGrunt = assetManager.getAsset("images/Enemy.png");
 	imgComdr = assetManager.getAsset("images/Enemy_Commander.png");
 	imgViewRad = assetManager.getAsset("images/ViewRange.png");
@@ -245,8 +247,10 @@ SceneManager.prototype.gameLoop = function (){
 	//	console.log("current scene: "+ sc.gameScene);
 		loadedScenes.push(sc.gameScene);
 	}
+
 	window.requestAnimFrame(sc.gameLoop);
 }
+
 
 SceneManager.prototype.loadScene = function(state,scene){
 	loading = true;
