@@ -24,7 +24,7 @@ CollisionManager.prototype.update = function(){
 
 
 
-CollisionManager.prototype.collisionCall = function(enemyManager,player){
+CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManager){
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {
 		enemyManager.moveControl(j,this.circleOnCircle(player.radius,player.x,player.y,enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y),
 			player.x,player.y);
@@ -119,6 +119,15 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player){
     				j--;
     				
    				}*/
+			}
+		}
+	}
+
+	for(var i = 0;i< lvlManager.objects.length;++i){
+		for(var j = 0;j< enemyManager.enemy.length;++j){
+			if(this.circleOnCircle(enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
+				lvlManager.objects[i].width,lvlManager.objects[i].x,lvlManager.objects[i].y)){
+				enemyManager.enemy[j].collisionReaction(lvlManager.objects[i]);
 			}
 		}
 	}

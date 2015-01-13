@@ -102,19 +102,23 @@ function touchEnd(e){
 SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/Back.png");
 	assetManager.queueLoadImg("images/Back_Tutorial.png");
-	assetManager.queueLoadImg("images/ViewRange.png");
 	assetManager.queueLoadImg("images/Enemy.png");
 	assetManager.queueLoadImg("images/Enemy_Commander.png");
 	assetManager.queueLoadImg("images/character_05.png");
 	assetManager.queueLoadImg("images/character_dead.png");
 	assetManager.queueLoadImg("images/Bullet.png");
-	assetManager.queueLoadImg("images/GoTo.png");
 	assetManager.queueLoadImg("images/pause_menu.png");
 	assetManager.queueLoadImg("images/pause_button.png");
 	assetManager.queueLoadImg("images/reload_button.png");
 	assetManager.queueLoadImg("images/highlight.png");
 	assetManager.queueLoadImg("images/win_menu.png");
 	assetManager.queueLoadImg("images/lose_menu.png");
+	//temp images
+	assetManager.queueLoadImg("images/ViewRange.png");
+	assetManager.queueLoadImg("images/GoTo.png");
+	assetManager.queueLoadImg("images/circle.png");
+	assetManager.queueLoadImg("images/square.png");
+	//sounds
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.mp3");
@@ -168,15 +172,20 @@ SceneManager.prototype.setGameImages = function(){
 	imgPlayerDead = assetManager.getAsset("images/character_dead.png");
 	imgGrunt = assetManager.getAsset("images/Enemy.png");
 	imgComdr = assetManager.getAsset("images/Enemy_Commander.png");
-	imgViewRad = assetManager.getAsset("images/ViewRange.png");
+	
 	imgBullet = assetManager.getAsset("images/Bullet.png");
 	imgHighlight = assetManager.getAsset("images/highlight.png");
-	imgRadarPUp = assetManager.getAsset("images/GoTo.png");
+	
 	imgPauseMenu = assetManager.getAsset("images/pause_menu.png");
 	imgWinMenu= assetManager.getAsset("images/win_menu.png");
 	imgLoseMenu= assetManager.getAsset("images/lose_menu.png");
 	imgPauseBtn = assetManager.getAsset("images/pause_button.png");
 	imgReloadBtn = assetManager.getAsset("images/reload_button.png");
+	//temp images
+	imgRadarPUp = assetManager.getAsset("images/GoTo.png");
+	imgViewRad = assetManager.getAsset("images/ViewRange.png");
+	imgCircle = assetManager.getAsset("images/circle.png");
+	imgSquare = assetManager.getAsset("images/square.png");
 	loadedImages = true;
 }
 

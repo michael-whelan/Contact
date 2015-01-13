@@ -12,7 +12,7 @@ var STARTING_GAME="1";
 function Client(){
   var that=this;
 
-  var host='192.168.15.6';
+  var host='149.153.102.45';
   var port=8080;
 
 

@@ -80,7 +80,7 @@ class MessageHandler:
 		elif type == "killEnemy":
 			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "playerDeath":
-			print('Number Died: '+numberOfDeaths)
+			#print('Number Died: '+numberOfDeaths)
 			#numberOfDeaths+=1
 			#if(numberOfDeaths==2):
 			#	self.sendToAll("server","lose","gameover")

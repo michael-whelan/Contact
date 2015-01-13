@@ -9,6 +9,7 @@ function LevelManager (){
 	this.cellHeight =650;
 	this.cellArray = new Array();
 	this.numCells=0;
+	this.objects = new Array();
 
 }
 
@@ -18,7 +19,7 @@ LevelManager.prototype.update = function() {
 
 LevelManager.prototype.setLevel = function(lvl){
 	this.currentLevel = lvl;
-		this.numCells = (2000/this.cellWidth) * (1300/this.cellHeight);
+	this.numCells = (2000/this.cellWidth) * (1300/this.cellHeight);
 	//console.log("numcells = ", (2000/this.cellWidth), (1300/this.cellHeight));
 	for(var i = 0; i < this.numCells; ++i){
 		this.cellArray[i] = new Array();
@@ -27,7 +28,7 @@ LevelManager.prototype.setLevel = function(lvl){
 
 LevelManager.prototype.mapSetup = function(){
 	if(this.currentLevel === "level1"){
-		var x = -(300 + (mapWidth-1450));var y = -(200+mapHeight-845);
+		/*var x = -(300 + (mapWidth-1450));var y = -(200+mapHeight-845);
 		var n = 0;
 		for(var i = 0; i < (2000/this.cellWidth); i++){		
 			for(var j = 0; j < (1300/this.cellHeight); j++){
@@ -36,7 +37,10 @@ LevelManager.prototype.mapSetup = function(){
 				//console.log(this.cellArray[n]);
 				n++;
 			}
-		}
+		}*/
+		var object = new Obstacle();
+		object.set(150,250,100,100,"square");
+		this.objects.push(object);
 	}
 }
 
@@ -76,6 +80,10 @@ LevelManager.prototype.draw = function() {
 	}
 	else if(this.currentLevel === "level1"){
 		ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
+
+		for(var i =0; i < this.objects.length; ++i){
+			this.objects[i].draw();
+		}
 		/*for(var i = 0; i < this.numCells; ++i){
 			ctx.drawImage(imgHighlight,this.cellArray[i][0],this.cellArray[i][1],this.cellWidth,this.cellHeight);
 		}*/

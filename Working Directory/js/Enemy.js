@@ -62,6 +62,21 @@ Enemy.prototype.targetPos = function(px,py){
 	this.targetPosY = py;
 }
 
+Enemy.prototype.collisionReaction = function(obj){
+	if(this.x < obj.x){
+		this.targetPosX = obj.n1X;
+	}
+	else{
+		this.targetPosX = obj.n2X;	
+	}
+	if(this.targetPosY < obj.y){
+		this.targetPosy = obj.n1Y;	
+	}
+	else{
+		this.targetPosY = obj.n2Y;
+	}
+	this.state = fsm.stateControl(this.state,"hearShot");
+}
 
 Enemy.prototype.update = function(){
  	if(this.alive){

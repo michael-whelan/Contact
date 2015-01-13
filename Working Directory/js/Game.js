@@ -172,7 +172,6 @@ Game.prototype.playBackgroundLoop = function(){
 };
 
 function getDistance(x1,y1,x2,y2){
-//	console.log(x1,y1,x2,y2);
 	var xs = 0;
   	var ys = 0;
  
@@ -304,7 +303,7 @@ Game.prototype.update = function(lvl){
 
 		enemyManager.update();
 		player.allowAimAssist = false;
-		collisionManager.collisionCall(enemyManager,player);
+		collisionManager.collisionCall(enemyManager,player,lvlManager);
 		
 		if(player.lives<=0){
 			pause = true;
