@@ -12,7 +12,7 @@ var STARTING_GAME="1";
 function Client(){
   var that=this;
 
-  var host='192.168.15.2';
+  var host='192.168.15.6';
   var port=8080;
 
 
@@ -21,7 +21,7 @@ function Client(){
 
   this.ws.onmessage = function(evt) {that.handleMessage(evt); };
 
-  this.ws.onclose = function(evt) { console.log("Connection close"); };
+  this.ws.onclose = function(evt) { console.log("Connection close"); game.goMenu = true;};
 
   this.ws.onopen = function(evt) { console.log('open connection'); };         
 }
@@ -113,8 +113,8 @@ Client.prototype.handleMessage = function(evt){
     textManager.playerDied = true;
     player2.dead = true;
   }
-  else if(mess.type ==="win")
+  else if(mess.type ==="lose")
   {
-    game.setWin(mess.data);
+    console.log(mess.data);
   }
 }
