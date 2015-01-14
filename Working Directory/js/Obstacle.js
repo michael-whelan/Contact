@@ -19,8 +19,8 @@ Obstacle.prototype.set = function(x,y,w,h,t){
 	this.obj_id = t;
 
 
-	this.n1X = x-50; this.n1Y = y - 50;
-	this.n2X = x+w+50; this.n2Y = y +w +50;
+	this.n1X = x-80; this.n1Y = y - 80;
+	this.n2X = x+w+80; this.n2Y = y +w +80;
 }
 
 Obstacle.prototype.update = function(){
@@ -40,5 +40,3 @@ Obstacle.prototype.draw = function(){
 	ctx.drawImage(imgCircle,this.n2X, this.n2Y, 10, 10);
 	ctx.drawImage(imgCircle,this.n1X, this.n2Y, 10, 10);
 }
-
-

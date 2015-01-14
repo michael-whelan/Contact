@@ -8,7 +8,8 @@ moveToPos = when moving to a targeted location ->Extra time(approximated pos)
 EVENTS:
 seeTarget = when the player is within view
 complete = whenever a task/ action is complete the complete event is triggered
-
+getScared = this only applies to the grunts and not the squad leaders.
+obstacle = this is when they collide with a wall
 Extra/Secondary to the other events->hearShot = when a player fires a shot the enemies alive on the map will be alerted to the location ofthe sound
 */
 var FSM=function (){
@@ -28,6 +29,9 @@ FSM.prototype.stateControl = function(currState, evt){
 		else if(evt === "getScared"){//if the player is sighted
 			return "scared";//attack the player
 		}
+		else if(evt === "obstacle"){//if the player is sighted
+			return "followPath";//attack the player
+		}
 		else{
 			return "wander";//without the interrupt just continue idle
 		}
@@ -46,12 +50,18 @@ FSM.prototype.stateControl = function(currState, evt){
 		else if(evt === "getScared"){//if the player is sighted
 			return "scared";//attack the player
 		}
+		else if(evt === "obstacle"){//if the player is sighted
+			return "followPath";//attack the player
+		}
 		return "moveToPos";
 	}
 
 	if(currState ==="attack"){
 		if(evt === "seeTarget"){//if the player is sighted
 			return "attack";
+		}
+		else if(evt === "obstacle"){//if the player is sighted
+			return "followPath";//attack the player
 		}
 		else if(evt === "getScared"){//if the player is sighted
 			return "scared";//attack the player
@@ -61,6 +71,17 @@ FSM.prototype.stateControl = function(currState, evt){
 	if(currState==="scared"){
 		return "scared";
 	}
-
+	if(currState==="followPath"){
+		if(evt === "seeTarget"){//if the player is sighted
+			return "attack";
+		}
+		else if(evt === "hearShot"){//interrupted by shot taken 
+			return "moveToPos";//tells the entity to change states to the appropriate
+		}
+		else if(evt === "getScared"){//if the player is sighted
+			return "scared";//attack the player
+		}
+		return "followPath";
+	}
 	return "wander";
 }

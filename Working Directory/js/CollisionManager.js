@@ -64,7 +64,7 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 		for(var i = 0; i < enemyManager.enemy[j].bullets.length; ++i){
 			if(this.circleOnCircle(enemyManager.enemy[j].bullets[i].radius,enemyManager.enemy[j].bullets[i].x,
 				enemyManager.enemy[j].bullets[i].y,player.radius,player.x,player.y) && player.flash === false){
-				player.health-=1;
+				//player.health-=1;
 				loseHealthSnd.play();
 				player.lastHitTime = Date.now();
 				enemyManager.enemy[j].bullets[i].kill();
@@ -126,7 +126,7 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 	for(var i = 0;i< lvlManager.objects.length;++i){
 		for(var j = 0;j< enemyManager.enemy.length;++j){
 			if(this.circleOnCircle(enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-				lvlManager.objects[i].width,lvlManager.objects[i].x,lvlManager.objects[i].y)){
+				lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
 				enemyManager.enemy[j].collisionReaction(lvlManager.objects[i]);
 			}
 		}

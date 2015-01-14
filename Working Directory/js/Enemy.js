@@ -29,6 +29,8 @@ var Enemy=function (rank){
 	this.bullets = [];
 	this.reset();
 
+	this.nodeArray = new Array();
+
 	//triangle variables
 	this.aX=0,this.aY=0,this.bX=0,this.bY=0,this.cX=0,this.cY=0;
 };
@@ -52,7 +54,7 @@ Enemy.prototype.spawnEnemy = function(x,y){
 	this.alive = true;
 	this.angle = Math.random()*(8-1) +1;
 	//Math.floor(Math.random()*(this.max-this.min) +this.min);
-	this.x =x;
+	this.x = x;
 	this.y = y;
 }
 
@@ -63,19 +65,48 @@ Enemy.prototype.targetPos = function(px,py){
 }
 
 Enemy.prototype.collisionReaction = function(obj){
-	if(this.x < obj.x){
+	/*var tempArr = this.nearestNode(this.x,this.y,obj);
+	var tempArr2 = this.nearestNode(this.targetPosX,this.targetPosY,obj);
+	var tempArr3 = new Array();
+	tempArr3.push(this.targetPosX);
+	tempArr3.push(this.targetPosY);
+
+	this.nodeArray.push(tempArr);
+	this.nodeArray.push(tempArr2);
+	this.nodeArray.push(tempArr3);
+	this.state = fsm.stateControl(this.state,"obstacle");*/
+	if(this.x < obj.x+obj.width/2){
 		this.targetPosX = obj.n1X;
 	}
 	else{
 		this.targetPosX = obj.n2X;	
 	}
-	if(this.targetPosY < obj.y){
+	if(this.targetPosY < obj.y+obj.height/2){
 		this.targetPosy = obj.n1Y;	
 	}
 	else{
 		this.targetPosY = obj.n2Y;
 	}
 	this.state = fsm.stateControl(this.state,"hearShot");
+	
+}
+
+Enemy.prototype.nearestNode = function(x,y,obj){
+	var x,y;
+	if(this.x < obj.x+obj.width/2){
+		this.targetPosX = obj.n1X;
+	}
+	else{
+		this.targetPosX = obj.n2X;	
+	}
+	if(this.targetPosY < obj.y+obj.height/2){
+		this.targetPosy = obj.n1Y;	
+	}
+	else{
+		this.targetPosY = obj.n2Y;
+	}
+	var ar = [x,y];
+	return ar;
 }
 
 Enemy.prototype.update = function(){
@@ -91,6 +122,9 @@ Enemy.prototype.update = function(){
 		//State Control
 		if(this.state === "wander"){
 			this.moveBasic();
+		}
+		else if(this.state === "followPath"){
+			this.moveAlongPath();
 		}
 		else if(this.state === "attack"){
 			this.drawLast = true;//shows the dot which represents the enemies view of the player.
@@ -182,6 +216,7 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
 }
 
 
+
 Enemy.prototype.turnTowardPlayer = function(){
 	if (this.alive == true){
 		if(this.rotateToDirection(this.targetPosX,this.targetPosY,0.03,0.04)){
@@ -248,6 +283,7 @@ Enemy.prototype.rotateToDirection = function(targX,targY,speed,leeWay){
 	}
 	return false;
 }
+
 Enemy.prototype.rotateToDirection2 = function(targX,targY,speed,leeWay){
 	var posDifferenceX = targX - this.x; // finds the vector for the difference in positions
 	var posDifferenceY = targY - this.y;
@@ -280,6 +316,14 @@ Enemy.prototype.goToPos = function(xPos,yPos){
 	if(this.closeToPos(xPos,yPos)){
 		this.state = fsm.stateControl(this.state,"complete");
 		this.drawLast = false;
+		return 1;
+	}
+	return 0;
+}
+
+Enemy.prototype.moveAlongPath = function(){
+	if(this.goToPos(this.nodeArray[0][0],this.nodeArray[0][1]) === 1){
+		this.nodeArray.splice(0,1);
 	}
 }
 

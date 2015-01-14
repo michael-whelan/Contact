@@ -70,7 +70,6 @@ EnemyManager.prototype.setEnemyPos = function(arr){
 
 		}
 	}
-
 	console.log("enemy Info: "+arr);
 }
 
@@ -93,7 +92,7 @@ EnemyManager.prototype.update = function(lvlMan){
 	this.spawnTimer++;
 	//controls the number of swarms and the size of each and when they are spawned.
 	if(this.spawnTimer> 150 && this.enemySwarms>0&&this.enemy.length === 0){
-		this.spawnSwarm(5,5,lvlMan);
+		this.spawnSwarm(1,1,lvlMan);//min,max
 		this.enemySwarms--;
 		this.spawnTimer=0;
 		this.swarmsSurvived++;
