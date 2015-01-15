@@ -201,6 +201,10 @@ EnemyManager.prototype.debugDraw =function(){
 	ctx.drawImage(imgViewRad, this.spawnPos2[0]-this.spawnRad,this.spawnPos2[1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
 	ctx.drawImage(imgViewRad, this.spawnPos3[0]-this.spawnRad,this.spawnPos3[1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
 	ctx.drawImage(imgViewRad, this.spawnPos4[0]-this.spawnRad,this.spawnPos4[1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
+
+	for(var i = 0; i< this.enemy.length; ++i){
+		this.enemy[i].debugDraw();
+	}
 }
 
 

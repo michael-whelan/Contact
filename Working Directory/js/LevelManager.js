@@ -39,7 +39,7 @@ LevelManager.prototype.mapSetup = function(){
 			}
 		}*/
 		var object = new Obstacle();
-		object.set(150,250,100,100,"square");
+		object.set(150,100,100,100,"square");
 		this.objects.push(object);
 	}
 }
@@ -73,7 +73,11 @@ LevelManager.prototype.getNextLevel = function(){
 	}
 	return this.currentLevel;
 }
-
+LevelManager.prototype.debugDraw = function() {
+	for(var i =0; i < this.objects.length; ++i){
+		this.objects[i].debugDraw();
+	}
+}
 LevelManager.prototype.draw = function() {
 	if(this.currentLevel ==="tutorial"){
 		ctx.drawImage(imgTutorialBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);

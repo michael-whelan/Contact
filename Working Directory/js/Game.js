@@ -423,7 +423,9 @@ Game.prototype.enemyToPlayerLine = function(j){
 	}
 	return false;
 }
-
+Game.prototype.getAngle = function(x,x2,y,y2){
+	return Math.atan2(y2-y,x2-x);//*180/Math.PI;
+}
 
 Game.prototype.debugDraw = function(){
 	ctx.beginPath();
@@ -440,15 +442,68 @@ Game.prototype.debugDraw = function(){
 		ctx.beginPath();
 		ctx.moveTo(player.x,player.y);
 		ctx.lineTo(enemyManager.enemy[i].x,enemyManager.enemy[i].y);
-		//console.log(player.getAngle(player.x,enemyManager.enemy[i].x,player.y,enemyManager.enemy[i].y));
+		var x = enemyManager.enemy[i].x;
+		var y = enemyManager.enemy[i].y;
 		ctx.stroke();
+		var check1 = this.getAngle(x,player.x,y,player.y);
+		var check2 = 0;
+		var check3=0;
+		var angCon =0;
+		for(var j =0; j<lvlManager.objects.length;++j){
+			var temp1,temp2,num1,num2;
+			angCon = this.getAngle(x,lvlManager.objects[j].x3,y,lvlManager.objects[j].y3);
+			var ang = new Array();
+			temp1 = temp2 = angCon;
+			ang[0] = this.getAngle(x,lvlManager.objects[j].x1,y,lvlManager.objects[j].y1);
+			ang[1] = this.getAngle(x,lvlManager.objects[j].x2,y,lvlManager.objects[j].y1);
+			ang[2] = this.getAngle(x,lvlManager.objects[j].x2,y,lvlManager.objects[j].y2);
+			ang[3] = this.getAngle(x,lvlManager.objects[j].x1,y,lvlManager.objects[j].y2);
 
-		enemyManager.enemy[i].debugDraw();
+			for(var i =0;i<4;++i){
+				if(Math.abs(temp1 - angCon) < Math.abs(ang[i]-angCon)){
+					temp2 = temp1;
+					num2 = num1;
+					temp1 = ang[i];
+					num1 = i;
+				}
+			}
+			check2 = temp1;
+			check3 = temp2;
+		}
+		if(Math.abs(check1-angCon)<Math.abs(check2-angCon)&&Math.abs(check1-angCon)<Math.abs(check3-angCon)){
+			console.log("hidden");
+		}
 
-		if(this.enemyToPlayerLine(i)){
+		if(num1 ===0|| num2 ===0){
+			ctx.beginPath();
+			ctx.moveTo(x,y);
+			ctx.lineTo(lvlManager.objects[0].x1,lvlManager.objects[0].y1);
+			ctx.stroke();
+		}
+		if(num1 ===1||num2 ===1){
+			ctx.beginPath();
+			ctx.moveTo(x,y);
+			ctx.lineTo(lvlManager.objects[0].x2,lvlManager.objects[0].y1);
+			ctx.stroke();
+		}
+		if(num1 ===2||num2 ===2){
+			ctx.beginPath();
+			ctx.moveTo(x,y);
+			ctx.lineTo(lvlManager.objects[0].x2,lvlManager.objects[0].y2);
+			ctx.stroke();
+		}
+		if(num1 ===3||num2 ===3){
+			ctx.beginPath();
+			ctx.moveTo(x,y);
+			ctx.lineTo(lvlManager.objects[0].x1,lvlManager.objects[0].y2);
+			ctx.stroke();
+		}	
+
+		//if(this.enemyToPlayerLine(i)){
     		//ctx.drawImage(imgViewRad,enemyManager.enemy[i].interX , enemyManager.enemy[i].interY, 50, 50);
-    	}
+    	//}
     }
+      	lvlManager.debugDraw();
 }
 
 Game.prototype.radarDraw = function(){

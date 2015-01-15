@@ -86,7 +86,9 @@ Menu.prototype.mouseDown= function(e){
 		}
 		else if(e.clientX >  this.lvl1X+300  && e.clientX <this.lvl1X+700&&e.clientY>300&&e.clientY<500){//770,190,955,375
 			this.returnVals = ["gameplay","level1"];
-			client.setLevel("level1");
+			if(multiplayer){
+				client.setLevel("level1");
+			}
 		}
 		else if(e.clientX >  this.lvlTutX+300  && e.clientX <this.lvlTutX+700&&e.clientY>300&&e.clientY<500){//770,190,955,375
 			this.returnVals = ["gameplay","tutorial"];

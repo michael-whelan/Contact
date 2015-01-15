@@ -73,13 +73,16 @@ FSM.prototype.stateControl = function(currState, evt){
 	}
 	if(currState==="followPath"){
 		if(evt === "seeTarget"){//if the player is sighted
-			return "attack";
+		//	return "attack";
 		}
 		else if(evt === "hearShot"){//interrupted by shot taken 
 			return "moveToPos";//tells the entity to change states to the appropriate
 		}
 		else if(evt === "getScared"){//if the player is sighted
 			return "scared";//attack the player
+		}
+		else if(evt === "done"){//if the player is sighted
+			return "wander";//attack the player
 		}
 		return "followPath";
 	}

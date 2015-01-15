@@ -65,17 +65,20 @@ Enemy.prototype.targetPos = function(px,py){
 }
 
 Enemy.prototype.collisionReaction = function(obj){
-	/*var tempArr = this.nearestNode(this.x,this.y,obj);
-	var tempArr2 = this.nearestNode(this.targetPosX,this.targetPosY,obj);
-	var tempArr3 = new Array();
-	tempArr3.push(this.targetPosX);
-	tempArr3.push(this.targetPosY);
+	if(this.state !="followPath" && this.nodeArray.length === 0){
+		var tempArr = this.nearestNode(this.x,this.y,obj);
+		var tempArr2 = this.nearestNode(this.targetPosX,this.targetPosY,obj);
+		var tempArr3 = new Array();
+		tempArr3.push(this.targetPosX);
+		tempArr3.push(this.targetPosY);
 
-	this.nodeArray.push(tempArr);
-	this.nodeArray.push(tempArr2);
-	this.nodeArray.push(tempArr3);
-	this.state = fsm.stateControl(this.state,"obstacle");*/
-	if(this.x < obj.x+obj.width/2){
+		this.nodeArray.push(tempArr);
+		this.nodeArray.push(tempArr2);
+		this.nodeArray.push(tempArr3);
+		console.log(this.nodeArray);
+		this.state = fsm.stateControl(this.state,"obstacle");
+	}
+	/*if(this.x < obj.x+obj.width/2){
 		this.targetPosX = obj.n1X;
 	}
 	else{
@@ -87,23 +90,23 @@ Enemy.prototype.collisionReaction = function(obj){
 	else{
 		this.targetPosY = obj.n2Y;
 	}
-	this.state = fsm.stateControl(this.state,"hearShot");
+	this.state = fsm.stateControl(this.state,"hearShot");*/
 	
 }
 
 Enemy.prototype.nearestNode = function(x,y,obj){
 	var x,y;
 	if(this.x < obj.x+obj.width/2){
-		this.targetPosX = obj.n1X;
+		x = obj.n1X;
 	}
 	else{
-		this.targetPosX = obj.n2X;	
+		x = obj.n2X;	
 	}
 	if(this.targetPosY < obj.y+obj.height/2){
-		this.targetPosy = obj.n1Y;	
+		y= obj.n1Y;	
 	}
 	else{
-		this.targetPosY = obj.n2Y;
+		y = obj.n2Y;
 	}
 	var ar = [x,y];
 	return ar;
@@ -116,6 +119,10 @@ Enemy.prototype.update = function(){
 		if(this.angle<0){
 		this.angle = 6;
 		}
+		if(this.state!="followPath"){
+			this.nodeArray.length = 0;
+		}
+
 		if(this.angle>6.3){
 			this.angle = 0;
 		}
@@ -187,7 +194,6 @@ Enemy.prototype.debugDraw = function(){
 
 Enemy.prototype.draw = function(){
 	if(this.alive){
-		
 		ctx.save();//save the state of canvas before rotation wrecks the place.
 		for(var i = 0; i <this.bullets.length; i++){
 			this.bullets[i].draw();
@@ -322,8 +328,13 @@ Enemy.prototype.goToPos = function(xPos,yPos){
 }
 
 Enemy.prototype.moveAlongPath = function(){
-	if(this.goToPos(this.nodeArray[0][0],this.nodeArray[0][1]) === 1){
-		this.nodeArray.splice(0,1);
+	try{
+		if(this.goToPos(this.nodeArray[0][0],this.nodeArray[0][1]) === 1){
+			this.nodeArray.splice(0,1);
+		}
+	}
+	catch(err){
+		this.state = fsm.stateControl(this.state,"done");
 	}
 }
 
