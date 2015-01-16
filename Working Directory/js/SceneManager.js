@@ -135,7 +135,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/joinMultiplayerBtn.png");
 	assetManager.queueLoadImg("images/stash_temp.png");
 	assetManager.queueLoadImg("images/choose_temp.png");
-	assetManager.queueLoadImg("images/armory_temp.png");
+	assetManager.queueLoadImg("images/armoryScreen.png");
 	assetManager.queueLoadImg("images/exit_temp.png");
 }
 
@@ -153,7 +153,7 @@ SceneManager.prototype.setTitleImages = function(){
 	imgJoinServer = assetManager.getAsset("images/joinMultiplayerBtn.png");
 	imgStashBack = assetManager.getAsset("images/stash_temp.png");
 	imgCustomBack = assetManager.getAsset("images/choose_temp.png");
-	imgArmoryBack = assetManager.getAsset("images/armory_temp.png");
+	imgArmoryBack = assetManager.getAsset("images/armoryScreen.png");
 	imgExitPrompt = assetManager.getAsset("images/exit_temp.png");
 	loadedImages=true;
 }
