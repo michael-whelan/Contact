@@ -8,8 +8,8 @@ var Enemy=function (rank){
 	this.interX=0;//used to display thir position on the screen radar.
 	this.centreX =0;
 	this.centreY =0;
-	this.width = 50;
-	this.height = 50;
+	this.width = 100;
+	this.height = 80;
 	this.angle = 2.87;
 	this.xVel = 0;
 	this.yVel = 0;
@@ -42,6 +42,7 @@ Enemy.prototype.reset = function(){
 	this.targetPosY =0;
 	this.lastX;
 	this.lastY;
+	this.shot  = false;
 	this.timeSinceDirectChange = 0;
 	this.x = 200;
 	this.y = 100;
@@ -75,7 +76,7 @@ Enemy.prototype.collisionReaction = function(obj){
 		this.nodeArray.push(tempArr);
 		this.nodeArray.push(tempArr2);
 		this.nodeArray.push(tempArr3);
-		console.log(this.nodeArray);
+		//console.log(this.nodeArray);
 		this.state = fsm.stateControl(this.state,"obstacle");
 	}
 	/*if(this.x < obj.x+obj.width/2){
@@ -246,6 +247,7 @@ Enemy.prototype.reload = function(){
 
 Enemy.prototype.shoot = function(){
 	if(this.numBullets>0){
+			this.shot = true;
 			var bullet = new Bullet();
 			bullet.spawnBullet(this.xDirect,this.yDirect,this.x,this.y,this.angle);
 			this.shot = true;

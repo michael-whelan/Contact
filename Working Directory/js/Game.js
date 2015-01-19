@@ -412,13 +412,13 @@ function calculateFps(now) {
 
 Game.prototype.enemyToPlayerLine = function(j){
 	if((lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-		innerX1,innerY1,innerX2,innerY1,j))||
+		innerX1,innerY1,innerX2,innerY1,j,true))||
 		(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-		innerX2,innerY1,innerX2,innerY2,j))||
+		innerX2,innerY1,innerX2,innerY2,j,true))||
 		(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-		innerX2,innerY2,innerX1,innerY2,j))||
+		innerX2,innerY2,innerX1,innerY2,j,true))||
 		(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-		innerX1,innerY2,innerX1,innerY1,j))){
+		innerX1,innerY2,innerX1,innerY1,j,true))){
 		return true;
 	}
 	return false;
@@ -442,10 +442,11 @@ Game.prototype.debugDraw = function(){
 		ctx.beginPath();
 		ctx.moveTo(player.x,player.y);
 		ctx.lineTo(enemyManager.enemy[i].x,enemyManager.enemy[i].y);
-		var x = enemyManager.enemy[i].x;
-		var y = enemyManager.enemy[i].y;
+		//var x = enemyManager.enemy[i].x;
+		//var y = enemyManager.enemy[i].y;
 		ctx.stroke();
-		var check1 = this.getAngle(x,player.x,y,player.y);
+		
+	/*	var check1 = this.getAngle(x,player.x,y,player.y);
 		var check2 = 0;
 		var check3=0;
 		var angCon =0;
@@ -497,7 +498,7 @@ Game.prototype.debugDraw = function(){
 			ctx.moveTo(x,y);
 			ctx.lineTo(lvlManager.objects[0].x1,lvlManager.objects[0].y2);
 			ctx.stroke();
-		}	
+		}	*/
 
 		//if(this.enemyToPlayerLine(i)){
     		//ctx.drawImage(imgViewRad,enemyManager.enemy[i].interX , enemyManager.enemy[i].interY, 50, 50);
@@ -600,7 +601,7 @@ function clamp(value, min, max){//used to clamp the cam if the player gets near 
     return value;
 }
 
-function lineIntersect(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y,enemy_id) {
+function lineIntersect(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y,enemy_id,b) {
  
     var s1_x, s1_y, s2_x, s2_y;
     s1_x = p1_x - p0_x;
@@ -617,8 +618,9 @@ function lineIntersect(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y,enemy_id) 
     var y=((p0_x*p1_y-p0_y*p1_x)*(p2_y-p3_y)-(p0_y-p1_y)*(p2_x*p3_y-p2_y*p3_x))/((p0_x-p1_x)*(p2_y-p3_y)-(p0_y-p1_y)*(p2_x-p3_x));
     if (s >= 0 && s <= 1 && t >= 0 && t <= 1){
         // Collision detected
+        if(b){
         enemyManager.enemy[enemy_id].interX = x-25;
-        enemyManager.enemy[enemy_id].interY = y-25;
+        enemyManager.enemy[enemy_id].interY = y-25;}
         return true;
     }
     return false; // No collision

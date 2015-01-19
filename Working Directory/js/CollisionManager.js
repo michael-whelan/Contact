@@ -28,12 +28,34 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {
 		enemyManager.moveControl(j,this.circleOnCircle(player.radius,player.x,player.y,enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y),
 			player.x,player.y);
-		
+		if(enemyManager.enemy[j].shot){//hear each others shots
+			enemyManager.hearShot(enemyManager.enemy[j].x,enemyManager.enemy[j].y);
+			enemyManager.enemy[j].shot = false;
+		}
 		if(this.circleOnTriangle(player.x,player.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
 		enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
 		enemyManager.enemy[j].cX,enemyManager.enemy[j].cY)){
-
-			enemyManager.moveControl(j,true,player.x,player.y);
+			for(var i =0; i<lvlManager.objects.length;++i){//crap and messy, needs to be made cleaner
+				if(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
+					lvlManager.objects[i].x1,lvlManager.objects[i].y1,lvlManager.objects[i].x1,lvlManager.objects[i].y2,i,false)){
+					//console.log("hidden");
+				}
+				else if(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
+					lvlManager.objects[i].x1,lvlManager.objects[i].y1,lvlManager.objects[i].x2,lvlManager.objects[i].y2,i,false)){
+					//console.log("hidden");
+				}
+				else if(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
+					lvlManager.objects[i].x2,lvlManager.objects[i].y1,lvlManager.objects[i].x2,lvlManager.objects[i].y2,i,false)){
+					//console.log("hidden");
+				}
+				else if(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
+					lvlManager.objects[i].x2,lvlManager.objects[i].y2,lvlManager.objects[i].x1,lvlManager.objects[i].y2,i,false)){
+					//console.log("hidden");
+				}
+				else{
+					enemyManager.moveControl(j,true,player.x,player.y);
+				}
+			}
 		}
 		else if(this.circleOnTriangle(player2.x,player2.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
 		enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
