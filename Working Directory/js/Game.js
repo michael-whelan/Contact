@@ -287,6 +287,7 @@ Game.prototype.controlMultiplayer = function(stick,stick2){
 Game.prototype.update = function(lvl){
 	if(!pause){
 		this.overlayed = false;
+		collisionManager.collisionCall(enemyManager,player,lvlManager);
 		for (var i = 0; i < sticks.length; ++i) {
 			sticks[i].update();
 		}
@@ -303,7 +304,7 @@ Game.prototype.update = function(lvl){
 
 		enemyManager.update();
 		player.allowAimAssist = false;
-		collisionManager.collisionCall(enemyManager,player,lvlManager);
+		
 		
 		if(player.lives<=0){
 			pause = true;

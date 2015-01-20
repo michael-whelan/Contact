@@ -2,18 +2,6 @@
 
 var CollisionManager=function ()
 {
-	this.x = 100;
-	this.y = 100;
-	this.width = 50;
-	this.height = 50;
-	this.angle = -2.87;
-	this.xVel = 0;
-	this.yVel = 0;
-	this.alive = false;
-	this.xDirect = 0;
-	this.yDirect = 0;
-	this.speed = 5;
-	//this.timeOfBirth = 0;
 };
 
 
@@ -151,6 +139,13 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 				lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
 				enemyManager.enemy[j].collisionReaction(lvlManager.objects[i]);
 			}
+		}
+		if(this.circleOnCircle(player.radius, player.x,player.y,
+			lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
+			//console.log(player.xVel,player.yVel);
+			//player.xVel*=-1;
+			//player.yVel*=-1;
+			//player.speed *=-1;
 		}
 	}
 }
