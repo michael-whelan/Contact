@@ -66,7 +66,7 @@ FSM.prototype.stateControl = function(currState, evt){
 		else if(evt === "getScared"){//if the player is sighted
 			return "scared";//attack the player
 		}
-			return "moveToPos";
+			return "attack";
 	}
 	if(currState==="scared"){
 		return "scared";

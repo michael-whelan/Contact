@@ -139,6 +139,13 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 				lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
 				enemyManager.enemy[j].collisionReaction(lvlManager.objects[i]);
 			}
+			for(var k = 0;k<enemyManager.enemy[j].bullets.length; ++k){
+				if(this.circleOnCircle(enemyManager.enemy[j].bullets[k].radius,enemyManager.enemy[j].bullets[k].x,enemyManager.enemy[j].bullets[k].y,
+					lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
+					enemyManager.enemy[j].bullets[k].kill();
+				}
+			}
+
 		}
 		if(this.circleOnCircle(player.radius, player.x,player.y,
 			lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
@@ -146,6 +153,13 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 			//player.xVel*=-1;
 			//player.yVel*=-1;
 			//player.speed *=-1;
+		}
+
+		for(var j =0; j<player.bullets.length; ++j){
+			if(this.circleOnCircle(player.bullets[j].radius,player.bullets[j].x,player.bullets[j].y,
+				lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
+				player.bullets[j].kill();
+			}
 		}
 	}
 }

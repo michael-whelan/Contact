@@ -206,6 +206,9 @@ SceneManager.prototype.loadScreen = function(){
 SceneManager.prototype.gameLoop = function (){
    	var GAME_RUNNING=0;
    	//this.update();
+   	window.onerror = function (errorMsg, url, lineNumber) {
+    alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
+}
 	if(loadedSounds &&loadedImages){
 			console.log("Load Time ",Date.now()-timeSpent);
    			loading = false;
@@ -304,10 +307,10 @@ SceneManager.prototype.loadScene = function(state,scene){
 			assetManager.loadLvl1Images(function() {
     			sc.setGameImages()
 			});
-			loadedSounds = true;
-			//assetManager.loadLvl1Sounds(function() {
-    		//	sc.setGameSounds()
-			//});
+			//loadedSounds = true;
+			assetManager.loadLvl1Sounds(function() {
+    			sc.setGameSounds()
+			});
 
 		//}
 	}

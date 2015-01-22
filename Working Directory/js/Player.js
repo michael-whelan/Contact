@@ -223,8 +223,7 @@ Player.prototype.controller = function(b1,b2){
 	}
 	else{
 
-		this.xVel = 0;
-		this.yVel = 0;
+		
 	}
 }
 
@@ -323,6 +322,9 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 
 	this.centreX = this.x+this.width/2;
 	this.centreY = this.y+this.height/2;
+
+	this.xVel = 0;
+		this.yVel = 0;
 }
 
 Player.prototype.debugDraw = function(){
