@@ -16,10 +16,10 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {
 		enemyManager.moveControl(j,this.circleOnCircle(player.radius,player.x,player.y,enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y),
 			player.x,player.y);
-		if(enemyManager.enemy[j].shot){//hear each others shots
-			enemyManager.hearShot(enemyManager.enemy[j].x,enemyManager.enemy[j].y);
-			enemyManager.enemy[j].shot = false;
-		}
+		//if(enemyManager.enemy[j].shot){//hear each others shots
+			//enemyManager.hearShot(enemyManager.enemy[j].x,enemyManager.enemy[j].y);
+			//enemyManager.enemy[j].shot = false;
+		//}
 		if(this.circleOnTriangle(player.x,player.y,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
 		enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
 		enemyManager.enemy[j].cX,enemyManager.enemy[j].cY)){
@@ -68,6 +68,29 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 				player2.shot = false;
 			}
 		}	
+
+		for(var i =0; i<lvlManager.objects.length;++i){//crap and messy, needs to be made cleaner//temp
+			if(this.circleOnTriangle(lvlManager.objects[i].x1,lvlManager.objects[i].y1,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
+			enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
+			enemyManager.enemy[j].cX,enemyManager.enemy[j].cY)){
+				enemyManager.enemy[j].angle+=1;
+			}
+			else if(this.circleOnTriangle(lvlManager.objects[i].x2,lvlManager.objects[i].y1,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
+			enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
+			enemyManager.enemy[j].cX,enemyManager.enemy[j].cY)){
+				enemyManager.enemy[j].angle+=1;	
+			}
+			else if(this.circleOnTriangle(lvlManager.objects[i].x2,lvlManager.objects[i].y2,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
+			enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
+			enemyManager.enemy[j].cX,enemyManager.enemy[j].cY)){
+				enemyManager.enemy[j].angle+=1;
+			}
+			else if(this.circleOnTriangle(lvlManager.objects[i].x1,lvlManager.objects[i].y2,enemyManager.enemy[j].aX,enemyManager.enemy[j].aY,
+			enemyManager.enemy[j].bX,enemyManager.enemy[j].bY,
+			enemyManager.enemy[j].cX,enemyManager.enemy[j].cY)){
+				enemyManager.enemy[j].angle+=1;
+			}
+		}
 	}
 	
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {
@@ -150,16 +173,20 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 		if(this.circleOnCircle(player.radius, player.x,player.y,
 			lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
 			//console.log(player.xVel,player.yVel);
-			//player.xVel*=-1;
-			//player.yVel*=-1;
-			//player.speed *=-1;
-		}
+			player.x = player.oldX;
+			player.y = player.oldY;
 
 		for(var j =0; j<player.bullets.length; ++j){
 			if(this.circleOnCircle(player.bullets[j].radius,player.bullets[j].x,player.bullets[j].y,
 				lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
 				player.bullets[j].kill();
 			}
+		}
+
+	}
+	else {
+			player.oldX = player.x;
+			player.oldY = player.y;
 		}
 	}
 }

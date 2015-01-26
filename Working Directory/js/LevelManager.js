@@ -39,7 +39,7 @@ LevelManager.prototype.mapSetup = function(){
 			}
 		}*/
 		var object = new Obstacle();
-		object.set(150,100,100,100,"square");
+		object.set(180,100,100,100,"square");
 		this.objects.push(object);
 	}
 }

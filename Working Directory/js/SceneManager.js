@@ -207,7 +207,7 @@ SceneManager.prototype.gameLoop = function (){
    	var GAME_RUNNING=0;
    	//this.update();
    	window.onerror = function (errorMsg, url, lineNumber) {
-    alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
+    console.log('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
 }
 	if(loadedSounds &&loadedImages){
 			console.log("Load Time ",Date.now()-timeSpent);
