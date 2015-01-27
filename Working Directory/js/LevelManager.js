@@ -10,7 +10,24 @@ function LevelManager (){
 	this.cellArray = new Array();
 	this.numCells=0;
 	this.objects = new Array();
+	this.placeLevels();
+}
 
+LevelManager.prototype.placeLevels = function(){
+	this.level1 = 
+		[[1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
 }
 
 LevelManager.prototype.update = function() {
@@ -27,6 +44,7 @@ LevelManager.prototype.setLevel = function(lvl){
 }
 
 LevelManager.prototype.mapSetup = function(){
+	this.object = [];
 	if(this.currentLevel === "level1"){
 		/*var x = -(300 + (mapWidth-1450));var y = -(200+mapHeight-845);
 		var n = 0;
@@ -38,9 +56,26 @@ LevelManager.prototype.mapSetup = function(){
 				n++;
 			}
 		}*/
-		var object = new Obstacle();
-		object.set(180,100,100,100,"square");
-		this.objects.push(object);
+		/*
+		1 = square object
+		2 = circle object
+		*/
+
+		for(var i = 0; i < 13; ++i){
+			for(var j = 0; j < 20; ++j){
+				if(this.level1[i][j] === 1){
+					var object = new Obstacle();
+					object.set((100*j)-845,(100*i)-652,100,100,"square");
+					this.objects.push(object);
+				}
+				if(this.level1[i][j] === 2){
+					var object = new Obstacle();
+					object.set((100*j)-845,(100*i)-652,100,100,"circle");
+					this.objects.push(object);
+				}
+			}
+		}
+		console.log(lvlManager.objects.length);
 	}
 }
 

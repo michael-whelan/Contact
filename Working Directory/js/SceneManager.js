@@ -1,5 +1,5 @@
 var game,menu;
-var canvas, ctx;
+var canvas, ctx,CT;
 var assetManager;
 var timeSpent;
 var loading;
@@ -10,13 +10,16 @@ var loadedSounds;
 var sc;
 var scaleRatio;
 var loadedScenes;
-
+var textManager;
 var client;
+
 function SceneManager(){
 	game = new Game();
 	menu = new Menu();
 	assetManager = new AssetManager();
+	textManager = new TextManager();
 	this.initCanvas();
+	textManager.init();
 	this.gameState="0";
 	this.gameScene = "0";
 	sc = this;
@@ -33,7 +36,8 @@ function SceneManager(){
 
 SceneManager.prototype.initCanvas=function () { 
 	canvas = document.createElement('canvas'); 
-	ctx = canvas.getContext('2d'); 
+	ctx = canvas.getContext('2d');
+	CT = new CanvasText; 
 	document.body.appendChild(canvas);
 	//set canvas to size of the screen.
 	canvas.width = 1152;//1152
@@ -214,11 +218,12 @@ SceneManager.prototype.gameLoop = function (){
    			loading = false;
    			loadedImages = false;
    			loadedSounds =false;
-   			game.reset(sc.gameScene);
+   			//game.reset(sc.gameScene);
    	}
    	//no updateing or drawing allowed until loading is complete
    	if(loading){
    		sc.loadScreen();
+   		textManager.loading();
    	}
    	else if(sc.gameState === "gameplay"){
  		sc.gameState = game.update(sc.gameScene);

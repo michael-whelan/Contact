@@ -1,6 +1,7 @@
 <html>
 
 <head>
+<link rel="stylesheet" type="text/css" href="css/font.css">
 <link rel="manifest" href="manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width, initial-scale=0.83">
@@ -24,6 +25,7 @@
 <script src="js/Stick.js"></script>
 <script src="js/CollisionManager.js"></script>
 <script src="js/Obstacle.js"></script>
+<script src="js/CanvasText-0.4.1.js"></script>
 <script src="js/AssetManager.js"></script>
 <script src="js/TextManager.js"></script>
 <script src="js/Client.js"></script>
@@ -37,7 +39,14 @@
 		margin: 0;
 		padding: 0;
 	}
-	
+	.score {
+		font-family: "osr";
+	}
+
+	.instructions{
+		font-family: "osr";
+	}
+
 	p {
 		display: none;
 	}
@@ -56,7 +65,8 @@
 
 
 <!--This is where all of the game text can be written and pulled onto the gamescreen-->
-<noembed id="txtAmmo">Ammo: </noembed>
+<noembed id="txtLoading"></noembed>
+<noembed id="txtAmmo"></noembed>
 <noembed id="txtHealth"></noembed>
 <noembed id="playerDeathMsg"></noembed>
 <noembed id="tutorialMsg1"></noembed>
@@ -75,6 +85,7 @@
 xmlhttp.open("GET","xml/xmlTest.xml",false);
 xmlhttp.send();
 xmlDoc=xmlhttp.responseXML;
+document.getElementById("txtLoading").innerHTML= xmlDoc.getElementsByTagName("txtLoading")[0].childNodes[0].nodeValue;
 document.getElementById("txtAmmo").innerHTML= xmlDoc.getElementsByTagName("txtAmmo")[0].childNodes[0].nodeValue;
 document.getElementById("txtHealth").innerHTML= xmlDoc.getElementsByTagName("txtHealth")[0].childNodes[0].nodeValue;
 document.getElementById("playerDeathMsg").innerHTML= xmlDoc.getElementsByTagName("playerDeathMsg")[0].childNodes[0].nodeValue;

@@ -1,0 +1,32 @@
+@font-face {
+    font-family: 'osr';
+    src: url('../fonts/osr/osr.eot');
+    src: url('../fonts/osr/osr.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/osr/osr.woff') format('woff'),
+         url('../fonts/osr/osr.ttf') format('truetype'),
+         url('../fonts/osr/osr.svg#osr') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'osb';
+    src: url('../fonts/osb/osb.eot');
+    src: url('../fonts/osb/osb.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/osb/osb.woff') format('woff'),
+         url('../fonts/osb/osb.ttf') format('truetype'),
+         url('../fonts/osb/osb.svg#osb') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'gdog';
+    src: url('../fonts/gdog/gdog.eot');
+    src: url('../fonts/gdog/gdog.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/gdog/gdog.woff') format('woff'),
+         url('../fonts/gdog/gdog.ttf') format('truetype'),
+         url('../fonts/gdog/gdog.svg#osb') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}

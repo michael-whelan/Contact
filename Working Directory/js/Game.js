@@ -13,7 +13,7 @@ var enemy;
 var collisionManager;
 var lvlManager;
 var levelWin;
-var textManager;
+
 var enemyManager;
 var mapWidth;
 var mapHeight;
@@ -41,7 +41,7 @@ var pauseTimer;
 
 function Game (){
 	//assetManager = new AssetManager();
-	player = new Player(100,100,"player1");
+	player = new Player(200,100,"player1");
 	player2 = new Player(100,100,"player2");
 	sticks = [new Stick(inputSize), new Stick(inputSize)];
 	fsm = new FSM();
@@ -49,7 +49,6 @@ function Game (){
 	lvlManager = new LevelManager();
 	enemyManager = new EnemyManager();
 	collisionManager = new CollisionManager();
-	textManager = new TextManager();
 	mapWidth = 2000;
 	mapHeight = 1300;
 	this.currentLvl;
@@ -59,7 +58,7 @@ function Game (){
 	this.btnScale = 50;
 	this.pauseX = 1050;
 	this.pauseY = 50;
-	this.reset();
+	//this.reset();
 }
 
 
@@ -76,10 +75,9 @@ Game.prototype.reset = function(lvl){
 	//player.init();
 	this.goMenu = false;
 	levelWin = false;
-	textManager.init();
 	textManager.reset();
 	lvlManager.mapSetup();
-	//this.playBackgroundLoop();
+	this.playBackgroundLoop();
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].active = false;
 	}
@@ -140,7 +138,6 @@ Game.prototype.touchStart = function(e){
 }
 
 Game.prototype.touchEnd = function(e){ 
-	
 	if(this.currentLvl === "tutorial"){
 		if(sticks[1].active){
 			textManager.upTutorial(0);
@@ -372,8 +369,8 @@ Game.prototype.update = function(lvl){
 		}
 	}
 	if(this.goMenu){
-		//backTrack.pause();
-		//backTrack.currentTime=0;
+		backTrack.pause();
+		backTrack.currentTime=0;
 		multiplayer = false;
 		return "menu";
 	}

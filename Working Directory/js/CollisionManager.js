@@ -155,8 +155,8 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 			}
 		}
 	}
-
 	for(var i = 0;i< lvlManager.objects.length;++i){
+		//console.log(i,lvlManager.objects[i].x,lvlManager.objects[i].y);
 		for(var j = 0;j< enemyManager.enemy.length;++j){
 			if(this.circleOnCircle(enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
 				lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
@@ -168,23 +168,20 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 					enemyManager.enemy[j].bullets[k].kill();
 				}
 			}
-
 		}
 		if(this.circleOnCircle(player.radius, player.x,player.y,
 			lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
 			//console.log(player.xVel,player.yVel);
 			player.x = player.oldX;
 			player.y = player.oldY;
-
-		for(var j =0; j<player.bullets.length; ++j){
-			if(this.circleOnCircle(player.bullets[j].radius,player.bullets[j].x,player.bullets[j].y,
-				lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
-				player.bullets[j].kill();
+			for(var j =0; j<player.bullets.length; ++j){
+				if(this.circleOnCircle(player.bullets[j].radius,player.bullets[j].x,player.bullets[j].y,
+					lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
+					player.bullets[j].kill();
+				}
 			}
 		}
-
-	}
-	else {
+		else{
 			player.oldX = player.x;
 			player.oldY = player.y;
 		}

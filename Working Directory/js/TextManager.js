@@ -2,7 +2,8 @@ var imgHighlight = new Image();
 
 var TextManager=function(){
 	//put each piece of text here. rename all you want it will need to be mentioned in the index too.
-	var strAmmo;
+	var strLoading;
+    var strAmmo;
     var ammoInt;
     var strHealth;
     var iAmmo;
@@ -18,26 +19,70 @@ var TextManager=function(){
 };
 
 TextManager.prototype.init = function(){
-	strAmmo = document.getElementById("txtAmmo").innerHTML;
-    strHealth = document.getElementById("txtHealth").innerHTML;
-    strPlayerDiedMessage = document.getElementById("playerDeathMsg").innerHTML;
+    CT.config({
+        canvas: canvas,
+        context: ctx,
+        fontFamily: "osr",
+        fontSize: "32px",
+        fontWeight: "normal",
+        fontColor: "#000",
+        lineHeight: "80"
+    });
+
+    //define style class
+    CT.defineClass("whiteBig",{
+        fontSize: "80px",
+        fontColor: "#ffffff",
+        fontFamily: "osr",
+        fontWeight: "normal",
+        fontStyle: "normal",
+        textShadow: "0px 2px 0px #660000"
+    });
+    CT.defineClass("whiteGame",{
+        fontSize: "30px",
+        fontColor: "#ffffff",
+        fontFamily: "osr",
+        fontWeight: "normal",
+        fontStyle: "normal",
+        textShadow: "0px 2px 0px #660000"
+    });
+    
+    var temp = document.getElementById("txtLoading").innerHTML;
+	var temp2 = document.getElementById("txtAmmo").innerHTML;
+    var temp3 = document.getElementById("txtHealth").innerHTML;
+    var temp4 = document.getElementById("playerDeathMsg").innerHTML;
+
+
+
+    strLoading = '<class="whiteBig">' + temp + '</class>';
+    strAmmo = '<class="whiteGame">' + temp2 + '</class>';
+    strHealth= '<class="whiteGame">' + temp3 + '</class>';
+    strPlayerDiedMessage= '<class="whiteBig">' + temp4 + '</class>';
 };
 
 TextManager.prototype.reset = function(){
     this.playerDied = false;
     this.deathMessageTimer = 0;
 }
-
+TextManager.prototype.loading = function(){
+    CT.textAlign = 'center';
+    CT.drawText({
+        text:strLoading,
+        x: canvas.width / 2,
+        y: canvas.height/2,
+        boxWidth:800
+    }); 
+}
 // This represents the Instructions Title
 TextManager.prototype.drawInstruc =function (){
 
 }
 TextManager.prototype.end = function(txt){
-     ctx.strokeStyle = "#003300";
-        ctx.font = '40px san-serif';
-        ctx.textBaseline = 'bottom';
-        //txtAmmo = txtAmmo + numBullets.toString();
-        ctx.strokeText("Swarms Survived: "+txt+". "+"Continue  Y/N", 300, 100);
+    ctx.strokeStyle = "#003300";
+    ctx.font = '40px san-serif';
+    ctx.textBaseline = 'bottom';
+    //txtAmmo = txtAmmo + numBullets.toString();
+    ctx.strokeText("Swarms Survived: "+txt+". "+"Continue  Y/N", 300, 100);
 }
 
 TextManager.prototype.controller = function(level){
@@ -52,8 +97,14 @@ TextManager.prototype.controller = function(level){
         //txtAmmo = txtAmmo + numBullets.toString();
         ctx.strokeText("R to Reload", 300, 100);
     }
-    ctx.font = '40px san-serif';
-    ctx.strokeText(strHealth+ player.health.toString()+"%", 30, 50);
+    var tempH = player.health.toString();
+    tempH = '<class="whiteGame">' + tempH + '</class>';
+    CT.textAlign = 'left';
+    CT.drawText({
+        text:strHealth+ tempH,
+        x: 50,
+        y: 20
+    });
     ctx.strokeStyle = "#003300";
     ctx.font = '40px san-serif';
     ctx.textBaseline = 'bottom';
@@ -66,12 +117,14 @@ TextManager.prototype.controller = function(level){
 }
 
 TextManager.prototype.gameText=function(){
-    ctx.strokeStyle = "#003300";
-    ctx.font = '40px san-serif';
-    ctx.textBaseline = 'bottom';
-    //txtAmmo = txtAmmo + numBullets.toString();
-    ctx.strokeText(strAmmo+ player.numBullets.toString(), 300, 100);
-
+    var tempAmm = player.numBullets.toString();
+    ammoInt = '<class="whiteGame">' + tempAmm + '</class>';
+    CT.textAlign = 'left';
+    CT.drawText({
+        text:strAmmo+ ammoInt,
+        x: 50,
+        y: 50
+    });
     if(this.playerDied){
         ctx.strokeText(strPlayerDiedMessage.toString(), 30, 120);
         this.deathMessageTimer++;
