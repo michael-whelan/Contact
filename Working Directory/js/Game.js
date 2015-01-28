@@ -344,17 +344,7 @@ Game.prototype.update = function(lvl){
 			}	
 		}
 	}//pause
-	else{
 
-		/*if(KeyController.isKeyDown(Key.N)){
-			backTrack.pause();
-			backTrack.currentTime=0;
-			return "menu";
-		}
-		if(KeyController.isKeyDown(Key.Y)){
-			this.reset();
-		}*/
-	}	
 	if(KeyController.isKeyDown(Key.ESC)){
 		//backTrack.pause();
 		//backTrack.currentTime=0;
@@ -375,7 +365,6 @@ Game.prototype.update = function(lvl){
 		return "menu";
 	}
 	timer++;
-
 	if(KeyController.isKeyDown(Key.ENTER)){
 		if(timer>20){	
 			if(debugDrawer){
@@ -531,8 +520,10 @@ Game.prototype.drawBtns = function(){
 	ctx.drawImage(imgPauseBtn,this.pauseX, this.pauseY, this.btnScale, this.btnScale);
 	ctx.drawImage(imgReloadBtn,1100, 250, this.btnScale, this.btnScale);
 }
-
+var drawNum=0;
 Game.prototype.draw =function (){
+	drawNum++;
+	if(drawNum%3 ===0){
 	ctx.setTransform(1,0,0,1,0,0);//reset the transform matrix as it is cumulative 
 
 	//wipes the screen at the start of each draw frame;
@@ -584,6 +575,7 @@ Game.prototype.draw =function (){
 		//textManager.end(enemyManager.swarmsSurvived);	
 		//ctx.drawImage(imgPauseMenu, -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
 		this.drawOverlay();
+	}
 	}
 }
 

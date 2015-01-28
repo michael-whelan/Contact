@@ -13,7 +13,7 @@ CollisionManager.prototype.update = function(){
 
 
 CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManager){
-	for (var j = 0; j < enemyManager.enemy.length; ++j) {
+	for (var j = 0; j < enemyManager.enemy.length; ++j){
 		enemyManager.moveControl(j,this.circleOnCircle(player.radius,player.x,player.y,enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y),
 			player.x,player.y);
 		//if(enemyManager.enemy[j].shot){//hear each others shots
@@ -155,6 +155,7 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 			}
 		}
 	}
+	var tempbool = false;
 	for(var i = 0;i< lvlManager.objects.length;++i){
 		//console.log(i,lvlManager.objects[i].x,lvlManager.objects[i].y);
 		for(var j = 0;j< enemyManager.enemy.length;++j){
@@ -169,24 +170,27 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 				}
 			}
 		}
+		for(var j =0; j<player.bullets.length; ++j){
+			if(this.circleOnCircle(player.bullets[j].radius,player.bullets[j].x,player.bullets[j].y,
+				lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
+				player.bullets[j].kill();	
+			}
+		}
 		if(this.circleOnCircle(player.radius, player.x,player.y,
 			lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
 			//console.log(player.xVel,player.yVel);
 			player.x = player.oldX;
 			player.y = player.oldY;
-			for(var j =0; j<player.bullets.length; ++j){
-				if(this.circleOnCircle(player.bullets[j].radius,player.bullets[j].x,player.bullets[j].y,
-					lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
-					player.bullets[j].kill();
-				}
-			}
+			tempbool =true;
 		}
-		else{
-			player.oldX = player.x;
-			player.oldY = player.y;
-		}
+			
+	}//simples
+	if(tempbool===false){
+		player.oldX = player.x;
+		player.oldY = player.y;
+			//console.log("no collide");
 	}
-}
+};
 
 
 CollisionManager.prototype.circleOnCircle = function(r1,x1,y1,r2,x2,y2){

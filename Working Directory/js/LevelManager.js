@@ -5,8 +5,8 @@ var backTrack = new Audio();
 
 function LevelManager (){
 	this.currentLevel;
-	this.cellWidth = 1000;
-	this.cellHeight =650;
+	this.cellWidth = 500;
+	this.cellHeight =325;
 	this.cellArray = new Array();
 	this.numCells=0;
 	this.objects = new Array();
@@ -15,16 +15,16 @@ function LevelManager (){
 
 LevelManager.prototype.placeLevels = function(){
 	this.level1 = 
-		[[1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
-		[0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0],
+		[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-		[0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0],
-		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
@@ -46,7 +46,7 @@ LevelManager.prototype.setLevel = function(lvl){
 LevelManager.prototype.mapSetup = function(){
 	this.object = [];
 	if(this.currentLevel === "level1"){
-		/*var x = -(300 + (mapWidth-1450));var y = -(200+mapHeight-845);
+		var x = -(300 + (mapWidth-1450));var y = -(200+mapHeight-845);
 		var n = 0;
 		for(var i = 0; i < (2000/this.cellWidth); i++){		
 			for(var j = 0; j < (1300/this.cellHeight); j++){
@@ -55,7 +55,7 @@ LevelManager.prototype.mapSetup = function(){
 				//console.log(this.cellArray[n]);
 				n++;
 			}
-		}*/
+		}
 		/*
 		1 = square object
 		2 = circle object
@@ -66,11 +66,13 @@ LevelManager.prototype.mapSetup = function(){
 				if(this.level1[i][j] === 1){
 					var object = new Obstacle();
 					object.set((100*j)-845,(100*i)-652,100,100,"square");
+				//	object.gridPos=this.getGridPos((100*j)-845,(100*i)-652,100,100);
 					this.objects.push(object);
 				}
 				if(this.level1[i][j] === 2){
 					var object = new Obstacle();
 					object.set((100*j)-845,(100*i)-652,100,100,"circle");
+				//	object.gridPos=this.getGridPos((100*j)-845,(100*i)-652,100,100);
 					this.objects.push(object);
 				}
 			}
@@ -78,8 +80,21 @@ LevelManager.prototype.mapSetup = function(){
 		console.log(lvlManager.objects.length);
 	}
 }
+/*
+LevelManager.prototype.getGridPos = function(x,y,w,h){
+	var tempArr = [];
+	for(var i =0; i<this.numcells; ++i){
+		if((x < this.cellArray[i][0]+ this.cellWidth) &&
+	    (x + w > this.cellArray[i][0]) &&
+	    (y + h > this.cellArray[i][1]) &&
+	    (y < this.cellArray[i][1] + this.cellWidth)){
+			tempArr.push(i);
+	    }
+    }
+    return tempArr;
+}*/
 
-LevelManager.prototype.getGridPos = function(x,y){
+/*LevelManager.prototype.getGridPos = function(x,y){
 	var row=0, col=0;
 	var n = 0;
 
@@ -97,7 +112,7 @@ LevelManager.prototype.getGridPos = function(x,y){
 		}
 	}
 	return [col,row];
-}
+}*/
 
 LevelManager.prototype.tutorialController = function(){
 }
@@ -123,9 +138,9 @@ LevelManager.prototype.draw = function() {
 		for(var i =0; i < this.objects.length; ++i){
 			this.objects[i].draw();
 		}
-		/*for(var i = 0; i < this.numCells; ++i){
+		for(var i = 0; i < this.numCells; ++i){
 			ctx.drawImage(imgHighlight,this.cellArray[i][0],this.cellArray[i][1],this.cellWidth,this.cellHeight);
-		}*/
+		}
 	}
 }
 

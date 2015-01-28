@@ -35,7 +35,7 @@ var Player=function (x,y,name){
 	this.allowAimAssist = false;
 	this.assistPositions = [];
 	this.reset(x,y);
-
+	this.gridTimer =0;
 	this.shootBool = false;this.dead = false;//multiplayer
 
 	//pickup Bools

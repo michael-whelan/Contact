@@ -71,7 +71,6 @@ function mouseDown(e){
 	else{
 		game.mouseDown(e);
 	}
-	//console.log(e.clientX,e.clientY);
 }
 
 function touchStart(e){
