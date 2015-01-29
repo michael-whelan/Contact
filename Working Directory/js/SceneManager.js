@@ -12,6 +12,7 @@ var scaleRatio;
 var loadedScenes;
 var textManager;
 var client;
+var transitionTimer=200;
 
 function SceneManager(){
 	game = new Game();
@@ -27,6 +28,7 @@ function SceneManager(){
 	loadedImages = false;
 	loadedSounds = false;
 	//loading = true;
+	this.fadeNum = 0;
 	this.onceTitle = false;
 	this.onceLvl1 = false;
 	this.onceLvlSel = false;
@@ -140,6 +142,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/choose_temp.png");
 	assetManager.queueLoadImg("images/armoryScreen.png");
 	assetManager.queueLoadImg("images/exit_temp.png");
+	assetManager.queueLoadSnd("sounds/music/123.mp3");
 }
 
 SceneManager.prototype.queueLvlSelectAssets = function(){
@@ -159,6 +162,10 @@ SceneManager.prototype.setTitleImages = function(){
 	imgArmoryBack = assetManager.getAsset("images/armoryScreen.png");
 	imgExitPrompt = assetManager.getAsset("images/exit_temp.png");
 	loadedImages=true;
+}
+SceneManager.prototype.setTitleSounds = function(){
+	titleMusic = assetManager.getAsset("sounds/music/123.mp3");
+	loadedSounds=true;
 }
 
 SceneManager.prototype.setLvlSelectImages = function(){
@@ -206,6 +213,23 @@ SceneManager.prototype.loadScreen = function(){
 	ctx.drawImage(imgLoader, 0,0,canvas.width ,canvas.height);
 }
 
+SceneManager.prototype.drawFade = function(){
+
+	if(transitionTimer<100&&transitionTimer%7 ===0){
+		sc.fadeNum+=0.1;
+		console.log("fade In");
+	}
+	else if(transitionTimer%7 ===0){
+		sc.fadeNum-=0.1;
+		console.log("fade out");
+	}
+	ctx.save();
+	ctx.globalAlpha = sc.fadeNum;
+	sc.loadScreen();
+	ctx.restore();
+}
+
+
 SceneManager.prototype.gameLoop = function (){
    	var GAME_RUNNING=0;
    	//this.update();
@@ -240,8 +264,13 @@ SceneManager.prototype.gameLoop = function (){
 	}
 	else if(sc.gameState === "menu"){
 		var temp = menu.update();
-		sc.gameState = temp[0];
-		sc.gameScene = temp[1];
+		if(transitionTimer>100){
+			sc.gameState = temp[0];
+			sc.gameScene = temp[1];
+		}
+		if(transitionTimer<200){
+			transitionTimer++;
+		}
 		if(sc.gameState ==="gameplay"){
 			game.reset(sc.gameScene);
 			if(!contains(loadedScenes,"level1")&&!contains(loadedScenes,"tutorial")){
@@ -260,6 +289,12 @@ SceneManager.prototype.gameLoop = function (){
 			}
 		}
 		menu.draw(sc.gameScene);
+		if(transitionTimer<190){
+			sc.drawFade();
+		}
+		else{
+			sc.fadeNum=0;
+		}
 	//	console.log("current scene: "+ sc.gameScene);
 		loadedScenes.push(sc.gameScene);
 	}
@@ -284,6 +319,9 @@ SceneManager.prototype.loadScene = function(state,scene){
 			assetManager.loadTitleImages(function() {
     			sc.setTitleImages()
 			});
+			/*assetManager.loadTitleSounds(function() {
+    			sc.setTitleSounds()
+			});*/
 			loadedSounds=true;
 		}
 		else if(scene ==="levelSelect"){

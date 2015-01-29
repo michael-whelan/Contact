@@ -166,6 +166,7 @@ Game.prototype.playBackgroundLoop = function(){
 	    this.play();
 	}, false);
 	backTrack.play();
+	console.log("play");
 };
 
 function getDistance(x1,y1,x2,y2){

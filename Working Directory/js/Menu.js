@@ -8,7 +8,7 @@ var imgStashBack = new Image();
 var imgArmoryBack = new Image();
 var imgCustomBack = new Image();
 var imgExitPrompt = new Image();
-
+var titleMusic = new Audio();
 
 function Menu (){
 	this.returnVals = ["null","null"]; //[state,scene]
@@ -31,6 +31,7 @@ Menu.prototype.reset = function() {
 	this.lvl1X = 1152;
 	this.lvlTutX=0;
     this.drawExit = false;
+    this.playBackgroundLoop();
 }
 
 Menu.prototype.update = function() {
@@ -49,9 +50,20 @@ Menu.prototype.update = function() {
 	return temp;
 }
 
+Menu.prototype.playBackgroundLoop = function(){
+	//an alternative method 
+	titleMusic.addEventListener('ended', function() {
+	    this.currentTime = 0;
+	    this.play();
+	}, false);
+	titleMusic.play();
+};
+
+
 //temp
 Menu.prototype.mouseDown= function(e){
 	//console.log(e.clientX ,e.clientY);
+	
 	if(this.scene=== "titleScreen"){
 		if(this.drawExit){
 			if(e.clientX >  350  && e.clientX <585&&e.clientY>330&&e.clientY<400){//770,190,955,375
@@ -65,12 +77,15 @@ Menu.prototype.mouseDown= function(e){
 		else {
 			if(e.clientX >  860  && e.clientX <1075&&e.clientY>160&&e.clientY<315){//770,190,955,375
 				this.returnVals = ["menu","levelSelect"];
+				transitionTimer=0;
 			}
 			else if(e.clientX >  820  && e.clientX <1100&&e.clientY>350&&e.clientY<410){//770,190,955,375
 				this.returnVals = ["menu","multiplayer"];
+				transitionTimer=0;
 			}
 			else if(e.clientX >  820  && e.clientX <1100&&e.clientY>450&&e.clientY<510){//770,190,955,375
 				this.returnVals = ["menu","stash"];
+				transitionTimer=0;
 			}
 			else if(e.clientX >  820  && e.clientX <1100&&e.clientY>550&&e.clientY<610){//770,190,955,375
 				//Exit
@@ -83,6 +98,7 @@ Menu.prototype.mouseDown= function(e){
 		console.log(e.clientX ,e.clientY);
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","titleScreen"];
+			transitionTimer=0;
 		}
 		else if(e.clientX >  this.lvl1X+300  && e.clientX <this.lvl1X+700&&e.clientY>300&&e.clientY<500){//770,190,955,375
 			this.returnVals = ["gameplay","level1"];
@@ -108,12 +124,14 @@ Menu.prototype.mouseDown= function(e){
 	else if(this.scene ==="multiplayer"){
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","titleScreen"];
+			transitionTimer=0;
 		}
 		else if(e.clientX>490 && e.clientX < 635&& e.clientY >300 && e.clientY < 380){
 			client.join();
 		}
 		if(multiplayer){
 			this.returnVals = ["menu","levelSelect"];
+			transitionTimer=0;
 			console.log("multiplayer");
 		}
 	}
@@ -121,25 +139,29 @@ Menu.prototype.mouseDown= function(e){
 		console.log(e.clientX ,e.clientY);
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","titleScreen"];
+			transitionTimer=0;
 		}
 		else if(e.clientX > 70  && e.clientX <580&&e.clientY>75&&e.clientY<630){
 			console.log("custom");
 			this.returnVals = ["menu","custom"];	
-
+			transitionTimer=0;
 		}
 		else if(e.clientX > 630  && e.clientX <1120&&e.clientY>75&&e.clientY<630){
 			console.log("upgrade");
 			this.returnVals = ["menu","armory"];
+			transitionTimer=0;
 		}
 	}
 	else if(this.scene === "armory"){
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","stash"];
+			transitionTimer=0;
 		}
 	}
 	else if(this.scene === "custom"){
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","stash"];
+			transitionTimer=0;
 		}
 	}
 }
@@ -190,7 +212,9 @@ Menu.prototype.draw = function(scene){
 
 	
 	if(scene ==="titleScreen"){
+
 		ctx.drawImage(imgTitleScreen, 0,0,1152,648);
+
 		if(this.drawExit){
 			ctx.drawImage(imgExitPrompt, 0,0,1152,648);
 		}
