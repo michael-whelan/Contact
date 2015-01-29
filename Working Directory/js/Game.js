@@ -161,12 +161,11 @@ Game.prototype.touchEnd = function(e){
 
 Game.prototype.playBackgroundLoop = function(){
 	//an alternative method 
-	backTrack.addEventListener('ended', function() {
+	backTrack.addEventListener('canplaythrough', function() {
 	    this.currentTime = 0;
 	    this.play();
 	}, false);
 	backTrack.play();
-	console.log("play");
 };
 
 function getDistance(x1,y1,x2,y2){
@@ -204,6 +203,7 @@ Game.prototype.updateOverlay = function(e){
 		}
 		else if(e.clientX> 725 && e.clientX < 800 && e.clientY >260&&e.clientY <320){
 			pause = false;
+			console.log("hit");
 		}
 	}
 	else if(this.overlayType === "win"){
@@ -302,7 +302,6 @@ Game.prototype.update = function(lvl){
 
 		enemyManager.update();
 		player.allowAimAssist = false;
-		
 		
 		if(player.lives<=0){
 			pause = true;

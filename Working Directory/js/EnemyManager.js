@@ -6,6 +6,7 @@ var EnemyManager=function (){
 	this.enemy = [];
 	this.setUp();
 	this.spawnRad = 60;
+	this.spawnPos = []
 	this.spawnPos1 = [];
 	this.spawnPos2 = [];
 	this.spawnPos3 = [];
@@ -37,7 +38,7 @@ EnemyManager.prototype.reset = function(lvl){
 	while(this.enemy.length>0) {
 		this.enemy.pop();
 	};
-	this.setSpawn(lvl);
+	//this.setSpawn(lvl);
 	this.currentLvl = lvl;
 	this.enemySwarms = 0;
 	this.totalSwarms=0;
@@ -82,7 +83,10 @@ EnemyManager.prototype.hearShot = function(px,py){
 
 EnemyManager.prototype.setUp = function(){
 	if(this.currentLvl === "level1"){
-		this.totalSwarms = 30;
+		this.totalSwarms = 10;
+	}
+	else if(this.currentLvl === "level2"){
+		this.totalSwarms = 25;
 	}
 	this.enemySwarms = this.totalSwarms;
 }
@@ -91,13 +95,17 @@ EnemyManager.prototype.setUp = function(){
 EnemyManager.prototype.update = function(lvlMan){
 	this.spawnTimer++;
 	//controls the number of swarms and the size of each and when they are spawned.
-	if(this.spawnTimer> 150 && this.enemySwarms>0&&this.enemy.length === 0){
-		this.spawnSwarm(5,5,lvlMan);//min,max
+	
+	if(this.spawnTimer> 150 && this.enemy.length === 0){
 		this.enemySwarms--;
-		this.spawnTimer=0;
 		this.swarmsSurvived++;
+		if( this.enemySwarms>0){
+			this.spawnSwarm(5,5,lvlMan);//min,max
+			this.spawnTimer=0;
+			
+		}
 	}
-	if(this.enemySwarms<=0 &&this.currentLvl !== "tutorial"){
+	if(this.enemySwarms<0 &&this.currentLvl !== "tutorial"){
 		levelWin = true;
 	}
 	
@@ -158,33 +166,22 @@ EnemyManager.prototype.possibleFear = function(){
 	if(rand === 1){
 		for (var i = 0; i < this.enemy.length; i++) {
 			this.enemy[i].state = fsm.stateControl(this.enemy[i].state,"getScared");
-		//	console.log(this.enemy[i].state);
+			//console.log(this.enemy[i].state);
 		};
 	}
 }
 
 EnemyManager.prototype.spawnSwarm = function(min,max,lvlMan){
 	//spawns a group of enemies.
-	var rand = Math.floor(Math.random()*(5-0) +0);
+	var rand = Math.floor(Math.random()*(this.spawnPos.length-0) +0);
 	var numEnemiesNeeded = Math.floor(Math.random()*(max-min) +min);
 	for(var i = 0; i< numEnemiesNeeded; i++){
 		if(i===0){
-			var enemySingle = new Enemy("cmdr");
+			var enemySingle = new Enemy("cmdr",5);
 		}else{
-			var enemySingle = new Enemy("grunt");
+			var enemySingle = new Enemy("grunt",1);
 		}
-		if(rand===0){
-			enemySingle.spawnEnemy(this.spawnPos1[0],this.spawnPos1[1]);
-		}
-		else if(rand ===1){
-			enemySingle.spawnEnemy(this.spawnPos2[0],this.spawnPos2[1]);
-		}
-		else if(rand ===2){
-			enemySingle.spawnEnemy(this.spawnPos3[0],this.spawnPos3[1]);
-		}
-		else{
-			enemySingle.spawnEnemy(this.spawnPos4[0],this.spawnPos4[1]);
-		}
+		enemySingle.spawnEnemy(this.spawnPos[rand][0],this.spawnPos[rand][1]);
 		this.enemy.push(enemySingle);
 	}
 //	this.setGrid(lvlMan);
@@ -197,10 +194,10 @@ EnemyManager.prototype.collision = function(e)
 };
 
 EnemyManager.prototype.debugDraw =function(){
-	ctx.drawImage(imgViewRad, this.spawnPos1[0]-this.spawnRad,this.spawnPos1[1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
-	ctx.drawImage(imgViewRad, this.spawnPos2[0]-this.spawnRad,this.spawnPos2[1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
-	ctx.drawImage(imgViewRad, this.spawnPos3[0]-this.spawnRad,this.spawnPos3[1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
-	ctx.drawImage(imgViewRad, this.spawnPos4[0]-this.spawnRad,this.spawnPos4[1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
+	ctx.drawImage(imgViewRad, this.spawnPos[0][0]-this.spawnRad,this.spawnPos[0][1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
+	ctx.drawImage(imgViewRad, this.spawnPos[1][0]-this.spawnRad,this.spawnPos[1][1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
+	ctx.drawImage(imgViewRad, this.spawnPos[2][0]-this.spawnRad,this.spawnPos[2][1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
+	ctx.drawImage(imgViewRad, this.spawnPos[3][0]-this.spawnRad,this.spawnPos[3][1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
 
 	for(var i = 0; i< this.enemy.length; ++i){
 		this.enemy[i].debugDraw();

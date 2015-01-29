@@ -148,6 +148,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 SceneManager.prototype.queueLvlSelectAssets = function(){
 	assetManager.queueLoadImg("images/worldSelectFloat_01.png");
 	assetManager.queueLoadImg("images/world1.png");
+	assetManager.queueLoadImg("images/world2.png");
 	assetManager.queueLoadImg("images/worldTutorial.png");
 }
 
@@ -171,6 +172,7 @@ SceneManager.prototype.setTitleSounds = function(){
 SceneManager.prototype.setLvlSelectImages = function(){
 	imgLvlSelBack = assetManager.getAsset("images/worldSelectFloat_01.png");
 	imgLvlSel1 = assetManager.getAsset("images/world1.png");
+	imgLvlSel2 = assetManager.getAsset("images/world2.png");
 	imgLvlSelTut = assetManager.getAsset("images/worldTutorial.png");
 	loadedImages=true;
 }
@@ -217,11 +219,9 @@ SceneManager.prototype.drawFade = function(){
 
 	if(transitionTimer<100&&transitionTimer%7 ===0){
 		sc.fadeNum+=0.1;
-		console.log("fade In");
 	}
 	else if(transitionTimer%7 ===0){
 		sc.fadeNum-=0.1;
-		console.log("fade out");
 	}
 	ctx.save();
 	ctx.globalAlpha = sc.fadeNum;
@@ -273,7 +273,7 @@ SceneManager.prototype.gameLoop = function (){
 		}
 		if(sc.gameState ==="gameplay"){
 			game.reset(sc.gameScene);
-			if(!contains(loadedScenes,"level1")&&!contains(loadedScenes,"tutorial")){
+			if(!contains(loadedScenes,sc.gameScene)){
 				//sc.loadScene(sc.gameState,sc.gameScene);
 				sc.loadScene(sc.gameState,sc.gameScene);
 			}

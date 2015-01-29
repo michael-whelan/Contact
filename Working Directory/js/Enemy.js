@@ -3,7 +3,7 @@ var imgComdr = new Image();
 var imgViewRad= new Image();
 var goToImg = new Image();
 
-var Enemy=function (rank){
+var Enemy=function (rank,life){
 	this.rank = rank;
 	this.interX=0;//used to display thir position on the screen radar.
 	this.centreX =0;
@@ -28,6 +28,7 @@ var Enemy=function (rank){
 	//bullets and crap
 	this.bullets = [];
 	this.reset();
+	this.health=life;
 
 	this.nodeArray = new Array();
 

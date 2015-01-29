@@ -137,13 +137,16 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 		if(player.bullets[i].alive){
 			for (var j = 0; j < enemyManager.enemy.length; ++j) {//enemy.length
 				if(this.circleOnCircle(player.bullets[i].radius,player.bullets[i].x,player.bullets[i].y,enemyManager.enemy[j].hitRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y)){
-					var x = enemyManager.enemy[j].x; var y = enemyManager.enemy[j].y;
-					if(multiplayer){
-						client.killEnemy(j);
-					}
-					if(enemyManager.kill(j)===1 && !pickUp.alive && !player.radar){
-						pickUp.spawn("radar",x,y);
-					}
+						enemyManager.enemy[j].health--;
+						if(enemyManager.enemy[j].health <=0){
+							var x = enemyManager.enemy[j].x; var y = enemyManager.enemy[j].y;
+							if(multiplayer){
+								client.killEnemy(j);
+							}
+							if(enemyManager.kill(j)===1 && !pickUp.alive && !player.radar){
+								pickUp.spawn("radar",x,y);
+							}
+						}
 					player.bullets[i].kill();
 				}
 				/*if(!enemyManager.enemy[j].alive){

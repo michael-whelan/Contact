@@ -1,6 +1,7 @@
 var imgTitleScreen = new Image();
 var imgLvlSelBack = new Image();
 var imgLvlSel1 = new Image();
+var imgLvlSel2 = new Image();
 var imgLvlSelTut = new Image();
 var imgBackArrow = new Image();
 var imgMultiplayerBack = new Image();
@@ -104,6 +105,12 @@ Menu.prototype.mouseDown= function(e){
 			this.returnVals = ["gameplay","level1"];
 			if(multiplayer){
 				client.setLevel("level1");
+			}
+		}
+		else if(e.clientX >  (this.lvl1X+1152)+300  && e.clientX <(this.lvl1X+1152)+700&&e.clientY>300&&e.clientY<500){//770,190,955,375
+			this.returnVals = ["gameplay","level2"];
+			if(multiplayer){
+				client.setLevel("level2");
 			}
 		}
 		else if(e.clientX >  this.lvlTutX+300  && e.clientX <this.lvlTutX+700&&e.clientY>300&&e.clientY<500){//770,190,955,375
@@ -221,6 +228,7 @@ Menu.prototype.draw = function(scene){
 	}
 	else if(scene === "levelSelect"){
 		ctx.drawImage(imgLvlSelBack, 0,0,1152,648);
+		ctx.drawImage(imgLvlSel2, this.lvl1X+1152,0,1152,648);
 		ctx.drawImage(imgLvlSel1, this.lvl1X,0,1152,648);
 		ctx.drawImage(imgLvlSelTut,this.lvlTutX,0,1152,648);
 	}

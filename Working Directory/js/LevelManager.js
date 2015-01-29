@@ -14,19 +14,39 @@ function LevelManager (){
 }
 
 LevelManager.prototype.placeLevels = function(){
+	/*
+		1 = square object
+		2 = circle object
+		9 = enemy spawn
+		*/
 	this.level1 = 
 		[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
-		[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
-		[0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0],
+		[0,0,9,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,9,0,2,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
+
+	this.level2 = 
+		[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,2,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,9,0,0,0,0,0,9,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,9,0,0,0,0,0,9,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,2,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
 }
 
@@ -44,7 +64,9 @@ LevelManager.prototype.setLevel = function(lvl){
 }
 
 LevelManager.prototype.mapSetup = function(){
-	this.object = [];
+	this.objects = [];
+	enemyManager.spawnPos = [];
+
 	if(this.currentLevel === "level1"){
 		var x = -(300 + (mapWidth-1450));var y = -(200+mapHeight-845);
 		var n = 0;
@@ -56,10 +78,7 @@ LevelManager.prototype.mapSetup = function(){
 				n++;
 			}
 		}
-		/*
-		1 = square object
-		2 = circle object
-		*/
+		
 
 		for(var i = 0; i < 13; ++i){
 			for(var j = 0; j < 20; ++j){
@@ -75,9 +94,39 @@ LevelManager.prototype.mapSetup = function(){
 				//	object.gridPos=this.getGridPos((100*j)-845,(100*i)-652,100,100);
 					this.objects.push(object);
 				}
+					if(this.level1[i][j] === 9){
+					var object = [];
+					object.push((100*j)-845);
+					object.push((100*i)-652);
+					enemyManager.spawnPos.push(object);
+				}
 			}
 		}
 		console.log(lvlManager.objects.length);
+	}
+	else if(this.currentLevel ==="level2"){
+		for(var i = 0; i < 13; ++i){
+			for(var j = 0; j < 20; ++j){
+				if(this.level2[i][j] === 1){
+					var object = new Obstacle();
+					object.set((100*j)-845,(100*i)-652,100,100,"square");
+				//	object.gridPos=this.getGridPos((100*j)-845,(100*i)-652,100,100);
+					this.objects.push(object);
+				}
+				if(this.level2[i][j] === 2){
+					var object = new Obstacle();
+					object.set((100*j)-845,(100*i)-652,100,100,"circle");
+				//	object.gridPos=this.getGridPos((100*j)-845,(100*i)-652,100,100);
+					this.objects.push(object);
+				}
+				if(this.level2[i][j] === 9){
+					var object = [];
+					object.push((100*j)-845);
+					object.push((100*i)-652);
+					enemyManager.spawnPos.push(object);
+				}
+			}
+		}
 	}
 }
 /*
@@ -121,6 +170,9 @@ LevelManager.prototype.getNextLevel = function(){
 	if(this.currentLevel === "tutorial"){
 		return "level1";
 	}
+	else if(this.currentLevel=== "level1"){
+		return "level2";	
+	}
 	return this.currentLevel;
 }
 LevelManager.prototype.debugDraw = function() {
@@ -140,6 +192,13 @@ LevelManager.prototype.draw = function() {
 		}
 		for(var i = 0; i < this.numCells; ++i){
 			ctx.drawImage(imgHighlight,this.cellArray[i][0],this.cellArray[i][1],this.cellWidth,this.cellHeight);
+		}
+	}
+	else if(this.currentLevel === "level2"){
+		ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
+
+		for(var i =0; i < this.objects.length; ++i){
+			this.objects[i].draw();
 		}
 	}
 }
