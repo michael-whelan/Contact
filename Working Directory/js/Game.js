@@ -58,6 +58,7 @@ function Game (){
 	this.btnScale = 50;
 	this.pauseX = 1050;
 	this.pauseY = 50;
+
 	//this.reset();
 }
 
@@ -65,6 +66,8 @@ function Game (){
 Game.prototype.reset = function(lvl){
 	player.reset();
 	player2.reset();
+	this.shakeNum1=0;
+	this.shakeNum2 =0;
 	this.sendTimer =0;
 	this.worldSendTimer=0;
 	lvlManager.setLevel(lvl);
@@ -531,8 +534,8 @@ Game.prototype.draw =function (){
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 
 	//this clamp sets the limits to the world size.
-	var camX = clamp(-player.x + canvas.width/2, 0, mapWidth - canvas.width);
-    var camY = clamp(-player.y + canvas.height/2, 0, mapHeight - canvas.height);
+	var camX = clamp(-player.x + canvas.width/2+this.shakeNum1, 0, mapWidth - canvas.width);
+    var camY = clamp(-player.y + canvas.height/2+this.shakeNum2, 0, mapHeight - canvas.height);
 
     //temp
     innerX1 = (clamp(player.x, -800+canvas.width/2 -40, mapWidth - (canvas.width)-270)-WIDTH/2)+40;
@@ -570,7 +573,20 @@ Game.prototype.draw =function (){
 		textManager.controller(this.currentLvl);
 		if(enemyManager.bossComing){
 			textManager.flashText();
-			console.log("boss");
+			/*if(textManager.clicker>8){
+				if(this.shakeNum1<10){
+					this.shakeNum1++;
+					this.shakeNum2--;
+				}
+				else if(this.shakeNum1<20){
+					this.shakeNum1++;
+					this.shakeNum2++;
+				}
+				else{
+					this.shakeNum1 = -10;
+					this.shakeNum2 = 0;
+				}
+			}*/
 		}
 		else{
 			textManager.clicker = 0;
