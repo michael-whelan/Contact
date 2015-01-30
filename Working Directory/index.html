@@ -66,6 +66,8 @@
 
 <!--This is where all of the game text can be written and pulled onto the gamescreen-->
 <noembed id="txtLoading"></noembed>
+<noembed id="txtBoss1"></noembed>
+<noembed id="txtBoss2"></noembed>
 <noembed id="txtAmmo"></noembed>
 <noembed id="txtHealth"></noembed>
 <noembed id="playerDeathMsg"></noembed>
@@ -88,6 +90,8 @@ xmlDoc=xmlhttp.responseXML;
 document.getElementById("txtLoading").innerHTML= xmlDoc.getElementsByTagName("txtLoading")[0].childNodes[0].nodeValue;
 document.getElementById("txtAmmo").innerHTML= xmlDoc.getElementsByTagName("txtAmmo")[0].childNodes[0].nodeValue;
 document.getElementById("txtHealth").innerHTML= xmlDoc.getElementsByTagName("txtHealth")[0].childNodes[0].nodeValue;
+document.getElementById("txtBoss1").innerHTML= xmlDoc.getElementsByTagName("txtBoss1")[0].childNodes[0].nodeValue;
+document.getElementById("txtBoss2").innerHTML= xmlDoc.getElementsByTagName("txtBoss2")[0].childNodes[0].nodeValue;
 document.getElementById("playerDeathMsg").innerHTML= xmlDoc.getElementsByTagName("playerDeathMsg")[0].childNodes[0].nodeValue;
 document.getElementById("tutorialMsg1").innerHTML= xmlDoc.getElementsByTagName("tutorialMsg1")[0].childNodes[0].nodeValue;
 document.getElementById("tutorialMsg2").innerHTML= xmlDoc.getElementsByTagName("tutorialMsg2")[0].childNodes[0].nodeValue;

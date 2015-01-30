@@ -13,6 +13,7 @@ var EnemyManager=function (){
 	this.spawnPos4 = [];
 	this.spawnPos5 = [];
 	this.swarmsSurvived = 0;
+	this.bossComing = false;
 };
 
 
@@ -102,11 +103,11 @@ EnemyManager.prototype.update = function(lvlMan){
 		if( this.enemySwarms>0){
 			this.spawnSwarm(5,5,lvlMan);//min,max
 			this.spawnTimer=0;
-			
 		}
 	}
 	if(this.enemySwarms<0 &&this.currentLvl !== "tutorial"){
-		levelWin = true;
+		//levelWin = true;
+		this.bossComing = true;
 	}
 	
 	for (var j = 0; j < this.enemy.length; ++j){

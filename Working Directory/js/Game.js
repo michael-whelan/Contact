@@ -423,6 +423,7 @@ Game.prototype.debugDraw = function(){
 	ctx.lineTo(innerX1,innerY1);
 	ctx.stroke();
 
+	textManager.flashText();
 	enemyManager.debugDraw();
 	player.debugDraw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {
@@ -567,6 +568,13 @@ Game.prototype.draw =function (){
 	if(!pause){
 		this.drawBtns();
 		textManager.controller(this.currentLvl);
+		if(enemyManager.bossComing){
+			textManager.flashText();
+			console.log("boss");
+		}
+		else{
+			textManager.clicker = 0;
+		}
 		if(this.currentLvl === "tutorial"){
 			textManager.controlTutorial();
 		}

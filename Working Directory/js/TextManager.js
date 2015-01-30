@@ -7,6 +7,11 @@ var TextManager=function(){
     var ammoInt;
     var strHealth;
     var iAmmo;
+    var strBoss1;
+    var strBoss2;
+
+    this.flashTimer =0;
+    this.clicker=0;
     this.lowestFps = 100;
     this.level;
     this.tutorialMsgNum = 0;
@@ -46,11 +51,21 @@ TextManager.prototype.init = function(){
         fontStyle: "normal",
         textShadow: "0px 2px 0px #660000"
     });
+     CT.defineClass("warning",{
+        fontSize: "40px",
+        fontColor: "#f01717",
+        fontFamily: "osr",
+        fontWeight: "normal",
+        fontStyle: "bold",
+        //textShadow: "0px 2px 0px #ffffff"
+    });
     
     var temp = document.getElementById("txtLoading").innerHTML;
 	var temp2 = document.getElementById("txtAmmo").innerHTML;
     var temp3 = document.getElementById("txtHealth").innerHTML;
     var temp4 = document.getElementById("playerDeathMsg").innerHTML;
+    var temp5 = document.getElementById("txtBoss1").innerHTML;
+    var temp6 = document.getElementById("txtBoss2").innerHTML;
 
 
 
@@ -58,6 +73,8 @@ TextManager.prototype.init = function(){
     strAmmo = '<class="whiteGame">' + temp2 + '</class>';
     strHealth= '<class="whiteGame">' + temp3 + '</class>';
     strPlayerDiedMessage= '<class="whiteBig">' + temp4 + '</class>';
+    strBoss1 =  '<class="warning">' + temp5 + '</class>';
+    strBoss2 =  '<class="warning">' + temp6 + '</class>';
 };
 
 TextManager.prototype.reset = function(){
@@ -133,6 +150,36 @@ TextManager.prototype.gameText=function(){
             this.playerDied= false;
             this.deathMessageTimer =0;
         }
+    }
+}
+
+TextManager.prototype.flashText = function(){
+    this.flashTimer++;
+
+    if(this.flashTimer<50){
+
+    }
+    else if(this.flashTimer<100){
+        if(this.clicker <5){
+            CT.textAlign = 'left';
+            CT.drawText({
+                text:strBoss1,
+                x: 450,
+                y: 50
+            });
+        }
+        else if(this.clicker<10){
+            CT.textAlign = 'left';
+            CT.drawText({
+                text:strBoss2,
+                x: 450,
+                y: 50
+            });
+        }
+    }
+    else{
+        this.flashTimer =0;
+        this.clicker+=1;
     }
 }
 

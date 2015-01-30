@@ -1,6 +1,8 @@
 <xmlTest>
 <txtLoading>Loading... </txtLoading>
 <txtConnecting>Waiting For Players...</txtConnecting>
+<txtBoss1>[WARNING]</txtBoss1>
+<txtBoss2>[BOSS INCOMING...]</txtBoss2>
 <txtHealth>Health: </txtHealth>
 <txtAmmo>Ammo:</txtAmmo>
 <playerDeathMsg>Teammate has fallen</playerDeathMsg>
