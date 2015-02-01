@@ -151,6 +151,7 @@ TextManager.prototype.gameText=function(){
             this.deathMessageTimer =0;
         }
     }
+    ctx.drawImage(imgHealthBar,300,50,enemyManager.boss1.health,20);
 }
 
 TextManager.prototype.flashText = function(){

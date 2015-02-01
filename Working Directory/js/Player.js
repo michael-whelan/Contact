@@ -353,6 +353,7 @@ Player.prototype.draw = function(){
 	else if (this.dead){
 		ctx.drawImage(imgPlayerDead,-this.width/2, -this.height/2, this.width, this.height);
 	}
+	
 	ctx.restore(); //restore the state of canvas
 	//ctx.drawImage(imgBullet,rotate_point(this.x+30,this.y+20,this.x,this.y,this.angle).x, rotate_point(this.x+30,this.y+20,this.x,this.y,this.angle).y, 10, 10);//80 65
 

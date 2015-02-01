@@ -68,7 +68,7 @@ LevelManager.prototype.mapSetup = function(){
 	enemyManager.spawnPos = [];
 
 	if(this.currentLevel === "level1"){
-		var x = -(300 + (mapWidth-1450));var y = -(200+mapHeight-845);
+		/*var x = -(300 + (mapWidth-1450));var y = -(200+mapHeight-845);
 		var n = 0;
 		for(var i = 0; i < (2000/this.cellWidth); i++){		
 			for(var j = 0; j < (1300/this.cellHeight); j++){
@@ -78,7 +78,7 @@ LevelManager.prototype.mapSetup = function(){
 				n++;
 			}
 		}
-		
+		*/
 
 		for(var i = 0; i < 13; ++i){
 			for(var j = 0; j < 20; ++j){

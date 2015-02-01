@@ -88,3 +88,25 @@ FSM.prototype.stateControl = function(currState, evt){
 	}
 	return "wander";
 }
+
+
+FSM.prototype.boss1 = function(currState,evt){
+	if(currState === "dig"){//the idle function
+		if(evt === "hearTarget"){//interrupted by shot taken 
+			return "comeUp";//tells the entity to change states to the appropriate
+		}
+		return "dig";
+	}
+	if (currState === "comeUp") {
+		if(evt ==="risen"){
+			return "attack";
+		}
+		return "comeUp";
+	}
+	if(currState === "attack"){
+		if(evt === "hurt"){
+			return "dig";
+		}
+		return "attack";
+	}
+}

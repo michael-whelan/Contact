@@ -10,9 +10,7 @@ CollisionManager.prototype.update = function(){
  	
 }
 
-
-
-CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManager){
+CollisionManager.prototype.enemy = function(enemyManager,player,lvlManager){
 	for (var j = 0; j < enemyManager.enemy.length; ++j){
 		enemyManager.moveControl(j,this.circleOnCircle(player.radius,player.x,player.y,enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y),
 			player.x,player.y);
@@ -125,39 +123,9 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 			}
 		}
 	}
+}
 
-	//temp only one pick up will become a list
-	if(this.circleOnCircle(player.radius, player.x,player.y,pickUp.radius,pickUp.x,pickUp.y)&&
-		pickUp.alive){
-		pickUp.alive = false;
-		player.radar = true;
-	}
-
-	for(var i = 0;i< player.bullets.length;++i){
-		if(player.bullets[i].alive){
-			for (var j = 0; j < enemyManager.enemy.length; ++j) {//enemy.length
-				if(this.circleOnCircle(player.bullets[i].radius,player.bullets[i].x,player.bullets[i].y,enemyManager.enemy[j].hitRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y)){
-						enemyManager.enemy[j].health--;
-						if(enemyManager.enemy[j].health <=0){
-							var x = enemyManager.enemy[j].x; var y = enemyManager.enemy[j].y;
-							if(multiplayer){
-								client.killEnemy(j);
-							}
-							if(enemyManager.kill(j)===1 && !pickUp.alive && !player.radar){
-								pickUp.spawn("radar",x,y);
-							}
-						}
-					player.bullets[i].kill();
-				}
-				/*if(!enemyManager.enemy[j].alive){
-    				var index = enemyManager.enemy.indexOf(j);
-    				enemyManager.enemy.splice(j, 1);
-    				j--;
-    				
-   				}*/
-			}
-		}
-	}
+CollisionManager.prototype.obstacleCol = function(enemyManager,player,lvlManager){
 	var tempbool = false;
 	for(var i = 0;i< lvlManager.objects.length;++i){
 		//console.log(i,lvlManager.objects[i].x,lvlManager.objects[i].y);
@@ -193,6 +161,46 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 		player.oldY = player.y;
 			//console.log("no collide");
 	}
+}
+
+CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManager){
+	
+	this.enemy(enemyManager,player,lvlManager);
+
+	//temp only one pick up will become a list
+	if(this.circleOnCircle(player.radius, player.x,player.y,pickUp.radius,pickUp.x,pickUp.y)&&
+		pickUp.alive){
+		pickUp.alive = false;
+		player.radar = true;
+	}
+
+	for(var i = 0;i< player.bullets.length;++i){
+		if(player.bullets[i].alive){
+			for (var j = 0; j < enemyManager.enemy.length; ++j) {//enemy.length
+				if(this.circleOnCircle(player.bullets[i].radius,player.bullets[i].x,player.bullets[i].y,enemyManager.enemy[j].hitRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y)){
+						enemyManager.enemy[j].health--;
+						if(enemyManager.enemy[j].health <=0){
+							var x = enemyManager.enemy[j].x; var y = enemyManager.enemy[j].y;
+							if(multiplayer){
+								client.killEnemy(j);
+							}
+							if(enemyManager.kill(j)===1 && !pickUp.alive && !player.radar){
+								pickUp.spawn("radar",x,y);
+							}
+						}
+					player.bullets[i].kill();
+				}
+				/*if(!enemyManager.enemy[j].alive){
+    				var index = enemyManager.enemy.indexOf(j);
+    				enemyManager.enemy.splice(j, 1);
+    				j--;
+    				
+   				}*/
+			}
+		}
+	}
+	this.obstacleCol(enemyManager,player,lvlManager);
+	
 };
 
 

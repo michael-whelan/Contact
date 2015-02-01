@@ -118,11 +118,13 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/highlight.png");
 	assetManager.queueLoadImg("images/win_menu.png");
 	assetManager.queueLoadImg("images/lose_menu.png");
+	assetManager.queueLoadImg("images/boss1.png");
 	//temp images
 	assetManager.queueLoadImg("images/ViewRange.png");
 	assetManager.queueLoadImg("images/GoTo.png");
 	assetManager.queueLoadImg("images/circle.png");
 	assetManager.queueLoadImg("images/square.png");
+	assetManager.queueLoadImg("images/health.png");
 	//sounds
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
@@ -189,10 +191,12 @@ SceneManager.prototype.setGameImages = function(){
 	imgHighlight = assetManager.getAsset("images/highlight.png");
 	
 	imgPauseMenu = assetManager.getAsset("images/pause_menu.png");
-	imgWinMenu= assetManager.getAsset("images/win_menu.png");
-	imgLoseMenu= assetManager.getAsset("images/lose_menu.png");
+	imgWinMenu = assetManager.getAsset("images/win_menu.png");
+	imgLoseMenu = assetManager.getAsset("images/lose_menu.png");
 	imgPauseBtn = assetManager.getAsset("images/pause_button.png");
 	imgReloadBtn = assetManager.getAsset("images/reload_button.png");
+	imgHealthBar = assetManager.getAsset("images/health.png");
+	imgBoss1 = assetManager.getAsset("images/boss1.png");
 	//temp images
 	imgRadarPUp = assetManager.getAsset("images/GoTo.png");
 	imgViewRad = assetManager.getAsset("images/ViewRange.png");

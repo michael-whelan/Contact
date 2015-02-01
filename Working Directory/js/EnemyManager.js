@@ -3,7 +3,9 @@
 
 
 var EnemyManager=function (){
+	this.boss1 = new Boss();
 	this.enemy = [];
+	this.boss;
 	this.setUp();
 	this.spawnRad = 60;
 	this.spawnPos = []
@@ -84,7 +86,7 @@ EnemyManager.prototype.hearShot = function(px,py){
 
 EnemyManager.prototype.setUp = function(){
 	if(this.currentLvl === "level1"){
-		this.totalSwarms = 10;
+		this.totalSwarms = 0;
 	}
 	else if(this.currentLvl === "level2"){
 		this.totalSwarms = 25;
@@ -105,9 +107,12 @@ EnemyManager.prototype.update = function(lvlMan){
 			this.spawnTimer=0;
 		}
 	}
+	this.boss1.update();
 	if(this.enemySwarms<0 &&this.currentLvl !== "tutorial"){
 		//levelWin = true;
+		
 		this.bossComing = true;
+
 	}
 	
 	for (var j = 0; j < this.enemy.length; ++j){
@@ -193,7 +198,15 @@ EnemyManager.prototype.collision = function(e)
 {
  
 };
+EnemyManager.prototype.draw =function(){
 
+	for (var i = 0; i < this.enemy.length; ++i) {
+		this.enemy[i].draw();
+	}
+	if(this.boss1.alive){
+		this.boss1.draw();
+	}
+}
 EnemyManager.prototype.debugDraw =function(){
 	ctx.drawImage(imgViewRad, this.spawnPos[0][0]-this.spawnRad,this.spawnPos[0][1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);
 	ctx.drawImage(imgViewRad, this.spawnPos[1][0]-this.spawnRad,this.spawnPos[1][1]-this.spawnRad, this.spawnRad*2, this.spawnRad*2);

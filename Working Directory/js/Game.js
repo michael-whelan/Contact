@@ -3,6 +3,7 @@
 imgPauseMenu = new Image();
 imgWinMenu = new Image();
 imgLoseMenu = new Image();
+imgHealthBar = new Image();
 //backTrack.src = "sounds/music/Gameplay_Theme_Idea.mp3";
 
 var fsm;
@@ -58,7 +59,8 @@ function Game (){
 	this.btnScale = 50;
 	this.pauseX = 1050;
 	this.pauseY = 50;
-
+	this.shake = false;
+	this.clicker =0;
 	//this.reset();
 }
 
@@ -68,6 +70,7 @@ Game.prototype.reset = function(lvl){
 	player2.reset();
 	this.shakeNum1=0;
 	this.shakeNum2 =0;
+	this.shakeTimer=0;
 	this.sendTimer =0;
 	this.worldSendTimer=0;
 	lvlManager.setLevel(lvl);
@@ -294,7 +297,9 @@ Game.prototype.update = function(lvl){
 		}
 		var stick = sticks[0];
 		var stick2 = sticks[1];
-		player.update(stick.normal.x,stick.normal.y,stick2.normal.x,stick2.normal.y,stick.active,stick2.active);
+		//if(!enemyManager.bossComing){
+			player.update(stick.normal.x,stick.normal.y,stick2.normal.x,stick2.normal.y,stick.active,stick2.active);
+		//}
 		if(multiplayer){
 			player2.update(0,0,0,0,false,player2.shootBool);
 			this.controlMultiplayer(stick,stick2);
@@ -360,6 +365,26 @@ Game.prototype.update = function(lvl){
 			else {pause=false;timer =0;this.overlayType = "null";}
 			//return "menu";
 		}
+	}
+	if(KeyController.isKeyDown(Key.N)){//temp
+		//this.shake= true;
+		enemyManager.bossComing = true;
+	}
+	if(enemyManager.bossComing){
+		this.panCam();
+	}
+	if(enemyManager.boss1.state ==="comeUp"){
+		this.shake = true;
+	}
+	else{
+		enemyManager.boss1.hearTarget(player.x,player.y);
+		this.shake = false;
+	}
+	if(this.shake){
+		this.shakeCam();
+	}
+	else{
+		this.clicker = 0;
 	}
 	if(this.goMenu){
 		backTrack.pause();
@@ -524,6 +549,45 @@ Game.prototype.drawBtns = function(){
 	ctx.drawImage(imgPauseBtn,this.pauseX, this.pauseY, this.btnScale, this.btnScale);
 	ctx.drawImage(imgReloadBtn,1100, 250, this.btnScale, this.btnScale);
 }
+
+Game.prototype.panCam = function(){
+
+}
+
+Game.prototype.shakeCam = function(){
+	if(this.shake){
+			//if(this.clicker<12){
+				this.shakeTimer++;
+				if(this.shakeTimer<5){
+					this.shakeNum1+=2;
+					this.shakeNum2-=2;
+				}
+				else if(this.shakeTimer<10){
+					this.shakeNum1+=2;
+					this.shakeNum2+=2;
+				}
+				else if(this.shakeTimer<15){
+					this.shakeNum1-=2;
+					this.shakeNum2+=2;
+				}
+				else if(this.shakeTimer<20){
+					this.shakeNum1-=2;
+					this.shakeNum2-=2;
+				}
+				else{
+					this.shakeNum1 = 0;
+					this.shakeNum2 = 0;
+					this.shakeTimer=0;
+					//this.clicker++;
+				//	enemyManager.bossComing = false;
+				}
+			//}
+			//else{
+			//	this.shake = false;
+			//}
+		}
+}
+
 var drawNum=0;
 Game.prototype.draw =function (){
 	drawNum++;
@@ -551,13 +615,12 @@ Game.prototype.draw =function (){
   	lvlManager.draw();
   	//ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
 	pickUp.draw();
+	
 	player.draw();
 	if(multiplayer){
 		player2.draw();
 	}
-	for (var i = 0; i < enemyManager.enemy.length; ++i) {
-		enemyManager.enemy[i].draw();
-	}
+	enemyManager.draw();
 	if(debugDrawer){
 		this.debugDraw();
 	}
@@ -568,28 +631,12 @@ Game.prototype.draw =function (){
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].draw();
 	}
+
 	if(!pause){
 		this.drawBtns();
 		textManager.controller(this.currentLvl);
 		if(enemyManager.bossComing){
 			textManager.flashText();
-			/*if(textManager.clicker>8){
-				if(this.shakeNum1<10){
-					this.shakeNum1++;
-					this.shakeNum2--;
-				}
-				else if(this.shakeNum1<20){
-					this.shakeNum1++;
-					this.shakeNum2++;
-				}
-				else{
-					this.shakeNum1 = -10;
-					this.shakeNum2 = 0;
-				}
-			}*/
-		}
-		else{
-			textManager.clicker = 0;
 		}
 		if(this.currentLvl === "tutorial"){
 			textManager.controlTutorial();
