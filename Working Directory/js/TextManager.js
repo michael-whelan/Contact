@@ -106,6 +106,7 @@ TextManager.prototype.controller = function(level){
     this.level = level;
     if(player.numBullets>0){
         this.gameText();
+      
     }
     else{
         ctx.strokeStyle = "#003300";
@@ -122,15 +123,16 @@ TextManager.prototype.controller = function(level){
         x: 50,
         y: 20
     });
-    ctx.strokeStyle = "#003300";
-    ctx.font = '40px san-serif';
-    ctx.textBaseline = 'bottom';
+      if(enemyManager.boss1.alive){
+            ctx.drawImage(imgHealthBar,550,50,enemyManager.boss1.health*1.5,20);
+        }
+ 
     //txtAmmo = txtAmmo + numBullets.toString();
     //ctx.strokeText("fps: "+fps.toFixed(), 680, 150);
-    if(fps<60){
+    /*if(fps<60){
         this.lowestFps = fps;
     }
-    ctx.strokeText("fps: "+this.lowestFps.toFixed(), 680, 50);
+    ctx.strokeText("fps: "+this.lowestFps.toFixed(), 680, 50);*/
 }
 
 TextManager.prototype.gameText=function(){
@@ -151,7 +153,6 @@ TextManager.prototype.gameText=function(){
             this.deathMessageTimer =0;
         }
     }
-    ctx.drawImage(imgHealthBar,300,50,enemyManager.boss1.health,20);
 }
 
 TextManager.prototype.flashText = function(){
@@ -161,7 +162,7 @@ TextManager.prototype.flashText = function(){
 
     }
     else if(this.flashTimer<100){
-        if(this.clicker <5){
+        if(this.clicker <2){
             CT.textAlign = 'left';
             CT.drawText({
                 text:strBoss1,
@@ -169,7 +170,7 @@ TextManager.prototype.flashText = function(){
                 y: 50
             });
         }
-        else if(this.clicker<10){
+        else if(this.clicker<4){
             CT.textAlign = 'left';
             CT.drawText({
                 text:strBoss2,

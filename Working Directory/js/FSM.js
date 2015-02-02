@@ -98,7 +98,7 @@ FSM.prototype.boss1 = function(currState,evt){
 		return "dig";
 	}
 	if (currState === "comeUp") {
-		if(evt ==="risen"){
+		if(evt ==="rise"){
 			return "attack";
 		}
 		return "comeUp";

@@ -8,18 +8,24 @@ var Boss=function (rank){
 	this.y=-200;
 	this.width = 200;
 	this.height=120;
-	this.state = "attack";
+	this.state = "dig";
 	this.targetPosX=0;
 	this.targetPosY=0;
 	this.xDirect = 0;
 	this.yDirect = 0;
 	this.shake = false;
 	this.health = 200;
-	this.alive=true;
+	this.alive=false;
 	this.angle=2.87;
 	this.bullets = [];
-	this.reloadTimer = 80;
+	this.reloadTimer = 350;
 	this.startReload = false; 
+	this.numBullets = 4;
+	this.lastHealth = 200;
+	this.comeTimer=0;
+	this.canRise =false;
+	this.digTimer=0;
+	this.attackTimer=0;
 };
 
 
@@ -33,7 +39,7 @@ Boss.prototype.reload = function(){
 	this.reloadTimer--;
 
 	if(this.reloadTimer<=0){
-		this.reloadTimer = 80;
+		this.reloadTimer = 350;
 		this.numBullets = 4;
 		this.startReload = false;
 	}
@@ -43,7 +49,6 @@ Boss.prototype.update = function(){
 	this.xDirect = Math.cos(this.angle);
 	this.yDirect = Math.sin(this.angle);
 
-console.log(this.angle);
 	if(this.angle<0){
 		this.angle = 6;
 		}
@@ -52,21 +57,58 @@ console.log(this.angle);
 			this.angle = 0;
 		}
 	if(this.state==="dig"){
+		this.digTimer++;
 
+		if(this.digTimer>500){
+			this.canRise = true;
+		}
+		this.lastHealth = this.health;
 	}
 	else if(this.state === "comeUp"){
 		this.comeUp();
 		this.comeTimer++;//foolish name
-		if(comeTimer>20){
-			this.state = fsm.boss1(this.state,"risen");
+		if(this.comeTimer>240){
+			
+			this.comeTimer = 0;
+			this.state = fsm.boss1(this.state,"rise");
 		}
 	}
 	else if(this.state === "attack"){
+		if(this.attackTimer>3000){
+			this.attackTimer = 0;
+			if(getDistance(this.targetPosX,this.targetPosY,this.x,this.y)>300){
+				this.state = fsm.boss1(this.state,"hurt");
+			}
+		}
+		this.attackTimer++;
 		this.turnTowardPlayer();
 	}
+
+	for(var i = 0; i <this.bullets.length; i++){
+			if(this.bullets[i].alive){
+				this.bullets[i].update();
+			}
+		}
 	if(this.health<=0){
+		console.log("dead boss");
 		this.alive = false;
 	}
+	else if(this.health<= this.lastHealth-30){
+		this.state = fsm.boss1(this.state,"hurt");
+	}
+}
+
+function getDistance(x1,y1,x2,y2){
+	var xs = 0;
+  	var ys = 0;
+ 
+  	xs = x2 - x1;
+  	xs = xs * xs;
+ 
+  	ys = y2 - y1;
+ 	 ys = ys * ys;
+ 
+  	return sqrt( xs + ys );
 }
 
 Boss.prototype.shoot = function(){
@@ -79,14 +121,9 @@ Boss.prototype.shoot = function(){
 			this.numBullets--;
 		}
 		else{
-			//console.log(this.numBullets);
 			this.startReload = true;
 		}
 
-	//end Space
-		/*if(this.numBullets<=0){
-			console.log("Press R To Reload");
-		}*/
 	for (var i = 0; i < this.bullets.length; ++i) {
     	if (!this.bullets[i].alive) {
     		var index = this.bullets.indexOf(i);
@@ -135,14 +172,13 @@ Boss.prototype.comeUp = function(){
 }
 
 Boss.prototype.draw = function(){
-	//console.log(this.angle);
 	ctx.save();//save the state of canvas before rotation wrecks the place.
 	for(var i = 0; i <this.bullets.length; i++){
 			this.bullets[i].draw();
 	}
 		ctx.translate(this.x, this.y); //let's translate
 		ctx.rotate(this.angle); //increment the angle and rotate the image 
-if(this.state!== "dig"){
+if(this.state=== "attack"){
 		ctx.drawImage(imgBoss1,-this.width/2,-this.height/2,this.width,this.height);
 	}
 		ctx.restore(); //restore the state of canvas

@@ -2,6 +2,7 @@
 
 var CollisionManager=function ()
 {
+	this.bossColTimer=0;
 };
 
 
@@ -95,7 +96,7 @@ CollisionManager.prototype.enemy = function(enemyManager,player,lvlManager){
 		for(var i = 0; i < enemyManager.enemy[j].bullets.length; ++i){
 			if(this.circleOnCircle(enemyManager.enemy[j].bullets[i].radius,enemyManager.enemy[j].bullets[i].x,
 				enemyManager.enemy[j].bullets[i].y,player.radius,player.x,player.y) && player.flash === false){
-				//player.health-=1;
+				player.health-=1;
 				loseHealthSnd.play();
 				player.lastHitTime = Date.now();
 				enemyManager.enemy[j].bullets[i].kill();
@@ -163,6 +164,34 @@ CollisionManager.prototype.obstacleCol = function(enemyManager,player,lvlManager
 	}
 }
 
+CollisionManager.prototype.playerVsBoss = function(enemyManager,player){
+	if(this.bossColTimer>100 && this.circleOnCircle(player.radius,player.x,player.y,enemyManager.boss1.height,enemyManager.boss1.x,enemyManager.boss1.y)&&
+		enemyManager.boss1.state ==="attack"){
+		player.health-=15;
+		this.bossColTimer =0;
+		loseHealthSnd.play();
+				player.lastHitTime = Date.now();
+	}
+	this.bossColTimer++;
+
+
+	for(var i = 0; i<enemyManager.boss1.bullets.length; ++i){
+		if(this.circleOnCircle(enemyManager.boss1.bullets[i].radius,enemyManager.boss1.bullets[i].x,
+				enemyManager.boss1.bullets[i].y,player.radius,player.x,player.y) && player.flash === false){
+				player.health-=1;
+				loseHealthSnd.play();
+				player.lastHitTime = Date.now();
+				enemyManager.boss1.bullets[i].kill();
+			}
+			if(multiplayer){
+				if(this.circleOnCircle(enemyManager.boss1.bullets[i].radius,enemyManager.boss1.bullets[i].x,
+				enemyManager.boss1.bullets[i].y,player2.radius,player2.x,player2.y) &&  player2.flash === false){
+					enemyManager.boss1.bullets[i].kill();
+				}
+			}
+	}
+}
+
 CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManager){
 	
 	this.enemy(enemyManager,player,lvlManager);
@@ -173,9 +202,17 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 		pickUp.alive = false;
 		player.radar = true;
 	}
-
+	if(enemyManager.boss1.alive){
+		this.playerVsBoss(enemyManager,player);
+	}
 	for(var i = 0;i< player.bullets.length;++i){
 		if(player.bullets[i].alive){
+			if(enemyManager.boss1.alive){
+				if(enemyManager.boss1.state !== "dig" && this.circleOnCircle(player.bullets[i].radius,player.bullets[i].x,player.bullets[i].y,enemyManager.boss1.height,enemyManager.boss1.x,enemyManager.boss1.y)){
+					enemyManager.boss1.health-=1;
+					player.bullets[i].kill();
+				}
+			}
 			for (var j = 0; j < enemyManager.enemy.length; ++j) {//enemy.length
 				if(this.circleOnCircle(player.bullets[i].radius,player.bullets[i].x,player.bullets[i].y,enemyManager.enemy[j].hitRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y)){
 						enemyManager.enemy[j].health--;

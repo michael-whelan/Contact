@@ -16,6 +16,7 @@ var EnemyManager=function (){
 	this.spawnPos5 = [];
 	this.swarmsSurvived = 0;
 	this.bossComing = false;
+	this.doonce=false;
 };
 
 
@@ -86,7 +87,7 @@ EnemyManager.prototype.hearShot = function(px,py){
 
 EnemyManager.prototype.setUp = function(){
 	if(this.currentLvl === "level1"){
-		this.totalSwarms = 0;
+		this.totalSwarms = 6;
 	}
 	else if(this.currentLvl === "level2"){
 		this.totalSwarms = 25;
@@ -107,10 +108,18 @@ EnemyManager.prototype.update = function(lvlMan){
 			this.spawnTimer=0;
 		}
 	}
-	this.boss1.update();
+	if(this.boss1.alive){
+		this.boss1.update();
+	}
 	if(this.enemySwarms<0 &&this.currentLvl !== "tutorial"){
 		//levelWin = true;
-		
+		if(!this.doonce){
+			this.boss1.alive = true;
+			this.doonce = true;
+		}
+		if(!this.boss1.alive){
+			levelWin=true;
+		}
 		this.bossComing = true;
 
 	}

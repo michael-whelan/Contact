@@ -37,7 +37,7 @@ var Player=function (x,y,name){
 	this.reset(x,y);
 	this.gridTimer =0;
 	this.shootBool = false;this.dead = false;//multiplayer
-
+	this.moveStep =false;
 	//pickup Bools
 	this.radar = false;
 
@@ -222,7 +222,6 @@ Player.prototype.controller = function(b1,b2){
 			this.move("backward");
 	}
 	else{
-
 		
 	}
 }
@@ -249,6 +248,7 @@ Player.prototype.setPickup = function(id){
 }
 
 Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
+	this.moveStep=false;
 	if(this.startReload){
 		this.reload();
 	}
@@ -266,6 +266,10 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 		if(b1){
 			this.xDirect = x1;
 			this.yDirect = y1;
+		
+		}
+		else{
+	
 		}
 		if(b2){
 			this.xFacing = x2;
@@ -373,6 +377,7 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
 }
 
 Player.prototype.move= function(dir){
+	this.moveStep = true;
 	this.centreX = this.x+this.width/2
 	this.centreY = this.y+this.height/2;
 	if(this.x>1060){

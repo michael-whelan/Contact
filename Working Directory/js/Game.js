@@ -377,8 +377,13 @@ Game.prototype.update = function(lvl){
 		this.shake = true;
 	}
 	else{
-		enemyManager.boss1.hearTarget(player.x,player.y);
 		this.shake = false;
+	}
+	if((player.moveStep&&enemyManager.boss1.state ==="dig"&&enemyManager.boss1.canRise)||enemyManager.boss1.state ==="attack"){
+		enemyManager.boss1.canRise = false;
+		enemyManager.boss1.digTimer =0;
+		enemyManager.boss1.hearTarget(player.x,player.y);
+		//this.shake = false;
 	}
 	if(this.shake){
 		this.shakeCam();
