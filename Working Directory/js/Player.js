@@ -291,7 +291,6 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 	for(var i = 0; i <this.bullets.length; i++){
 		if(this.bullets[i].alive){
 			this.bullets[i].update();
-			//console.log(this.bullets[i].bulletTimer);
 		}
 	}
 

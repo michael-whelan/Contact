@@ -25,19 +25,16 @@ CollisionManager.prototype.enemy = function(enemyManager,player,lvlManager){
 			for(var i =0; i<lvlManager.objects.length;++i){//crap and messy, needs to be made cleaner
 				if(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
 					lvlManager.objects[i].x1,lvlManager.objects[i].y1,lvlManager.objects[i].x1,lvlManager.objects[i].y2,i,false)){
-					//console.log("hidden");
+					
 				}
 				else if(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-					lvlManager.objects[i].x1,lvlManager.objects[i].y1,lvlManager.objects[i].x2,lvlManager.objects[i].y2,i,false)){
-					//console.log("hidden");
+					lvlManager.objects[i].x1,lvlManager.objects[i].y1,lvlManager.objects[i].x2,lvlManager.objects[i].y2,i,false)){			
 				}
 				else if(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
-					lvlManager.objects[i].x2,lvlManager.objects[i].y1,lvlManager.objects[i].x2,lvlManager.objects[i].y2,i,false)){
-					//console.log("hidden");
+					lvlManager.objects[i].x2,lvlManager.objects[i].y1,lvlManager.objects[i].x2,lvlManager.objects[i].y2,i,false)){	
 				}
 				else if(lineIntersect(player.x,player.y,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
 					lvlManager.objects[i].x2,lvlManager.objects[i].y2,lvlManager.objects[i].x1,lvlManager.objects[i].y2,i,false)){
-					//console.log("hidden");
 				}
 				else{
 					enemyManager.moveControl(j,true,player.x,player.y);
@@ -129,7 +126,6 @@ CollisionManager.prototype.enemy = function(enemyManager,player,lvlManager){
 CollisionManager.prototype.obstacleCol = function(enemyManager,player,lvlManager){
 	var tempbool = false;
 	for(var i = 0;i< lvlManager.objects.length;++i){
-		//console.log(i,lvlManager.objects[i].x,lvlManager.objects[i].y);
 		for(var j = 0;j< enemyManager.enemy.length;++j){
 			if(this.circleOnCircle(enemyManager.enemy[j].viewRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y,
 				lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
@@ -150,7 +146,6 @@ CollisionManager.prototype.obstacleCol = function(enemyManager,player,lvlManager
 		}
 		if(this.circleOnCircle(player.radius, player.x,player.y,
 			lvlManager.objects[i].width/2,lvlManager.objects[i].x+lvlManager.objects[i].width/2,lvlManager.objects[i].y+lvlManager.objects[i].width/2)){
-			//console.log(player.xVel,player.yVel);
 			player.x = player.oldX;
 			player.y = player.oldY;
 			tempbool =true;
@@ -160,7 +155,6 @@ CollisionManager.prototype.obstacleCol = function(enemyManager,player,lvlManager
 	if(tempbool===false){
 		player.oldX = player.x;
 		player.oldY = player.y;
-			//console.log("no collide");
 	}
 }
 
@@ -177,18 +171,18 @@ CollisionManager.prototype.playerVsBoss = function(enemyManager,player){
 
 	for(var i = 0; i<enemyManager.boss1.bullets.length; ++i){
 		if(this.circleOnCircle(enemyManager.boss1.bullets[i].radius,enemyManager.boss1.bullets[i].x,
-				enemyManager.boss1.bullets[i].y,player.radius,player.x,player.y) && player.flash === false){
+				enemyManager.boss1.bullets[i].y,player.radius,player.x,player.y) && enemyManager.boss1.bullets[i].alive&& player.flash === false){
 				player.health-=1;
 				loseHealthSnd.play();
 				player.lastHitTime = Date.now();
 				enemyManager.boss1.bullets[i].kill();
 			}
-			if(multiplayer){
-				if(this.circleOnCircle(enemyManager.boss1.bullets[i].radius,enemyManager.boss1.bullets[i].x,
-				enemyManager.boss1.bullets[i].y,player2.radius,player2.x,player2.y) &&  player2.flash === false){
-					enemyManager.boss1.bullets[i].kill();
-				}
+		if(multiplayer){
+			if(this.circleOnCircle(enemyManager.boss1.bullets[i].radius,enemyManager.boss1.bullets[i].x,
+			enemyManager.boss1.bullets[i].y,player2.radius,player2.x,player2.y) &&  player2.flash === false){
+				enemyManager.boss1.bullets[i].kill();
 			}
+		}
 	}
 }
 
@@ -273,7 +267,6 @@ CollisionManager.prototype.circleOnTriangle = function(x,y,x1,y1,x2,y2,x3,y3){
 		return true;
 	}
 	return false;*/
-	//console.log(x,y,x1,y1,x2,y2,x3,y3);
 	if( this.fAB(x,y,x1,y1,x2,y2)*this.fBC(x,y,x2,y2,x3,y3)>0 && this.fBC(x,y,x2,y2,x3,y3)*this.fCA(x,y,x1,y1,x3,y3)>0){
 		return true;
 	}
@@ -295,7 +288,6 @@ CollisionManager.prototype.fBC = function(x,y,x2,y2,x3,y3){
 
 CollisionManager.prototype.onSideOfLine = function(aX,aY,bX,bY,cX,cY){
 	if(((bX-aX)* (cY - aY)) - ((bY-aY)*(cX-aX))>0){
-	//	console.log(aX,aY,bX,bY);
 		return true;
 	}
 	return false;

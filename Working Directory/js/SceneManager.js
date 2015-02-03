@@ -238,8 +238,8 @@ SceneManager.prototype.gameLoop = function (){
    	var GAME_RUNNING=0;
    	//this.update();
    	window.onerror = function (errorMsg, url, lineNumber) {
-    console.log('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
-}
+    	console.log('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
+	}
 	if(loadedSounds &&loadedImages){
 			console.log("Load Time ",Date.now()-timeSpent);
    			loading = false;
@@ -299,7 +299,6 @@ SceneManager.prototype.gameLoop = function (){
 		else{
 			sc.fadeNum=0;
 		}
-	//	console.log("current scene: "+ sc.gameScene);
 		loadedScenes.push(sc.gameScene);
 	}
 
@@ -353,10 +352,10 @@ SceneManager.prototype.loadScene = function(state,scene){
 			assetManager.loadLvl1Images(function() {
     			sc.setGameImages()
 			});
-			loadedSounds = true;
-			//assetManager.loadLvl1Sounds(function() {
-    		//	sc.setGameSounds()
-			//});
+			//loadedSounds = true;
+			assetManager.loadLvl1Sounds(function() {
+    			sc.setGameSounds()
+			});
 		//}
 	}
 	else if(state === "credits"){

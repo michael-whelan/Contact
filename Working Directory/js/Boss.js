@@ -27,12 +27,25 @@ var Boss=function (rank){
 	this.digTimer=0;
 	this.attackTimer=0;
 };
-
+//Boss.inherits(Enemy);
 
 Boss.prototype.hearTarget = function(x,y){
 	this.state = fsm.boss1(this.state,"hearTarget");
 	this.targetPosX = x;
 	this.targetPosY = y;
+}
+
+Boss.prototype.reset = function(){
+	this.x=0;
+	this.y=-200;
+	this.reloadTimer = 350;
+	this.startReload = false; 
+	this.comeTimer=0;
+	this.canRise =false;
+	this.digTimer=0;
+	this.attackTimer=0;
+	this.alive = false;
+	this.health = 200;
 }
 
 Boss.prototype.reload = function(){
@@ -90,7 +103,6 @@ Boss.prototype.update = function(){
 			}
 		}
 	if(this.health<=0){
-		console.log("dead boss");
 		this.alive = false;
 	}
 	else if(this.health<= this.lastHealth-30){
@@ -125,7 +137,7 @@ Boss.prototype.shoot = function(){
 		}
 
 	for (var i = 0; i < this.bullets.length; ++i) {
-    	if (!this.bullets[i].alive) {
+    	if (!this.bullets[i].alive){
     		var index = this.bullets.indexOf(i);
     		this.bullets.splice(i, 1);
     		i--;

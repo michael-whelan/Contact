@@ -47,7 +47,7 @@ Enemy.prototype.reset = function(){
 	this.timeSinceDirectChange = 0;
 	this.x = 200;
 	this.y = 100;
-	this.numBullets = 4;
+	this.numBullets = 2;
 	this.reloadTimer = 80;
 	this.startReload = false; 
 }
@@ -77,7 +77,6 @@ Enemy.prototype.collisionReaction = function(obj){
 		this.nodeArray.push(tempArr);
 		this.nodeArray.push(tempArr2);
 		this.nodeArray.push(tempArr3);
-		//console.log(this.nodeArray);
 		this.state = fsm.stateControl(this.state,"obstacle");
 	}
 	/*if(this.x < obj.x+obj.width/2){
@@ -148,7 +147,6 @@ Enemy.prototype.update = function(){
 			this.moveBasic();
 		}
 		//end state control
-		//console.log(this.state);
 		for(var i = 0; i <this.bullets.length; i++){
 			if(this.bullets[i].alive){
 				this.bullets[i].update();
@@ -256,14 +254,11 @@ Enemy.prototype.shoot = function(){
 			this.numBullets--;
 		}
 		else{
-			//console.log(this.numBullets);
 			this.startReload = true;
 		}
 
 	//end Space
-		/*if(this.numBullets<=0){
-			console.log("Press R To Reload");
-		}*/
+
 	for (var i = 0; i < this.bullets.length; ++i) {
     	if (!this.bullets[i].alive) {
     		var index = this.bullets.indexOf(i);

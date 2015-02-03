@@ -42,6 +42,9 @@ EnemyManager.prototype.reset = function(lvl){
 	while(this.enemy.length>0) {
 		this.enemy.pop();
 	};
+	this.bossComing = false;
+	this.boss1.reset();
+	this.doonce = false;
 	//this.setSpawn(lvl);
 	this.currentLvl = lvl;
 	this.enemySwarms = 0;
@@ -87,7 +90,7 @@ EnemyManager.prototype.hearShot = function(px,py){
 
 EnemyManager.prototype.setUp = function(){
 	if(this.currentLvl === "level1"){
-		this.totalSwarms = 6;
+		this.totalSwarms = 2;
 	}
 	else if(this.currentLvl === "level2"){
 		this.totalSwarms = 25;
@@ -117,7 +120,7 @@ EnemyManager.prototype.update = function(lvlMan){
 			this.boss1.alive = true;
 			this.doonce = true;
 		}
-		if(!this.boss1.alive){
+		else if(!this.boss1.alive){
 			levelWin=true;
 		}
 		this.bossComing = true;
@@ -177,11 +180,9 @@ EnemyManager.prototype.kill = function(j){
 
 EnemyManager.prototype.possibleFear = function(){
 	var rand= Math.floor(Math.random()*(5-1) +1);
-	//console.log(rand);
 	if(rand === 1){
 		for (var i = 0; i < this.enemy.length; i++) {
 			this.enemy[i].state = fsm.stateControl(this.enemy[i].state,"getScared");
-			//console.log(this.enemy[i].state);
 		};
 	}
 }
