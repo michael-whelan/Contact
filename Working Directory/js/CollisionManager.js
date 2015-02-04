@@ -204,6 +204,7 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 			if(enemyManager.boss1.alive){
 				if(enemyManager.boss1.state !== "dig" && this.circleOnCircle(player.bullets[i].radius,player.bullets[i].x,player.bullets[i].y,enemyManager.boss1.height,enemyManager.boss1.x,enemyManager.boss1.y)){
 					enemyManager.boss1.health-=1;
+					client.bossState("bossHit",0,0);
 					player.bullets[i].kill();
 				}
 			}

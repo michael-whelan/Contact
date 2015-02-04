@@ -352,10 +352,10 @@ SceneManager.prototype.loadScene = function(state,scene){
 			assetManager.loadLvl1Images(function() {
     			sc.setGameImages()
 			});
-			//loadedSounds = true;
-			assetManager.loadLvl1Sounds(function() {
+			loadedSounds = true;
+			/*assetManager.loadLvl1Sounds(function() {
     			sc.setGameSounds()
-			});
+			});*/
 		//}
 	}
 	else if(state === "credits"){

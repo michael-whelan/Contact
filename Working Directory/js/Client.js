@@ -12,7 +12,7 @@ var STARTING_GAME="1";
 function Client(){
   var that=this;
 
-  var host='149.153.102.45';
+  var host='192.168.15.11';
   var port=8080;
 
 
@@ -66,6 +66,23 @@ Client.prototype.worldUpdate = function(arr){
   this.ws.send(mess);
 }
 
+
+Client.prototype.bossState = function(effect,x,y){
+  //console.log("updating multiplayer");
+  message.pid = _name;
+  message.type = effect;
+  if(effect==="bossHit"){
+      message.data = "hit";
+  }
+  else
+  {
+      message.data = [x,y];
+  }
+  var mess = JSON.stringify(message);
+  this.ws.send(mess);
+}
+
+
 Client.prototype.deathAlert = function(){
   //console.log("updating multiplayer");
   message.pid = _name;
@@ -101,6 +118,15 @@ Client.prototype.handleMessage = function(evt){
   else if(mess.type === "updatePos"){
     var messA = mess.data;
     player2.setPos(messA[0],messA[1],messA[2],messA[3]);
+  }
+  else if(mess.type === "bossHit"){
+    enemyManager.boss1.health--;
+    
+  }
+  else if(mess.type === "bossTarget"){
+    var messA = mess.data;
+    enemyManager.boss1.hearTarget(messA[0],messA[1]);
+    
   }
   else if(mess.type === "worldUp"){
     var messA = mess.data;

@@ -366,10 +366,6 @@ Game.prototype.update = function(lvl){
 			//return "menu";
 		}
 	}
-	if(KeyController.isKeyDown(Key.N)){//temp
-		//this.shake= true;
-		enemyManager.bossComing = true;
-	}
 	if(enemyManager.bossComing){
 		this.panCam();
 	}
@@ -383,8 +379,10 @@ Game.prototype.update = function(lvl){
 		enemyManager.boss1.canRise = false;
 		enemyManager.boss1.digTimer =0;
 		enemyManager.boss1.hearTarget(player.x,player.y);
+		client.bossState("bossTarget",player.x,player.y);
 		//this.shake = false;
 	}
+
 	if(this.shake){
 		this.shakeCam();
 	}

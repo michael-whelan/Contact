@@ -72,15 +72,15 @@ Boss.prototype.update = function(){
 		}
 	if(this.state==="dig"){
 		this.digTimer++;
-		if(this.health>100){
+		//if(this.health>100){
 			if(this.digTimer>500){
 				this.canRise = true;
 			}
-		}
-		else if(this.digTimer>100 && this.counter<10){
+		//}
+		/*else if(this.digTimer>100 && this.counter<10){
 			this.attackRandom();
 			this.digTimer = 0;
-		}
+		}*/
 		this.lastHealth = this.health;
 	}
 	else if(this.state === "comeUp"){
