@@ -18,7 +18,7 @@ var Boss=function (rank){
 	this.alive=false;
 	this.angle=2.87;
 	this.bullets = [];
-	this.reloadTimer = 350;
+	this.reloadTimer = 200;
 	this.startReload = false; 
 	this.numBullets = 4;
 	this.lastHealth = 200;
@@ -26,6 +26,8 @@ var Boss=function (rank){
 	this.canRise =false;
 	this.digTimer=0;
 	this.attackTimer=0;
+	this.randPosArray = [];
+	this.counter=0;
 };
 //Boss.inherits(Enemy);
 
@@ -38,7 +40,7 @@ Boss.prototype.hearTarget = function(x,y){
 Boss.prototype.reset = function(){
 	this.x=0;
 	this.y=-200;
-	this.reloadTimer = 350;
+	this.reloadTimer = 200;
 	this.startReload = false; 
 	this.comeTimer=0;
 	this.canRise =false;
@@ -50,7 +52,6 @@ Boss.prototype.reset = function(){
 
 Boss.prototype.reload = function(){
 	this.reloadTimer--;
-
 	if(this.reloadTimer<=0){
 		this.reloadTimer = 350;
 		this.numBullets = 4;
@@ -71,9 +72,14 @@ Boss.prototype.update = function(){
 		}
 	if(this.state==="dig"){
 		this.digTimer++;
-
-		if(this.digTimer>500){
-			this.canRise = true;
+		if(this.health>100){
+			if(this.digTimer>500){
+				this.canRise = true;
+			}
+		}
+		else if(this.digTimer>100 && this.counter<10){
+			this.attackRandom();
+			this.digTimer = 0;
 		}
 		this.lastHealth = this.health;
 	}
@@ -121,6 +127,14 @@ function getDistance(x1,y1,x2,y2){
  	 ys = ys * ys;
  
   	return sqrt( xs + ys );
+}
+
+Boss.prototype.attackRandom = function(){
+	var rand1= Math.floor(Math.random()*(13-1) +1);
+	var rand2= Math.floor(Math.random()*(20-1) +1);
+	var temp = [rand1,rand2];
+	this.randPosArray.push(temp);
+	this.counter++;
 }
 
 Boss.prototype.shoot = function(){

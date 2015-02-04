@@ -256,7 +256,6 @@ Enemy.prototype.shoot = function(){
 		else{
 			this.startReload = true;
 		}
-
 	//end Space
 
 	for (var i = 0; i < this.bullets.length; ++i) {

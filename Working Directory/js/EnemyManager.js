@@ -3,7 +3,7 @@
 
 
 var EnemyManager=function (){
-	this.boss1 = new Boss();
+	this.boss1 = new Boss("boss1");
 	this.enemy = [];
 	this.boss;
 	this.setUp();
