@@ -95,7 +95,16 @@ FSM.prototype.boss1 = function(currState,evt){
 		if(evt === "hearTarget"){//interrupted by shot taken 
 			return "comeUp";//tells the entity to change states to the appropriate
 		}
+		if(evt === "stage2"){//interrupted by shot taken 
+			return "flurry";//tells the entity to change states to the appropriate
+		}
 		return "dig";
+	}
+	if(currState ==="flurry"){
+		if(evt==="stage1"){
+			return "dig";
+		}
+		return "flurry"
 	}
 	if (currState === "comeUp") {
 		if(evt ==="rise"){

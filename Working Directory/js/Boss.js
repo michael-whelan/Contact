@@ -1,5 +1,5 @@
 var imgBoss1 = new Image();
-
+var imgHole = new Image();
 
 
 var Boss=function (rank){
@@ -26,8 +26,9 @@ var Boss=function (rank){
 	this.canRise =false;
 	this.digTimer=0;
 	this.attackTimer=0;
-	this.randPosArray = [];
 	this.counter=0;
+	this.flurryTimer=0;
+	this.hitAreas=[];
 };
 //Boss.inherits(Enemy);
 
@@ -72,22 +73,31 @@ Boss.prototype.update = function(){
 		}
 	if(this.state==="dig"){
 		this.digTimer++;
-		//if(this.health>100){
+		if(this.health>100||this.counter>=10){
 			if(this.digTimer>500){
 				this.canRise = true;
 			}
-		//}
-		/*else if(this.digTimer>100 && this.counter<10){
-			this.attackRandom();
-			this.digTimer = 0;
-		}*/
+		}
+		else{
+			this.state = fsm.boss1(this.state,"stage2");
+		}
 		this.lastHealth = this.health;
+	}
+	else if(this.state === "flurry"){
+		this.shake=true;
+		this.flurryTimer++;
+		if(this.flurryTimer>=150){
+			this.attackRandom();
+			this.flurryTimer=0;
+		}
+		if(this.counter>=10){
+			this.state = fsm.boss1(this.state,"stage1");
+		}
 	}
 	else if(this.state === "comeUp"){
 		this.comeUp();
 		this.comeTimer++;//foolish name
 		if(this.comeTimer>240){
-			
 			this.comeTimer = 0;
 			this.state = fsm.boss1(this.state,"rise");
 		}
@@ -130,12 +140,16 @@ function getDistance(x1,y1,x2,y2){
 }
 
 Boss.prototype.attackRandom = function(){
-	var rand1= Math.floor(Math.random()*(13-1) +1);
-	var rand2= Math.floor(Math.random()*(20-1) +1);
-	var temp = [rand1,rand2];
-	this.randPosArray.push(temp);
+	var rand1= Math.floor(Math.random()*(13-0) +0);
+	var rand2= Math.floor(Math.random()*(20-0) +0);
+	this.hearTarget((rand1*100)-845,(rand2*100)-652);
+	//console.log(rand1*100,rand2*100);
+	var arr = [(rand1*100)-845,(rand2*100)-652];
+	this.hitAreas.push(arr);
 	this.counter++;
 }
+
+
 
 Boss.prototype.shoot = function(){
 	if(this.numBullets>0){
@@ -200,17 +214,17 @@ Boss.prototype.comeUp = function(){
 Boss.prototype.draw = function(){
 	ctx.save();//save the state of canvas before rotation wrecks the place.
 	for(var i = 0; i <this.bullets.length; i++){
-			this.bullets[i].draw();
+		this.bullets[i].draw();
 	}
+	for(var i=0;i<this.hitAreas.length; ++i){
+		//console.log("array ",this.hitAreas[i][0],this.hitAreas[i][1]);
+		ctx.drawImage(imgHole,this.hitAreas[i][0],this.hitAreas[i][1],100,100);
+	}
+
+	if(this.state=== "attack"){
 		ctx.translate(this.x, this.y); //let's translate
 		ctx.rotate(this.angle); //increment the angle and rotate the image 
-if(this.state=== "attack"){
 		ctx.drawImage(imgBoss1,-this.width/2,-this.height/2,this.width,this.height);
 	}
-		ctx.restore(); //restore the state of canvas
-
-
-
-
-	
+	ctx.restore(); //restore the state of canvas	
 }

@@ -379,6 +379,7 @@ Game.prototype.update = function(lvl){
 		enemyManager.boss1.canRise = false;
 		enemyManager.boss1.digTimer =0;
 		enemyManager.boss1.hearTarget(player.x,player.y);
+		if(multiplayer)
 		client.bossState("bossTarget",player.x,player.y);
 		//this.shake = false;
 	}
@@ -390,8 +391,8 @@ Game.prototype.update = function(lvl){
 		this.clicker = 0;
 	}
 	if(this.goMenu){
-		backTrack.pause();
-		backTrack.currentTime=0;
+		//backTrack.pause();
+		//backTrack.currentTime=0;
 		multiplayer = false;
 		return "menu";
 	}
@@ -559,11 +560,12 @@ Game.prototype.draw =function (){
   	//ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
 	pickUp.draw();
 	
+	
+	enemyManager.draw();
 	player.draw();
 	if(multiplayer){
 		player2.draw();
 	}
-	enemyManager.draw();
 	if(debugDrawer){
 		this.debugDraw();
 	}

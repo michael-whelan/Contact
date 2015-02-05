@@ -106,7 +106,6 @@ TextManager.prototype.controller = function(level){
     this.level = level;
     if(player.numBullets>0){
         this.gameText();
-      
     }
     else{
         ctx.strokeStyle = "#003300";

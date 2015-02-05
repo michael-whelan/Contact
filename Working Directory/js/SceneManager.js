@@ -39,7 +39,7 @@ function SceneManager(){
 SceneManager.prototype.initCanvas=function () { 
 	canvas = document.createElement('canvas'); 
 	ctx = canvas.getContext('2d');
-	CT = new CanvasText; 
+	CT = new CanvasText(); 
 	document.body.appendChild(canvas);
 	//set canvas to size of the screen.
 	canvas.width = 1152;//1152
@@ -119,6 +119,8 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/win_menu.png");
 	assetManager.queueLoadImg("images/lose_menu.png");
 	assetManager.queueLoadImg("images/boss1.png");
+	assetManager.queueLoadImg("images/hole.png");
+
 	//temp images
 	assetManager.queueLoadImg("images/ViewRange.png");
 	assetManager.queueLoadImg("images/GoTo.png");
@@ -197,6 +199,7 @@ SceneManager.prototype.setGameImages = function(){
 	imgReloadBtn = assetManager.getAsset("images/reload_button.png");
 	imgHealthBar = assetManager.getAsset("images/health.png");
 	imgBoss1 = assetManager.getAsset("images/boss1.png");
+	imgHole =  assetManager.getAsset("images/hole.png");
 	//temp images
 	imgRadarPUp = assetManager.getAsset("images/GoTo.png");
 	imgViewRad = assetManager.getAsset("images/ViewRange.png");
