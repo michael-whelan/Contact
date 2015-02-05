@@ -369,7 +369,7 @@ Game.prototype.update = function(lvl){
 	if(enemyManager.bossComing){
 		this.panCam();
 	}
-	if(enemyManager.boss1.state ==="comeUp"){
+	if(enemyManager.boss1.state ==="comeUp"||enemyManager.boss1.state ==="flurry"){
 		this.shake = true;
 	}
 	else{
@@ -559,7 +559,6 @@ Game.prototype.draw =function (){
   	lvlManager.draw();
   	//ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
 	pickUp.draw();
-	
 	
 	enemyManager.draw();
 	player.draw();

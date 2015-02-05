@@ -20,7 +20,7 @@ var Boss=function (rank){
 	this.bullets = [];
 	this.reloadTimer = 200;
 	this.startReload = false; 
-	this.numBullets = 4;
+	this.numBullets = 12;
 	this.lastHealth = 200;
 	this.comeTimer=0;
 	this.canRise =false;
@@ -46,16 +46,21 @@ Boss.prototype.reset = function(){
 	this.comeTimer=0;
 	this.canRise =false;
 	this.digTimer=0;
-	this.attackTimer=0;
 	this.alive = false;
 	this.health = 200;
+	this.digTimer=0;
+	this.attackTimer=0;
+	this.counter=0;
+	this.flurryTimer=0;
+	this.hitAreas=[];
+	this.state = "dig";
 }
 
 Boss.prototype.reload = function(){
 	this.reloadTimer--;
 	if(this.reloadTimer<=0){
-		this.reloadTimer = 350;
-		this.numBullets = 4;
+		this.reloadTimer = 450;
+		this.numBullets = 12;
 		this.startReload = false;
 	}
 }
@@ -103,6 +108,7 @@ Boss.prototype.update = function(){
 		}
 	}
 	else if(this.state === "attack"){
+		this.counter = 0;
 		if(this.attackTimer>3000){
 			this.attackTimer = 0;
 			if(getDistance(this.targetPosX,this.targetPosY,this.x,this.y)>300){
@@ -121,7 +127,7 @@ Boss.prototype.update = function(){
 	if(this.health<=0){
 		this.alive = false;
 	}
-	else if(this.health<= this.lastHealth-30){
+	else if(this.health<= this.lastHealth-20){
 		this.state = fsm.boss1(this.state,"hurt");
 	}
 }
@@ -134,7 +140,7 @@ function getDistance(x1,y1,x2,y2){
   	xs = xs * xs;
  
   	ys = y2 - y1;
- 	 ys = ys * ys;
+ 	ys = ys * ys;
  
   	return sqrt( xs + ys );
 }
@@ -142,13 +148,12 @@ function getDistance(x1,y1,x2,y2){
 Boss.prototype.attackRandom = function(){
 	var rand1= Math.floor(Math.random()*(13-0) +0);
 	var rand2= Math.floor(Math.random()*(20-0) +0);
-	this.hearTarget((rand1*100)-845,(rand2*100)-652);
+	this.hearTarget((rand2*100)-845,(rand1*100)-652);
 	//console.log(rand1*100,rand2*100);
-	var arr = [(rand1*100)-845,(rand2*100)-652];
+	var arr = [(rand2*100)-845,(rand1*100)-652];
 	this.hitAreas.push(arr);
 	this.counter++;
 }
-
 
 
 Boss.prototype.shoot = function(){

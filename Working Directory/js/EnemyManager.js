@@ -90,10 +90,10 @@ EnemyManager.prototype.hearShot = function(px,py){
 
 EnemyManager.prototype.setUp = function(){
 	if(this.currentLvl === "level1"){
-		this.totalSwarms = 2;
+		this.totalSwarms = 7;
 	}
 	else if(this.currentLvl === "level2"){
-		this.totalSwarms = 25;
+		this.totalSwarms = 20;
 	}
 	this.enemySwarms = this.totalSwarms;
 }
@@ -174,6 +174,9 @@ EnemyManager.prototype.kill = function(j){
 	var rand= Math.floor(Math.random()*(10-1) +1);
 	if(rand === 2){
 		return 1;
+	}
+	else if(rand >= 8){
+		return 2;
 	}
 	return 0;
 }
