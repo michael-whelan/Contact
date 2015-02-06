@@ -182,12 +182,12 @@ CollisionManager.prototype.playerVsBoss = function(enemyManager,player){
 	}
 	for(var i = 0; i<enemyManager.boss1.bullets.length; ++i){
 		if(this.circleOnCircle(enemyManager.boss1.bullets[i].radius,enemyManager.boss1.bullets[i].x,
-				enemyManager.boss1.bullets[i].y,player.radius,player.x,player.y) && enemyManager.boss1.bullets[i].alive&& player.flash === false){
-				player.health-=2;
-				loseHealthSnd.play();
-				player.lastHitTime = Date.now();
-				enemyManager.boss1.bullets[i].kill();
-			}
+		enemyManager.boss1.bullets[i].y,player.radius,player.x,player.y) && enemyManager.boss1.bullets[i].alive&& player.flash === false){
+			player.health-=2;
+			loseHealthSnd.play();
+			player.lastHitTime = Date.now();
+			enemyManager.boss1.bullets[i].kill();
+		}
 		if(multiplayer){
 			if(this.circleOnCircle(enemyManager.boss1.bullets[i].radius,enemyManager.boss1.bullets[i].x,
 			enemyManager.boss1.bullets[i].y,player2.radius,player2.x,player2.y) &&  player2.flash === false){

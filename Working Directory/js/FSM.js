@@ -91,6 +91,7 @@ FSM.prototype.stateControl = function(currState, evt){
 
 
 FSM.prototype.boss1 = function(currState,evt){
+	if((multiplayer&&_name === "player1")||!multiplayer){
 	if(currState === "dig"){//the idle function
 		if(evt === "hearTarget"){//interrupted by shot taken 
 			return "comeUp";//tells the entity to change states to the appropriate
@@ -118,4 +119,6 @@ FSM.prototype.boss1 = function(currState,evt){
 		}
 		return "attack";
 	}
+	}
+	return currState;
 }

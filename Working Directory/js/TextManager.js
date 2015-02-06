@@ -105,7 +105,15 @@ TextManager.prototype.end = function(txt){
 TextManager.prototype.controller = function(level){
     this.level = level;
     if(player.numBullets>0){
-        this.gameText();
+        //this.gameText();
+        var count=0;
+        for(var j =0; j<3; j++){
+        for(var i = 0; i < 10;i++){
+            count++;
+            if(count <= player.numBullets){
+            ctx.drawImage(imgSquare,(8*i)+50,(j*15)+50,5,10);}
+        }
+    }
     }
     else{
         ctx.strokeStyle = "#003300";

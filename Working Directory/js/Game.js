@@ -271,7 +271,7 @@ Game.prototype.controlMultiplayer = function(stick,stick2){
 		client.update(player.x,player.y,player.angle,tmpint);
 		this.sendTimer =0;
 	}
-	if(_name === "player1" && this.worldSendTimer > 15){//player 1 will be put in control as the authoritive player. His is the correct game world.
+	if(_name === "player1" && this.worldSendTimer > 15 && !enemyManager.boss1.alive){//player 1 will be put in control as the authoritive player. His is the correct game world.
 		var tempArr = new Array();
 		for(var i = 0; i < enemyManager.enemy.length; ++i){
 			var temp2 = new Array();
@@ -285,6 +285,10 @@ Game.prototype.controlMultiplayer = function(stick,stick2){
 		}
 		this.worldSendTimer =0;
 		client.worldUpdate(tempArr);
+	}
+	else if(_name === "player1" && this.worldSendTimer > 30 && enemyManager.boss1.alive){
+		this.worldSendTimer =0;
+		client.bossPos(enemyManager.boss1.x,enemyManager.boss1.y,enemyManager.boss1.state);
 	}
 }
 
@@ -369,6 +373,10 @@ Game.prototype.update = function(lvl){
 	if(enemyManager.bossComing){
 		this.panCam();
 	}
+	if(enemyManager.boss1.counter>=10 && multiplayer){
+		client.bossHole(enemyManager.boss1.hitAreas);
+	}
+
 	if(enemyManager.boss1.state ==="comeUp"||enemyManager.boss1.state ==="flurry"){
 		this.shake = true;
 	}
@@ -378,9 +386,20 @@ Game.prototype.update = function(lvl){
 	if((player.moveStep&&enemyManager.boss1.state ==="dig"&&enemyManager.boss1.canRise)||enemyManager.boss1.state ==="attack"){
 		enemyManager.boss1.canRise = false;
 		enemyManager.boss1.digTimer =0;
-		enemyManager.boss1.hearTarget(player.x,player.y);
-		if(multiplayer)
-		client.bossState("bossTarget",player.x,player.y);
+		
+		if(multiplayer){
+			if(getDistance(player.x,player.y,enemyManager.boss1.x,enemyManager.boss1.y)<
+			getDistance(player2.x,player2.y,enemyManager.boss1.x,enemyManager.boss1.y)){
+				client.bossState("bossTarget");
+			enemyManager.boss1.hearTarget(player.x,player.y);
+			}
+			else{
+				enemyManager.boss1.hearTarget(player2.x,player2.y);
+			}
+		}
+		else{
+			enemyManager.boss1.hearTarget(player.x,player.y);
+		}
 		//this.shake = false;
 	}
 
@@ -578,6 +597,7 @@ Game.prototype.draw =function (){
 
 	if(!pause){
 		this.drawBtns();
+		
 		textManager.controller(this.currentLvl);
 		if(enemyManager.bossComing){
 			textManager.flashText();

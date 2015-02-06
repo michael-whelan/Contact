@@ -79,6 +79,10 @@ class MessageHandler:
 			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "bossTarget":
 			self.sendToOtherPlayer(pid,type,data1)
+		elif type == "bossPos":
+			self.sendToOtherPlayer(pid,type,data1)
+		elif type == "bossHole":
+			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "worldUp":
 			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "killEnemy":
