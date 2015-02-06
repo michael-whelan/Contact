@@ -78,7 +78,7 @@ Boss.prototype.update = function(){
 		}
 	if(this.state==="dig"){
 		this.digTimer++;
-		if(this.health>100||this.counter>=10){
+		if(this.health>100||this.counter>=7){
 			if(this.digTimer>500){
 				this.canRise = true;
 			}
@@ -95,7 +95,7 @@ Boss.prototype.update = function(){
 			this.attackRandom();
 			this.flurryTimer=0;
 		}
-		if(this.counter>=10){
+		if(this.counter>=7){
 			this.state = fsm.boss1(this.state,"stage1");
 		}
 	}

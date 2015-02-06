@@ -13,7 +13,7 @@ function Client(){
 var that=this;
 
 //var host='149.153.102.45';
-var host = '192.168.15.12';
+var host = '149.153.102.45';
 var port=8080;
 
 

@@ -373,7 +373,7 @@ Game.prototype.update = function(lvl){
 	if(enemyManager.bossComing){
 		this.panCam();
 	}
-	if(enemyManager.boss1.counter>=10 && multiplayer){
+	if(enemyManager.boss1.counter>=7 && multiplayer){
 		client.bossHole(enemyManager.boss1.hitAreas);
 	}
 

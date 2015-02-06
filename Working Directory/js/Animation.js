@@ -16,7 +16,6 @@ var WaterAnimation=function(){
 }
 
 	
-
 WaterAnimation.prototype.start = function(){
 	this.stage = new createjs.Stage(canvas);
  	var ss = new createjs.SpriteSheet({
