@@ -5,6 +5,7 @@
 <txtBoss1>[WARNING]</txtBoss1>
 <txtBoss2>[BOSS INCOMING...]</txtBoss2>
 <txtHealth>Health: </txtHealth>
+<txtCoins>Cash: </txtCoins>
 <txtAmmo>Ammo:</txtAmmo>
 <playerDeathMsg>Teammate has fallen</playerDeathMsg>
 <tutorialMsg1>Touch the bottom right</tutorialMsg1>

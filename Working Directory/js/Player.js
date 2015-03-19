@@ -10,6 +10,8 @@ var emptySnd = new Audio();
 
 var loseHealthSnd = new Audio();
 
+var equipment = [-1,-1];
+
 var Player=function (x,y,name){
 	this.bullets =[];
 	this.rotSpeed = 0.01;

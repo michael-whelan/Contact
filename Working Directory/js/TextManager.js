@@ -21,6 +21,10 @@ var TextManager=function(){
     var strPlayerDiedMessage;
     this.playerDied = false;//if a teammate has died this will allow a message to be drawn on screen
     this.deathMessageTimer = 0;
+
+    var coins;
+    var upgradelevel;
+
 };
 
 TextManager.prototype.init = function(){
@@ -66,13 +70,13 @@ TextManager.prototype.init = function(){
     var temp4 = document.getElementById("playerDeathMsg").innerHTML;
     var temp5 = document.getElementById("txtBoss1").innerHTML;
     var temp6 = document.getElementById("txtBoss2").innerHTML;
-
-
+    var temp7 = document.getElementById("txtCoins").innerHTML;
 
     strLoading = '<class="whiteBig">' + temp + '</class>';
     strAmmo = '<class="whiteGame">' + temp2 + '</class>';
     strHealth= '<class="whiteGame">' + temp3 + '</class>';
     strPlayerDiedMessage= '<class="whiteBig">' + temp4 + '</class>';
+    coins = '<class="whiteBig">' + temp7 + '</class>';
     strBoss1 =  '<class="warning">' + temp5 + '</class>';
     strBoss2 =  '<class="warning">' + temp6 + '</class>';
 };
@@ -140,6 +144,59 @@ TextManager.prototype.controller = function(level){
         this.lowestFps = fps;
     }
     ctx.strokeText("fps: "+this.lowestFps.toFixed(), 680, 50);*/
+}
+
+TextManager.prototype.drawShop = function(shieldLvl,AmmoLvl,BombLvl,HealthLvl,other1Lvl,other2Lvl){
+    var tempC = playerCash.toString();
+    tempC = '<class="whiteBig">' + tempC + '</class>';
+    CT.textAlign = 'left';
+    CT.drawText({
+        text:coins+ tempC,
+        x: 400,
+        y: 50
+    });
+    var tempNum =  '<class="whiteBig">'+shieldLvl.toString()+ '</class>';
+    CT.textAlign = 'left';
+    CT.drawText({
+        text:tempNum,
+        x: 92,
+        y: 100
+    });
+    tempNum = '<class="whiteBig">'+AmmoLvl.toString()+ '</class>';
+    CT.textAlign = 'left';
+    CT.drawText({
+        text:tempNum,
+        x: 450,
+        y: 100
+    });
+    tempNum ='<class="whiteBig">'+BombLvl.toString()+ '</class>';
+    CT.textAlign = 'left';
+    CT.drawText({
+        text:tempNum,
+        x: 810,
+        y: 100
+    });
+    tempNum = '<class="whiteBig">'+HealthLvl.toString()+ '</class>';
+    CT.textAlign = 'left';
+    CT.drawText({
+        text:tempNum,
+        x: 92,
+        y: 400
+    });
+    tempNum = '<class="whiteBig">'+other1Lvl.toString()+ '</class>';
+    CT.textAlign = 'left';
+    CT.drawText({
+        text:tempNum,
+        x: 450,
+        y: 400
+    });
+    tempNum = '<class="whiteBig">'+other2Lvl.toString()+ '</class>';
+    CT.textAlign = 'left';
+    CT.drawText({
+        text:tempNum,
+        x: 810,
+        y: 400
+    });
 }
 
 TextManager.prototype.gameText=function(){

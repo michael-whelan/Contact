@@ -13,6 +13,7 @@ var loadedScenes;
 var textManager;
 var client;
 var transitionTimer=200;
+var playerCash = 0;
 
 function SceneManager(){
 	game = new Game();
@@ -147,6 +148,9 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/armoryScreen.png");
 	assetManager.queueLoadImg("images/exit_temp.png");
 	assetManager.queueLoadSnd("sounds/music/123.mp3");
+
+	//temp
+	assetManager.queueLoadImg("images/selected.png");
 }
 
 SceneManager.prototype.queueLvlSelectAssets = function(){
@@ -166,6 +170,9 @@ SceneManager.prototype.setTitleImages = function(){
 	imgCustomBack = assetManager.getAsset("images/choose_temp.png");
 	imgArmoryBack = assetManager.getAsset("images/armoryScreen.png");
 	imgExitPrompt = assetManager.getAsset("images/exit_temp.png");
+
+	//temp
+	imgSelectX =  assetManager.getAsset("images/selected.png");
 	loadedImages=true;
 }
 SceneManager.prototype.setTitleSounds = function(){

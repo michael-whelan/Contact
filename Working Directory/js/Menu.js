@@ -10,9 +10,11 @@ var imgArmoryBack = new Image();
 var imgCustomBack = new Image();
 var imgExitPrompt = new Image();
 var titleMusic = new Audio();
-
+var imgSelectX = new Image();
+var shop;
 function Menu (){
 	this.returnVals = ["null","null"]; //[state,scene]
+	this.btnPos = [[1015,105],[1015,215],[1015,345],[1015,445],[1015,560]];
 	this.scene;
 	this.scrollX = 0;
 	this.lvl1X = 1152;
@@ -23,6 +25,8 @@ function Menu (){
     this.backH=50;
     this.drawExit = false;
     this.allow1=true;
+    shop = new Shop();
+    this.timer=0;
 }
 
 Menu.prototype.reset = function() {
@@ -36,6 +40,7 @@ Menu.prototype.reset = function() {
 }
 
 Menu.prototype.update = function() {
+	this.timer++;
 	if(this.returnVals[0] === "null"){
 		return ["menu","titleScreen"];
 	}
@@ -126,7 +131,6 @@ Menu.prototype.mouseDown= function(e){
 			//scroll right
 			this.scrollX -=1152;
 		}
-		
 	}
 	else if(this.scene ==="multiplayer"){
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
@@ -164,15 +168,105 @@ Menu.prototype.mouseDown= function(e){
 			this.returnVals = ["menu","stash"];
 			transitionTimer=0;
 		}
+		shop.update(e.clientX,e.clientY);
 	}
 	else if(this.scene === "custom"){
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","stash"];
 			transitionTimer=0;
 		}
+		this.updateCustom(e.clientX,e.clientY);
 	}
 }
 //end temp
+
+function sqrt(x) {
+    var i;
+    var s;
+    s=((x/2)+x/(x/2)) / 2; /*first guess*/
+    for(i=1;i<=4;i++) { /*average of guesses*/
+        s=(s+x/s)/2;
+      //console.log("s,",s);
+    }
+    return s;
+}
+
+Menu.prototype.updateCustom = function(mX,mY){
+	for(var j =0; j<5;++j){
+		if(sqrt((this.btnPos[j][0] -mX)*(this.btnPos[j][0] -mX) +(this.btnPos[j][1] -mY)*(this.btnPos[j][1] -mY)) <40){
+			for(var i = 0; i < 2;++i){
+				var q=0;
+				if(i ===0){
+					q = 1;
+				}else{
+					q = 0;
+				}
+				if(equipment[i]===j){
+					equipment[i]=-1;
+				}
+				else if(equipment[i]===-1 && q!==j){
+					equipment[i]=j;
+					break;
+				}
+			}
+		}
+	}
+
+
+		/*if(mX >this.btnPos[0] && mX<1075 && mY >50 && mY < 135){
+			for(var i = 0; i < 2;++i){
+				if(player.equipment[i]===0){
+					player.equipment[i]=-1;
+				}
+				else if(player.equipment[i]===-1){
+					player.equipment[i]=0;
+				}
+			}
+		}
+		else if(mX >960 && mX<1075 && mY >170 && mY < 255){
+			for(var i = 0; i < 2;++i){
+				if(player.equipment[i]===1){
+					player.equipment[i]=-1;
+				}
+				else if(player.equipment[i]===-1){
+					player.equipment[i]=1;
+				}
+			}
+		}
+		else if(mX >960 && mX<1075 && mY >300 && mY < 375){
+			for(var i = 0; i < 2;++i){
+				if(player.equipment[i]===2){
+					player.equipment[i]=-1;
+				}
+				else if(player.equipment[i]===-1){
+					player.equipment[i]=2;
+				}
+			}
+		}
+		else if(mX >960 && mX<1075 && mY >400 && mY < 475){
+			for(var i = 0; i < 2;++i){
+				if(player.equipment[i]===3){
+					player.equipment[i]=-1;
+				}
+				else if(player.equipment[i]===-1){
+					player.equipment[i]=3;
+				}
+			}
+		}
+		else if(mX >960 && mX<1075 && mY >505 && mY < 590){
+			for(var i = 0; i < 2;++i){
+				if(player.equipment[i]===4){
+					player.equipment[i]=-1;
+				}
+				else if(player.equipment[i]===-1){
+					player.equipment[i]=4;
+				}
+			}
+		}
+	}*/
+	
+	console.log(mX,mY);
+}
 
 Menu.prototype.updateScroll = function(){
 	if(this.lvlTutX < this.scrollX){
@@ -240,10 +334,16 @@ Menu.prototype.draw = function(scene){
 		ctx.drawImage(imgStashBack, 0,0,1152,648);
 	}
 	else if(scene ==="armory"){
-		ctx.drawImage(imgArmoryBack, 0,0,1152,648);
+		shop.draw();
 	}
 	else if(scene ==="custom"){
 		ctx.drawImage(imgCustomBack, 0,0,1152,648);
+		if(equipment[0]!==-1){
+			ctx.drawImage(imgSelectX,this.btnPos[equipment[0]][0]-50,this.btnPos[equipment[0]][1]-35,100,70);
+		}
+		if(equipment[1]!==-1){
+			ctx.drawImage(imgSelectX,this.btnPos[equipment[1]][0]-50,this.btnPos[equipment[1]][1]-35,100,70);
+		}
 	}
 	if(scene !=="titleScreen"){
 		ctx.drawImage(imgBackArrow, this.backX,this.backY,this.backW,this.backH);
