@@ -125,6 +125,7 @@ SceneManager.prototype.queueGameAssets = function(){
 	//temp images
 	assetManager.queueLoadImg("images/ViewRange.png");
 	assetManager.queueLoadImg("images/GoTo.png");
+	assetManager.queueLoadImg("images/shield.png");
 	assetManager.queueLoadImg("images/circle.png");
 	assetManager.queueLoadImg("images/square.png");
 	assetManager.queueLoadImg("images/health.png");
@@ -212,6 +213,7 @@ SceneManager.prototype.setGameImages = function(){
 	imgViewRad = assetManager.getAsset("images/ViewRange.png");
 	imgCircle = assetManager.getAsset("images/circle.png");
 	imgSquare = assetManager.getAsset("images/square.png");
+	imgShield = assetManager.getAsset("images/shield.png");
 	loadedImages = true;
 }
 

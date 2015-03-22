@@ -36,7 +36,6 @@ var Enemy=function (rank,life){
 	this.aX=0,this.aY=0,this.bX=0,this.bY=0,this.cX=0,this.cY=0;
 };
 
-
 Enemy.prototype.reset = function(){
 	this.moveDirection;
 	this.targetPosX= 0;
@@ -59,7 +58,6 @@ Enemy.prototype.spawnEnemy = function(x,y){
 	this.x = x;
 	this.y = y;
 }
-
 
 Enemy.prototype.targetPos = function(px,py){
 	this.targetPosX = px;
@@ -221,8 +219,6 @@ function rotate_point(pointX, pointY, originX, originY, angle) {
 	};
 }
 
-
-
 Enemy.prototype.turnTowardPlayer = function(){
 	if (this.alive == true){
 		if(this.rotateToDirection(this.targetPosX,this.targetPosY,0.03,0.04)){
@@ -307,7 +303,6 @@ Enemy.prototype.rotateToDirection2 = function(targX,targY,speed,leeWay){
 	return false;
 }
 
-
 Enemy.prototype.goToPos = function(xPos,yPos){
 	this.rotateToDirection(xPos,yPos,0.08,0.01);
 	
@@ -360,9 +355,6 @@ Enemy.prototype.closeToPos = function(xPos,yPos){
 	}
 	return false;
 }
-
-
-
 
 Enemy.prototype.moveBasic = function(){
 	this.moveDirection = "forward";

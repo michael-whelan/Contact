@@ -33,8 +33,8 @@ Bullet.prototype.draw = function(){
 
 Bullet.prototype.spawnBullet = function(playXDirect,playYDirect,xPos,yPos,angle){
 	//Bullet.bulletTimer++;
- 	this.xDirect = playXDirect;
- 	this.yDirect = playYDirect;	
+ 	this.xDirect= this.xFacing = Math.cos(angle);
+	this.yDirect=this.yFacing = Math.sin(angle);
  	this.alive = true;
  	this.x = xPos;
  	this.y = yPos;

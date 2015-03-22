@@ -2,6 +2,8 @@ var imgPlayer= new Image();
 
 var imgPlayerDead = new Image();
 
+var imgShield = new Image();
+
 var spawnSnd = new Audio();
 
 var reloadSnd = new Audio();
@@ -12,7 +14,9 @@ var loseHealthSnd = new Audio();
 
 var equipment = [-1,-1];
 
+
 var Player=function (x,y,name){
+	this.gun = "shotgun";
 	this.bullets =[];
 	this.rotSpeed = 0.01;
 	this.width = 128;
@@ -40,8 +44,14 @@ var Player=function (x,y,name){
 	this.gridTimer =0;
 	this.shootBool = false;this.dead = false;//multiplayer
 	this.moveStep =false;
-	//pickup Bools
+	this.shotDelay = 50;
+	this.fullMag = 30;
+	//pickup vars
 	this.radar = false;
+	this.bombNum=0;
+	this.bomb = new Bomb();
+	this.pickupAbility = ["NULL","NULL"];//the pickups that the player is able to get this game
+	this.shieldStrength=0;
 
 //triangle variables
 	this.aX=0,this.aY=0,this.bX=0,this.bY=0,this.cX=0,this.cY=0;
@@ -53,8 +63,28 @@ Player.prototype.reload = function(){
 
 	if(this.reloadTimer<=0){
 		this.reloadTimer = this.reloadDelay;
-		this.numBullets = 30;
+		this.numBullets = this.fullMag;
 		this.startReload = false;
+	}
+}
+
+Player.prototype.setEquipment = function(t1,n1,t2,n2,wChoice){
+	this.pickupAbility = [t1,t2];
+	this.gun = wChoice;
+	this.reloadDelay = 50;
+	if(wChoice === "shotgun"){
+		this.shotDelay = 50;
+		this.fullMag = 5;
+	}
+	else if(wChoice === "assault"){
+		this.shotDelay = 18;
+		this.fullMag = 30;
+	}
+	if(t1 === "shield"||t2 === "shield"){
+
+	}
+	if(t1 === "bomb"||t2 === "bomb"){
+
 	}
 }
 
@@ -134,17 +164,45 @@ Player.prototype.aimAssist = function(){
 Player.prototype.shoot = function(){	
 	//if(KeyController.isKeyDown(Key.SPACE)){
 		this.angle = this.aimAssist();
-		if(this.numBullets>0 && this.bulletTimer>18){
+		if(this.numBullets>0 && this.bulletTimer>this.shotDelay){
 			if(this.name === "player2"){
 				console.log("player 2 shoot" +this.numBullets+this.bulletTimer);
 			}
-			var bullet = new Bullet();
-			bullet.spawnBullet(this.xFacing,this.yFacing,this.bulletX,this.bulletY,this.angle);
-			this.shot = true;
-			this.bullets.push(bullet);
-			this.numBullets--;
-			this.bulletTimer=0;
+			if(this.gun ==="assault"){
+				var bullet = new Bullet();
+				bullet.spawnBullet(this.xFacing,this.yFacing,this.bulletX,this.bulletY,this.angle);
+				this.shot = true;
+				this.bullets.push(bullet);
+				this.numBullets--;
+				this.bulletTimer=0;
 			}
+			else if(this.gun ==="shotgun"){
+				var bullet = new Bullet();
+				bullet.spawnBullet(this.xFacing+this.xFacing,this.yFacing+this.yFacing,this.bulletX,this.bulletY,this.angle+0.5);
+				this.shot = true;
+				this.bullets.push(bullet);
+				this.numBullets--;
+
+				var bullet2 = new Bullet();
+				bullet2.spawnBullet(this.xFacing+this.xFacing,this.yFacing+this.yFacing,this.bulletX,this.bulletY,this.angle+0.2);
+				this.shot = true;
+				this.bullets.push(bullet2);
+				this.numBullets--;
+
+				var bullet3 = new Bullet();
+				bullet3.spawnBullet(this.xFacing+this.xFacing,this.yFacing+this.yFacing,this.bulletX,this.bulletY,this.angle-0.2);
+				this.shot = true;
+				this.bullets.push(bullet3);
+				this.numBullets--;
+
+				var bullet4 = new Bullet();
+				bullet4.spawnBullet(this.xFacing+this.xFacing,this.yFacing+this.yFacing,this.bulletX,this.bulletY,this.angle-0.5);
+				this.shot = true;
+				this.bullets.push(bullet4);
+				this.numBullets--;
+				this.bulletTimer=0;
+			}
+		}
 		else if(this.numBullets<=0){
 			//emptySnd.play();
 			emptySnd.play();
@@ -205,7 +263,17 @@ Player.prototype.controller = function(b1,b2){
 	if(this.angle>6.3){
 		this.angle = 0;
 	}
-	
+	//temp
+	if(KeyController.isKeyDown(Key.B)){
+		if(this.bombNum>0){
+			this.bomb.update(this.x,this.y);
+			this.bombNum--;
+		}
+	}
+	else if(this.bomb.alive){
+		this.bomb.release = true;
+	}
+	//temp
 	if(KeyController.isKeyDown(Key.R) &&this.numBullets<30){
 		this.setAssistPostitions();
 		//console.log("Reloading...");
@@ -230,7 +298,6 @@ Player.prototype.controller = function(b1,b2){
 
 Player.prototype.respawn = function(){
 	this.lives--;
-//	console.log("multiplayer: "+this.multiplayer);
 	this.health = 100;
 	this.x = this.startX;
 	this.y = this.startY;
@@ -332,6 +399,20 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 		this.yVel = 0;
 }
 
+
+Player.prototype.takeDmg = function(i){
+	var tmp = i;
+	if(this.shieldStrength>0){
+		this.shieldStrength-=i;
+		tmp-=i;
+	}
+	if(tmp>0){
+		this.health-=tmp;
+		loseHealthSnd.play();
+	}
+	this.lastHitTime = Date.now();
+}
+
 Player.prototype.debugDraw = function(){
 		ctx.beginPath();
     	ctx.moveTo(this.aX,this.aY);//a
@@ -348,7 +429,7 @@ Player.prototype.draw = function(){
 		this.bullets[i].draw();
 	}
 	//ctx.drawImage(imgViewRad ,this.x-this.aimAssistRadius, this.y-this.aimAssistRadius,this.aimAssistRadius*2,this.aimAssistRadius*2); 
-	
+	this.bomb.draw();
 	//ctx.drawImage(imgViewRad,this.enemyPointX,this.enemyPointY,30,10);
 	ctx.translate(this.x, this.y); //let's translate
 	ctx.rotate(this.angle); //increment the angle and rotate the image 
@@ -364,6 +445,9 @@ Player.prototype.draw = function(){
 
 	this.bulletX = rotate_point(this.x+30,this.y+20,this.x,this.y,this.angle).x;
 	this.bulletY = rotate_point(this.x+30,this.y+20,this.x,this.y,this.angle).y;
+	if(this.shieldStrength>0){
+		ctx.drawImage(imgShield,this.x-this.width/2, this.y-this.width/2, this.width, this.width);
+	}
 	//ctx.drawImage(imgViewRad,this.x- this.radius, this.y - this.radius, this.radius*2, this.radius*2);
 	//ctx.drawImage(imgBullet,Math.cos(this.angle) + (this.x-40) - Math.sin(this.angle) * (this.y+50-this.y) +(this.x - this.width/2), 
 	//Math.sin(this.angle) + (this.x-40) + Math.cos(this.angle) * (this.y+30-this.y) + (this.y+50 - this.height/2), 10, 10);

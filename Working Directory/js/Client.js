@@ -112,12 +112,12 @@ Client.prototype.handleMessage = function(evt){
 		console.log("waiting for players");
 		_name = "player1";
 		}
-	else if(mess.data === STARTING_GAME){
-		console.log("Starting Game");
-		if(_name ==="junk"){
-			_name = "player2";
-		}
-		multiplayer = true;
+		else if(mess.data === STARTING_GAME){
+			console.log("Starting Game");
+			if(_name ==="junk"){
+				_name = "player2";
+			}
+			multiplayer = true;
 		}
 	}
 	else if(mess.type === "setLevel"){
