@@ -218,10 +218,14 @@ CollisionManager.prototype.killEnemy = function(j){
 		client.killEnemy(j);
 	}
 	var killType =enemyManager.kill(j);
-	if(killType===1 && !pickUp.alive && !player.radar){
-		pickUp.spawn("radar",x,y);
+	if(killType===1 && !pickUp.alive){
+		console.log(player.pickupAbility[0]);
+		pickUp.spawn(player.pickupAbility[0],x,y);
 	}
 	else if(killType===2 && !pickUp.alive){
+		pickUp.spawn(player.pickupAbility[1],x,y);
+	}
+	else if(killType===3 && !pickUp.alive){
 		pickUp.spawn("health",x,y);
 	}
 }

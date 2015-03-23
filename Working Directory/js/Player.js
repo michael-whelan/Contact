@@ -48,11 +48,17 @@ var Player=function (x,y,name){
 	this.fullMag = 30;
 	//pickup vars
 	this.radar = false;
+	this.radarTimer=0;
+	this.maxRadarTimer=0;
 	this.bombNum=0;
+	this.maxBombNum=0;
 	this.bomb = new Bomb();
 	this.pickupAbility = ["NULL","NULL"];//the pickups that the player is able to get this game
 	this.shieldStrength=0;
+	this.maxShieldStrength=0;
+	this.maxHealth = 100;
 
+	this.dmgMult=1;
 //triangle variables
 	this.aX=0,this.aY=0,this.bX=0,this.bY=0,this.cX=0,this.cY=0;
 
@@ -67,24 +73,51 @@ Player.prototype.reload = function(){
 		this.startReload = false;
 	}
 }
+Player.prototype.setAttributes = function(h,dmg,rS){
+	console.log("att, ",h,dmg,rS);
+	if(h>0){
+		this.health = this.maxHealth = 100+(h*30);
+	}
+	if(dmg>0){
+		this.dmgMult = 1+(dmg*0.2);
+	}
+	if(rS>0){
+		this.reloadDelay = 100-(rS*6);	
+	}
+}
 
 Player.prototype.setEquipment = function(t1,n1,t2,n2,wChoice){
+	t1 = menu.getEquipType(t1);
+	t2 = menu.getEquipType(t2);
 	this.pickupAbility = [t1,t2];
+	console.log("equips = ",t1,t2);
 	this.gun = wChoice;
 	this.reloadDelay = 50;
 	if(wChoice === "shotgun"){
-		this.shotDelay = 50;
+		this.shotDelay = 80;
 		this.fullMag = 5;
 	}
 	else if(wChoice === "assault"){
 		this.shotDelay = 18;
 		this.fullMag = 30;
 	}
-	if(t1 === "shield"||t2 === "shield"){
-
+	if(t1 === "shield"){
+		this.maxShieldStrength = n1*10;
 	}
-	if(t1 === "bomb"||t2 === "bomb"){
-
+	else if(t2 === "shield"){
+		this.maxShieldStrength = n2*10;
+	}
+	if(t1 === "bomb"){
+		this.maxBombNum = n1;
+	}
+	else if(t2 === "bomb"){
+		this.maxBombNum = n2;
+	}
+	if(t1 === "radar"){
+		this.maxRadarTimer = n1*5000;
+	}
+	else if(t2 === "radar"){
+		this.maxRadarTimer = n2*5000;
 	}
 }
 
@@ -130,8 +163,7 @@ Player.prototype.setPos = function(x,y,o,_int){//used for multiplayer for second
 		this.shootBool = true;
 		//shoot();
 	}
-	else {this.shootBool = false;}
-	
+	else {this.shootBool = false;}	
 }
 
 Player.prototype.setAssistPostitions = function(){
@@ -159,7 +191,6 @@ Player.prototype.aimAssist = function(){
 	}
 	return this.angle;
 }
-
 
 Player.prototype.shoot = function(){	
 	//if(KeyController.isKeyDown(Key.SPACE)){
@@ -197,6 +228,12 @@ Player.prototype.shoot = function(){
 
 				var bullet4 = new Bullet();
 				bullet4.spawnBullet(this.xFacing+this.xFacing,this.yFacing+this.yFacing,this.bulletX,this.bulletY,this.angle-0.5);
+				this.shot = true;
+				this.bullets.push(bullet4);
+				this.numBullets--;
+
+				var bullet4 = new Bullet();
+				bullet4.spawnBullet(this.xFacing+this.xFacing,this.yFacing+this.yFacing,this.bulletX,this.bulletY,this.angle);
 				this.shot = true;
 				this.bullets.push(bullet4);
 				this.numBullets--;
@@ -313,6 +350,15 @@ Player.prototype.getAngle = function(x,x2,y,y2){
 Player.prototype.setPickup = function(id){
 	if(id === "radar"){
 		this.radar = true;
+		this.radarTimer = this.maxRadarTimer;
+	}
+	else if(id === "shield"){
+		this.shieldStrength = this.maxShieldStrength;
+	}
+	else if(id === "bomb"){
+		if(this.bombNum<this.maxBombNum){
+			this.bombNum++;
+		}
 	}
 }
 
@@ -321,8 +367,15 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 	if(this.startReload){
 		this.reload();
 	}
+
+	if(this.radar){
+		this.radarTimer--;
+		if(this.radarTimer<0){
+			this.radar = false;
+		}
+	}
 	
-	if(this.health<100 && Date.now() - this.lastHitTime > 5000){
+	if(this.health<this.maxHealth && Date.now() - this.lastHitTime > 5000){
 		this.rechargeHealth();
 	}
 	if(this.name==="player1"){this.controller(b1,b2);}
@@ -396,7 +449,7 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 	this.centreY = this.y+this.height/2;
 
 	this.xVel = 0;
-		this.yVel = 0;
+	this.yVel = 0;
 }
 
 

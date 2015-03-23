@@ -27,6 +27,9 @@ function Menu (){
     this.allow1=true;
     shop = new Shop();
     this.timer=0;
+
+    //custom upgrades
+
 }
 
 Menu.prototype.reset = function() {
@@ -192,6 +195,7 @@ function sqrt(x) {
 }
 
 Menu.prototype.updateCustom = function(mX,mY){
+	//0 = radar, 1 = bomb, 2 = shield
 	for(var j =0; j<5;++j){
 		if(sqrt((this.btnPos[j][0] -mX)*(this.btnPos[j][0] -mX) +(this.btnPos[j][1] -mY)*(this.btnPos[j][1] -mY)) <40){
 			for(var i = 0; i < 2;++i){
@@ -211,61 +215,28 @@ Menu.prototype.updateCustom = function(mX,mY){
 			}
 		}
 	}
-
-
-		/*if(mX >this.btnPos[0] && mX<1075 && mY >50 && mY < 135){
-			for(var i = 0; i < 2;++i){
-				if(player.equipment[i]===0){
-					player.equipment[i]=-1;
-				}
-				else if(player.equipment[i]===-1){
-					player.equipment[i]=0;
-				}
-			}
-		}
-		else if(mX >960 && mX<1075 && mY >170 && mY < 255){
-			for(var i = 0; i < 2;++i){
-				if(player.equipment[i]===1){
-					player.equipment[i]=-1;
-				}
-				else if(player.equipment[i]===-1){
-					player.equipment[i]=1;
-				}
-			}
-		}
-		else if(mX >960 && mX<1075 && mY >300 && mY < 375){
-			for(var i = 0; i < 2;++i){
-				if(player.equipment[i]===2){
-					player.equipment[i]=-1;
-				}
-				else if(player.equipment[i]===-1){
-					player.equipment[i]=2;
-				}
-			}
-		}
-		else if(mX >960 && mX<1075 && mY >400 && mY < 475){
-			for(var i = 0; i < 2;++i){
-				if(player.equipment[i]===3){
-					player.equipment[i]=-1;
-				}
-				else if(player.equipment[i]===-1){
-					player.equipment[i]=3;
-				}
-			}
-		}
-		else if(mX >960 && mX<1075 && mY >505 && mY < 590){
-			for(var i = 0; i < 2;++i){
-				if(player.equipment[i]===4){
-					player.equipment[i]=-1;
-				}
-				else if(player.equipment[i]===-1){
-					player.equipment[i]=4;
-				}
-			}
-		}
-	}*/
-	
-	console.log(mX,mY);
+}
+Menu.prototype.getEquipType = function(num){
+	if(num ===0){
+		return "radar"
+	}
+	else if(num ===1){
+		return "bomb";
+	}
+	else if(num ===2){
+		return "shield"
+	}
+}
+Menu.prototype.getEquipLvl = function(eType){
+	if(eType===0){
+		return shop.other2Lvl;
+	}
+	else if(eType===1){
+		return shop.BombLvl;	
+	}
+	else if(eType===2){
+		return shop.shieldLvl;
+	}
 }
 
 Menu.prototype.updateScroll = function(){

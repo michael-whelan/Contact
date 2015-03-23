@@ -171,14 +171,17 @@ EnemyManager.prototype.kill = function(j){
 		this.possibleFear();
 	}
 
-	var rand= Math.floor(Math.random()*(10-1) +1);
-	if(rand === 2){
+	var rand= Math.floor(Math.random()*(12-1) +1);
+	/*if(rand === 2){
 		return 1;
 	}
-	else if(rand >= 8){
+	else if(rand = 7){
 		return 2;
 	}
-	return 0;
+	else if(rand >= 10){
+		return 3;
+	}*/
+	return 1;
 }
 
 EnemyManager.prototype.possibleFear = function(){

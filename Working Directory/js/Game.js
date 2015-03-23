@@ -68,6 +68,8 @@ function Game (){
 Game.prototype.reset = function(lvl){
 	player.reset();
 	player2.reset();
+	player.setAttributes(shop.HealthLvl,shop.ammoLvl,shop.other1Lvl);
+	player.setEquipment(equipment[0],menu.getEquipLvl(equipment[0]),equipment[1],menu.getEquipLvl(equipment[1]),"assault");
 	this.shakeNum1=0;
 	this.shakeNum2 =0;
 	this.shakeTimer=0;

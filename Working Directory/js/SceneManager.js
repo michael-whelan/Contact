@@ -129,6 +129,7 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/circle.png");
 	assetManager.queueLoadImg("images/square.png");
 	assetManager.queueLoadImg("images/health.png");
+	assetManager.queueLoadImg("images/bomb.png");
 	//sounds
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
@@ -214,6 +215,7 @@ SceneManager.prototype.setGameImages = function(){
 	imgCircle = assetManager.getAsset("images/circle.png");
 	imgSquare = assetManager.getAsset("images/square.png");
 	imgShield = assetManager.getAsset("images/shield.png");
+	imgBombP = assetManager.getAsset("images/bomb.png");
 	loadedImages = true;
 }
 

@@ -1,5 +1,5 @@
 var imgRadarPUp = new Image();
-
+var imgbombP = new Image();
 
 
 var Pickup=function (){
@@ -29,6 +29,12 @@ Pickup.prototype.draw = function(){
 		}
 		else if(this.type ==="health"){
 			ctx.drawImage(imgViewRad,this.x, this.y, this.radius*2, this.radius*2);
+		}
+		else if(this.type ==="bomb"){
+			ctx.drawImage(imgbombP,this.x, this.y, this.radius*2, this.radius*2);
+		}
+		else if(this.type ==="shield"){
+			ctx.drawImage(imgShield,this.x, this.y, this.radius*2, this.radius*2);
 		}
 	}
 }
