@@ -14,6 +14,19 @@ Shop.prototype.reset = function() {
 
 }
 
+
+Shop.prototype.checkLvl =function(type){
+	if(type ==="radar"){
+		return this.other2Lvl;
+	}
+	else if(type === "shield"){
+		return this.shieldLvl;
+	}
+	else if(type === "bomb"){
+		return this.BombLvl;
+	}
+}
+
 Shop.prototype.update = function(mX,mY) {
 	if(mX >92 && mX<336 && mY >98 && mY < 345){
 		this.shieldLvl++;

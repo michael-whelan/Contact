@@ -11,10 +11,17 @@ var imgCustomBack = new Image();
 var imgExitPrompt = new Image();
 var titleMusic = new Audio();
 var imgSelectX = new Image();
+var imgCustBtn = new Image();
+var imgShopBtn = new Image();
 var shop;
+
 function Menu (){
 	this.returnVals = ["null","null"]; //[state,scene]
 	this.btnPos = [[1015,105],[1015,215],[1015,345],[1015,445],[1015,560]];
+	this.gunBtn = [[830,270],[830,400]];
+	this.custBtnPos = [200,50];
+	this.shopBtnPos = [300,50];
+	this.selectedGunI = -1;
 	this.scene;
 	this.scrollX = 0;
 	this.lvl1X = 1152;
@@ -27,7 +34,7 @@ function Menu (){
     this.allow1=true;
     shop = new Shop();
     this.timer=0;
-
+    this.selectedGun = "assault";
     //custom upgrades
 
 }
@@ -105,8 +112,18 @@ Menu.prototype.mouseDown= function(e){
 	}
 	else if(this.scene=== "levelSelect" && (_name==="player1"|| !multiplayer)){
 		console.log(e.clientX ,e.clientY);
+		var mX = e.clientX;
+		var mY = e.clientY;
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","titleScreen"];
+			transitionTimer=0;
+		}
+		else if(sqrt((this.custBtnPos[0] -mX)*(this.custBtnPos[0] -mX) +(this.custBtnPos[1] -mY)*(this.custBtnPos[1] -mY)) <50){
+			this.returnVals = ["menu","custom"];
+			transitionTimer=0;
+		}
+		else if(sqrt((this.shopBtnPos[0] -mX)*(this.shopBtnPos[0] -mX) +(this.shopBtnPos[1] -mY)*(this.shopBtnPos[1] -mY)) <50){
+			this.returnVals = ["menu","armory"];
 			transitionTimer=0;
 		}
 		else if(e.clientX >  this.lvl1X+300  && e.clientX <this.lvl1X+700&&e.clientY>300&&e.clientY<500){//770,190,955,375
@@ -209,13 +226,37 @@ Menu.prototype.updateCustom = function(mX,mY){
 					equipment[i]=-1;
 				}
 				else if(equipment[i]===-1 && q!==j){
-					equipment[i]=j;
+					if(shop.checkLvl(this.getEquipType(j))>0){
+						equipment[i]=j;
+					}
 					break;
 				}
 			}
 		}
 	}
+	for(var i =0;i<2;i++){
+		if(sqrt((this.gunBtn[i][0] -mX)*(this.gunBtn[i][0] -mX) +(this.gunBtn[i][1] -mY)*(this.gunBtn[i][1] -mY)) <40){
+			var q;
+			this.selectedGunI = i;
+			if(i ===0){
+				q = 1;
+			}else{
+				q = 0;
+			}
+			this.selectedGun = this.selectGun(i);
+		}
+	}
 }
+
+Menu.prototype.selectGun = function(num){
+	if(num ===0){
+		return "assault";
+	}
+	else if(num === 1){
+		return "shotgun";
+	}
+}
+
 Menu.prototype.getEquipType = function(num){
 	if(num ===0){
 		return "radar"
@@ -296,6 +337,8 @@ Menu.prototype.draw = function(scene){
 		ctx.drawImage(imgLvlSel2, this.lvl1X+1152,0,1152,648);
 		ctx.drawImage(imgLvlSel1, this.lvl1X,0,1152,648);
 		ctx.drawImage(imgLvlSelTut,this.lvlTutX,0,1152,648);
+		ctx.drawImage(imgShopBtn,this.shopBtnPos[0]-50,this.shopBtnPos[1]-50,100,100);
+		ctx.drawImage(imgCustBtn,this.custBtnPos[0]-50,this.custBtnPos[1]-50,100,100);
 	}
 	else if(scene ==="multiplayer"){
 		ctx.drawImage(imgMultiplayerBack, 0,0,1152,648);
@@ -314,6 +357,9 @@ Menu.prototype.draw = function(scene){
 		}
 		if(equipment[1]!==-1){
 			ctx.drawImage(imgSelectX,this.btnPos[equipment[1]][0]-50,this.btnPos[equipment[1]][1]-35,100,70);
+		}
+		if(this.selectedGunI !==-1){
+			ctx.drawImage(imgSelectX,this.gunBtn[this.selectedGunI][0]-50,this.gunBtn[this.selectedGunI][1]-35,100,70);
 		}
 	}
 	if(scene !=="titleScreen"){

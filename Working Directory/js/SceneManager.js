@@ -50,15 +50,9 @@ SceneManager.prototype.initCanvas=function () {
 	canvas.addEventListener("touchmove",touchMove,false);
 	canvas.addEventListener("touchend",touchEnd,false);
 	canvas.addEventListener("mousedown",mouseDown,false);
-	/*canvas.addEventListener("mousedown",mouseDown,false);
-	canvas.addEventListener("mousemove",mouseMove,false);
-	canvas.addEventListener("mouseup",mouseUp,false);*/
-	//document.addEventListener("mousemove", function (e) {
-	//e.preventDefault();
-	//stick.setInputXY(e.pageX, e.pageY);
-//});
-	//this.queueAssets();
+
 }
+
 function resizeGame(){
 	canvas.style.height = window.parent.document.getElementById("getHeight").style.height;
   	canvas.style.width = window.parent.document.getElementById("getWidth").style.width;
@@ -130,6 +124,7 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/square.png");
 	assetManager.queueLoadImg("images/health.png");
 	assetManager.queueLoadImg("images/bomb.png");
+	assetManager.queueLoadImg("images/coin.png");
 	//sounds
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
@@ -153,6 +148,8 @@ SceneManager.prototype.queueTitleAssets = function(){
 
 	//temp
 	assetManager.queueLoadImg("images/selected.png");
+	assetManager.queueLoadImg("images/shopBtn.png");
+	assetManager.queueLoadImg("images/custBtn.png");
 }
 
 SceneManager.prototype.queueLvlSelectAssets = function(){
@@ -175,6 +172,8 @@ SceneManager.prototype.setTitleImages = function(){
 
 	//temp
 	imgSelectX =  assetManager.getAsset("images/selected.png");
+	imgCustBtn = assetManager.getAsset("images/custBtn.png");
+	imgShopBtn = assetManager.getAsset("images/shopBtn.png");
 	loadedImages=true;
 }
 SceneManager.prototype.setTitleSounds = function(){
@@ -216,6 +215,7 @@ SceneManager.prototype.setGameImages = function(){
 	imgSquare = assetManager.getAsset("images/square.png");
 	imgShield = assetManager.getAsset("images/shield.png");
 	imgBombP = assetManager.getAsset("images/bomb.png");
+	imgCoin = assetManager.getAsset("images/coin.png");
 	loadedImages = true;
 }
 

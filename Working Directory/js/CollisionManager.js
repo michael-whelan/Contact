@@ -217,16 +217,28 @@ CollisionManager.prototype.killEnemy = function(j){
 	if(multiplayer){
 		client.killEnemy(j);
 	}
+	
 	var killType =enemyManager.kill(j);
-	if(killType===1 && !pickUp.alive){
-		console.log(player.pickupAbility[0]);
+	if(killType===1 ){//&& !pickUp.alive){
+		var pickUp = new Pickup();
 		pickUp.spawn(player.pickupAbility[0],x,y);
+		pickUps.push(pickUp);
 	}
-	else if(killType===2 && !pickUp.alive){
+	else if(killType===2){//&& !pickUp.alive){
+		var pickUp = new Pickup();
 		pickUp.spawn(player.pickupAbility[1],x,y);
+		pickUps.push(pickUp);
 	}
-	else if(killType===3 && !pickUp.alive){
+	else if(killType===3){//&& !pickUp.alive){
+		var pickUp = new Pickup();
 		pickUp.spawn("health",x,y);
+		pickUps.push(pickUp);
+	}
+	else{
+		
+		var pickUp = new Pickup();
+		pickUp.spawn("coin",x,y);
+		pickUps.push(pickUp);
 	}
 }
 
@@ -235,15 +247,28 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 	this.enemy(enemyManager,player,lvlManager);
 
 	//temp only one pick up will become a list
-	if(this.circleOnCircle(player.radius, player.x,player.y,pickUp.radius,pickUp.x,pickUp.y)&&
-		pickUp.alive){
-		pickUp.alive = false;
-		if(pickUp.type ==="health"){
-			player.health+=20;
+	for(var i =0; i < pickUps.length; ++i){
+		if(this.circleOnCircle(player.radius, player.x,player.y,pickUps[i].radius,pickUps[i].x,pickUps[i].y)&&
+			pickUps[i].alive){
+			pickUps[i].alive = false;
+			if(pickUps[i].type ==="health"){
+				player.health+=20;
+			}
+			else if(pickUps[i].type ==="coin"){
+				playerCash+=10;
+			}
+			else{
+				player.setPickup(pickUps[i].type);
+			}
 		}
-		else{
-			player.setPickup(pickUp.type);
-		}
+		console.log(pickUps[i]);
+	}
+	for (var i = 0; i < pickUps.length; ++i) {
+    	if (!pickUps[i].alive) {
+    		var index =pickUps.indexOf(i);
+    		pickUps.splice(i, 1);
+    		i--;
+   		}
 	}
 	if(enemyManager.boss1.alive){
 		this.playerVsBoss(enemyManager,player);

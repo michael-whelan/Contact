@@ -1,6 +1,6 @@
 var imgRadarPUp = new Image();
 var imgbombP = new Image();
-
+var imgCoin = new Image();
 
 var Pickup=function (){
 	this.type ="Null"; 
@@ -35,6 +35,9 @@ Pickup.prototype.draw = function(){
 		}
 		else if(this.type ==="shield"){
 			ctx.drawImage(imgShield,this.x, this.y, this.radius*2, this.radius*2);
+		}
+		else if(this.type ==="coin"){
+			ctx.drawImage(imgCoin,this.x, this.y, this.radius*2, this.radius*2);
 		}
 	}
 }

@@ -92,15 +92,18 @@ Player.prototype.setEquipment = function(t1,n1,t2,n2,wChoice){
 	this.pickupAbility = [t1,t2];
 	console.log("equips = ",t1,t2);
 	this.gun = wChoice;
-	this.reloadDelay = 50;
+
 	if(wChoice === "shotgun"){
+		this.reloadDelay = 450;
 		this.shotDelay = 80;
 		this.fullMag = 5;
 	}
 	else if(wChoice === "assault"){
+		this.reloadDelay = 200;
 		this.shotDelay = 18;
 		this.fullMag = 30;
 	}
+	this.numBullets= this.fullMag;
 	if(t1 === "shield"){
 		this.maxShieldStrength = n1*10;
 	}
@@ -212,25 +215,21 @@ Player.prototype.shoot = function(){
 				bullet.spawnBullet(this.xFacing+this.xFacing,this.yFacing+this.yFacing,this.bulletX,this.bulletY,this.angle+0.5);
 				this.shot = true;
 				this.bullets.push(bullet);
-				this.numBullets--;
 
 				var bullet2 = new Bullet();
 				bullet2.spawnBullet(this.xFacing+this.xFacing,this.yFacing+this.yFacing,this.bulletX,this.bulletY,this.angle+0.2);
 				this.shot = true;
 				this.bullets.push(bullet2);
-				this.numBullets--;
 
 				var bullet3 = new Bullet();
 				bullet3.spawnBullet(this.xFacing+this.xFacing,this.yFacing+this.yFacing,this.bulletX,this.bulletY,this.angle-0.2);
 				this.shot = true;
 				this.bullets.push(bullet3);
-				this.numBullets--;
 
 				var bullet4 = new Bullet();
 				bullet4.spawnBullet(this.xFacing+this.xFacing,this.yFacing+this.yFacing,this.bulletX,this.bulletY,this.angle-0.5);
 				this.shot = true;
 				this.bullets.push(bullet4);
-				this.numBullets--;
 
 				var bullet4 = new Bullet();
 				bullet4.spawnBullet(this.xFacing+this.xFacing,this.yFacing+this.yFacing,this.bulletX,this.bulletY,this.angle);
@@ -454,7 +453,7 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 
 
 Player.prototype.takeDmg = function(i){
-	var tmp = i;
+	/*var tmp = i;
 	if(this.shieldStrength>0){
 		this.shieldStrength-=i;
 		tmp-=i;
@@ -463,7 +462,7 @@ Player.prototype.takeDmg = function(i){
 		this.health-=tmp;
 		loseHealthSnd.play();
 	}
-	this.lastHitTime = Date.now();
+	this.lastHitTime = Date.now();*/
 }
 
 Player.prototype.debugDraw = function(){

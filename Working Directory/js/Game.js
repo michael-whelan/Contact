@@ -33,7 +33,7 @@ var point = {
 	y: (648 / 2)
 };
 var _name="junk";
-var pickUp;
+var pickUps=[];
 
 var pause= false;
 var debugDrawer = false;
@@ -41,12 +41,10 @@ var timer =0;
 var pauseTimer;
 
 function Game (){
-	//assetManager = new AssetManager();
 	player = new Player(200,100,"player1");
 	player2 = new Player(100,100,"player2");
 	sticks = [new Stick(inputSize), new Stick(inputSize)];
 	fsm = new FSM();
-	pickUp = new Pickup();
 	lvlManager = new LevelManager();
 	enemyManager = new EnemyManager();
 	collisionManager = new CollisionManager();
@@ -61,7 +59,6 @@ function Game (){
 	this.pauseY = 50;
 	this.shake = false;
 	this.clicker =0;
-	//this.reset();
 }
 
 
@@ -69,7 +66,7 @@ Game.prototype.reset = function(lvl){
 	player.reset();
 	player2.reset();
 	player.setAttributes(shop.HealthLvl,shop.ammoLvl,shop.other1Lvl);
-	player.setEquipment(equipment[0],menu.getEquipLvl(equipment[0]),equipment[1],menu.getEquipLvl(equipment[1]),"assault");
+	player.setEquipment(equipment[0],menu.getEquipLvl(equipment[0]),equipment[1],menu.getEquipLvl(equipment[1]),menu.selectedGun);
 	this.shakeNum1=0;
 	this.shakeNum2 =0;
 	this.shakeTimer=0;
@@ -579,8 +576,10 @@ Game.prototype.draw =function (){
     //the numbers offset the background so that it centres with the map
   	lvlManager.draw();
   	//ctx.drawImage(imgBack, -(300 + (mapWidth-1450)),-(200+mapHeight-845),mapWidth, mapHeight);
-	pickUp.draw();
-	
+	for (var i = 0; i < pickUps.length; ++i) {
+		pickUps[i].draw();
+	}	
+
 	enemyManager.draw();
 	player.draw();
 	if(multiplayer){
