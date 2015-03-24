@@ -7,8 +7,8 @@ import json
 #list of WebSocket connections
 connections={}
 
-session = Session()
-
+#session = Session()
+sessionList = list()
 
 class WSHandler(tornado.websocket.WebSocketHandler):
 	def check_origin(self, origin):
@@ -34,7 +34,11 @@ class MessageHandler:
 	numberOfDeaths = 0#this keeps track of whether or not there is still anyone playing
 	def __init__(self):
 		pass
-
+	def createSession(self):
+		session1 = Session()
+		sessionList.append(session1)
+		return 
+		
 	def handleIncomingMsg(self, data, socket,pid):
 		try:
 			print ('message received %s' %data)
@@ -50,26 +54,37 @@ class MessageHandler:
 			type = 'error'
 			print('except')
 					
-
-		if type == "join":
-			#add to connection list
-			
-			print('Session return, '+ str(session.getState()))
-			if(str(session.getState()) == "-1"):
-				print('p1');
-				success = session.addPlayer('player1')
+		if type == "host":
+			self.createSession()
+			if(str(sessionList[len(sessionList)-1].getState()) == "-1"):
+				success = sessionList[len(sessionList)-1].addPlayer('player1')
 				data['pid'] = 'player1'
-			else:
-				print('p2')
-				success = session.addPlayer('player2')
-				data['pid'] = 'player2'
-				
-			self.addToConnectionList(socket, data)
+				self.addToConnectionList(socket, data)
 			
 			if(success):
-				self.sendToAll(data['pid'], "state",str(session.getState()))
+				self.sendToAll(data['pid'], "state",str(str(sessionList[len(sessionList)-1].getState())))
 			else:
-				self.sendMessage(data['pid'], "error", "No available space: Two players already in the game!")  
+				self.sendMessage(data['pid'], "error", "Unexpected error with hosting") 	
+				
+				
+				
+		elif type == "join":
+			#add to connection list
+			
+			
+			for s in sessionList:
+				print('Session return, '+ str(s.getState()))
+				if(s.getState() == 0):
+					print('p2')
+					success = s.addPlayer('player2')
+					print('Session return2, '+ str(s.getState()))
+					data['pid'] = 'player2'
+					self.addToConnectionList(socket, data)
+			
+					if(success):
+						self.sendToAll(data['pid'], "state",str(s.getState()))
+			#else:
+			#	self.sendMessage(data['pid'], "error", "No available space: Two players already in the game!") 
 			
 		elif type == "test":
 			self.sendToAll(pid,type,1)
@@ -127,6 +142,7 @@ class MessageHandler:
 
 	def sendToAll(self,pid,type,data):
 		for pid in connections:
+			print("pids saved "+pid)
 			self.sendMessage(pid, type, data)
 			
 	def sendToAll2(self,pid,type,data):

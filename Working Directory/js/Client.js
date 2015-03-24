@@ -27,6 +27,15 @@ this.ws.onclose = function(evt) { console.log("Connection close"); game.goMenu =
 this.ws.onopen = function(evt) { console.log('open connection'); };         
 }
 
+
+Client.prototype.host = function(){
+	console.log("host button");
+	message.pid = "junk";
+	message.type = "host";
+	var mess = JSON.stringify(message);
+	this.ws.send(mess);
+}
+
 Client.prototype.join = function(){
 	message.pid = "junk";
 	message.type = "join";
@@ -106,7 +115,7 @@ Client.prototype.handleMessage = function(evt){
 
 	var mess = JSON.parse(evt.data);
 	//console.log(mess);
-
+	console.log(mess.data);
 	if (mess.type ==="state"){
 		if(mess.data === WAITING_FOR_PLAYERS){
 		console.log("waiting for players");
