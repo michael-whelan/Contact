@@ -37,8 +37,13 @@ class MessageHandler:
 	def createSession(self):
 		session1 = Session()
 		sessionList.append(session1)
-		return 
-		
+		print(len(sessionList))
+	
+	def getSession(self, pid):
+		for s in sessionList:
+			if s.getSession(pid):
+				return s
+	
 	def handleIncomingMsg(self, data, socket,pid):
 		try:
 			print ('message received %s' %data)
@@ -57,8 +62,8 @@ class MessageHandler:
 		if type == "host":
 			self.createSession()
 			if(str(sessionList[len(sessionList)-1].getState()) == "-1"):
-				success = sessionList[len(sessionList)-1].addPlayer('player1')
-				data['pid'] = 'player1'
+				success = sessionList[len(sessionList)-1].addPlayer(data['pid'])
+				#data['pid'] = 'player1'
 				self.addToConnectionList(socket, data)
 			
 			if(success):
@@ -76,9 +81,9 @@ class MessageHandler:
 				print('Session return, '+ str(s.getState()))
 				if(s.getState() == 0):
 					print('p2')
-					success = s.addPlayer('player2')
+					success = s.addPlayer(data['pid'])
 					print('Session return2, '+ str(s.getState()))
-					data['pid'] = 'player2'
+					#data['pid'] = 'player2'
 					self.addToConnectionList(socket, data)
 			
 					if(success):
@@ -126,7 +131,7 @@ class MessageHandler:
 		print(str(socket.id) + " joined")
 
 	def updateState(self, pid, data):
-		for pid in connections:
+		for pid in self.getSession(my_pid).getPlayers():
 			self.sendMessage(pid, "updateState", data)
 
 	#add in types 
@@ -140,18 +145,15 @@ class MessageHandler:
 		except KeyError:
 			print("Player " + str(pid) + " isn't connected")
 
-	def sendToAll(self,pid,type,data):
-		for pid in connections:
-			print("pids saved "+pid)
+	def sendToAll(self,my_pid,type,data):
+		for pid in  self.getSession(my_pid).getPlayers():
+			#print("pids saved "+pid)
 			self.sendMessage(pid, type, data)
 			
-	def sendToAll2(self,pid,type,data):
-		for pid in connections:
-			self.sendMessage(pid, "win",data)
-
+			
 	#Assuming two players, sends to the player that isn't my_pid
 	def sendToOtherPlayer(self,my_pid,type,data):
-		for pid in connections:
+		for pid in self.getSession(my_pid).getPlayers():
 			#print(my_pid)
 			#print(type)
 			#print(data)

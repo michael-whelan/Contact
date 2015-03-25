@@ -21,9 +21,18 @@ class Session:
 		return result;
 
 
+	def getSession(self, pid):
+		for p in self.player:
+			if p == pid:
+				return True
+		return False
+		
 	def getNumPlayers(self):
 		return len(self.player)
 
+	def getPlayers(self):
+		return self.player
+		
 	def getState(self):
 		return self.gameState
 

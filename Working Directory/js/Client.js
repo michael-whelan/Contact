@@ -16,8 +16,6 @@ var that=this;
 var host = '149.153.102.45';
 var port=8080;
 
-
-
 this.ws = new WebSocket("ws://" + host + ":" + port +'/wstest');
 
 this.ws.onmessage = function(evt) {that.handleMessage(evt); };
@@ -27,17 +25,20 @@ this.ws.onclose = function(evt) { console.log("Connection close"); game.goMenu =
 this.ws.onopen = function(evt) { console.log('open connection'); };         
 }
 
-
+Client.prototype.generateId = function () {
+	var rand= Math.random()*(50-1) +1; 
+	return rand;
+}
 Client.prototype.host = function(){
 	console.log("host button");
-	message.pid = "junk";
+	message.pid = this.generateId();
 	message.type = "host";
 	var mess = JSON.stringify(message);
 	this.ws.send(mess);
 }
 
 Client.prototype.join = function(){
-	message.pid = "junk";
+	message.pid =this.generateId();
 	message.type = "join";
 	var mess = JSON.stringify(message);
 	this.ws.send(mess);
@@ -117,6 +118,7 @@ Client.prototype.handleMessage = function(evt){
 	//console.log(mess);
 	console.log(mess.data);
 	if (mess.type ==="state"){
+		p2Ip = mess.dest;
 		if(mess.data === WAITING_FOR_PLAYERS){
 		console.log("waiting for players");
 		_name = "player1";
