@@ -1,13 +1,19 @@
+<!doctype html>
 <html>
 
 <head>
 <link rel="stylesheet" type="text/css" href="css/font.css">
 <link rel="manifest" href="manifest.json">
-<meta name="mobile-web-app-capable" content="yes">
+<!--<meta name="mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width, initial-scale=0.83">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="images/app-icon.png">
-<!--<script src="http://localhost:8080/target/target-script-min.js#windows"></script>-->
+<!-<script src="http://localhost:8080/target/target-script-min.js#windows"></script>-->
+<style>
+  html { 
+    -ms-touch-action: none;
+  }
+</style>
 <meta charset="UTF-8">
 <script src="./lib/util.js"></script>
 <script src="./lib/KeyController.js"></script>
@@ -35,6 +41,7 @@
 <script src="js/Bomb.js"></script>
 
 <link href='http://fonts.googleapis.com/css?family=Shadows+Into+Light|Dosis'>
+<style>
 
 <style>
 	body {
@@ -68,6 +75,7 @@
 
 <!--This is where all of the game text can be written and pulled onto the gamescreen-->
 <noembed id="txtLoading"></noembed>
+<noembed id="txtConnecting"></noembed>
 <noembed id="txtBoss1"></noembed>
 <noembed id="txtBoss2"></noembed>
 <noembed id="txtAmmo"></noembed>
@@ -91,6 +99,7 @@ xmlhttp.open("GET","xml/xmlTest.xml",false);
 xmlhttp.send();
 xmlDoc=xmlhttp.responseXML;
 document.getElementById("txtLoading").innerHTML= xmlDoc.getElementsByTagName("txtLoading")[0].childNodes[0].nodeValue;
+document.getElementById("txtConnecting").innerHTML= xmlDoc.getElementsByTagName("txtConnecting")[0].childNodes[0].nodeValue;
 document.getElementById("txtAmmo").innerHTML= xmlDoc.getElementsByTagName("txtAmmo")[0].childNodes[0].nodeValue;
 document.getElementById("txtHealth").innerHTML= xmlDoc.getElementsByTagName("txtHealth")[0].childNodes[0].nodeValue;
 document.getElementById("txtCoins").innerHTML= xmlDoc.getElementsByTagName("txtCoins")[0].childNodes[0].nodeValue;

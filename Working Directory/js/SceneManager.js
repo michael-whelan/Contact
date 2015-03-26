@@ -46,11 +46,12 @@ SceneManager.prototype.initCanvas=function () {
 	canvas.width = 1152;//1152
 	canvas.height = 648;//648 
 	resizeGame();
+	/*canvas.msg = new MSGesture();
+    canvas.msg.target = canvas;*/
 	canvas.addEventListener("touchstart",touchStart,false);
 	canvas.addEventListener("touchmove",touchMove,false);
 	canvas.addEventListener("touchend",touchEnd,false);
 	canvas.addEventListener("mousedown",mouseDown,false);
-
 }
 
 function resizeGame(){
@@ -68,10 +69,12 @@ function mouseDown(e){
 	else{
 		game.mouseDown(e);
 	}
+	console.log("mouse");
 }
 
 function touchStart(e){
-	//e.preventDefault(); 
+	//e.preventDefault();
+	console.log("touchstart"); 
 	if(sc.gameState ==="menu"){
 		//menu.touchStart(e);
 	}
@@ -82,6 +85,7 @@ function touchStart(e){
 }
 function touchMove(e){
 	e.preventDefault(); 
+	console.log("touchstart");
 	if(sc.gameState ==="menu"){
 		menu.touchMove(e);
 	}
@@ -96,6 +100,7 @@ function touchEnd(e){
 	else if(sc.gameState === "gameplay"){
 		game.touchEnd(e);
 	}	
+
 }
 
 

@@ -78,7 +78,7 @@ EnemyManager.prototype.setEnemyPos = function(arr){
 
 		}
 	}
-	console.log("enemy Info: "+arr);
+//	console.log("enemy Info: "+arr);
 }
 
 EnemyManager.prototype.hearShot = function(px,py){

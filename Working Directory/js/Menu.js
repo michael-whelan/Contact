@@ -61,6 +61,13 @@ Menu.prototype.update = function() {
 		client = new Client();
 		this.allow1=false;
 	}
+	if(this.scene ==="multiplayer"){
+		if(multiplayer && _name ==="player1"){
+			console.log("multiplayer");
+			this.returnVals =["menu","levelSelect"];
+			return ["menu","levelSelect"];
+		}
+	}
 	var temp = this.returnVals;
 	//this.returnVals = ["null","null"];
 	return temp;
@@ -159,15 +166,12 @@ Menu.prototype.mouseDown= function(e){
 		}
 		else if(e.clientX>490 && e.clientX < 635&& e.clientY >200 && e.clientY < 280){
 			client.host();
+			client.connecting = true;
 		}
 		else if(e.clientX>490 && e.clientX < 635&& e.clientY >300 && e.clientY < 380){
 			client.join();
 		}
-		if(multiplayer){
-			this.returnVals = ["menu","levelSelect"];
-			transitionTimer=0;
-			console.log("multiplayer");
-		}
+
 	}
 	else if(this.scene ==="stash"){
 		console.log(e.clientX ,e.clientY);
@@ -345,8 +349,14 @@ Menu.prototype.draw = function(scene){
 	}
 	else if(scene ==="multiplayer"){
 		ctx.drawImage(imgMultiplayerBack, 0,0,1152,648);
-		ctx.drawImage(imgJoinServer, canvas.width/2-60, canvas.height/2-140,120,80);
-		ctx.drawImage(imgJoinServer, canvas.width/2-60, canvas.height/2-40,120,80);
+		if(client.connecting){
+			ctx.drawImage(imgLoader, 0,0,canvas.width ,canvas.height);
+			textManager.connecting();
+		}
+		else{
+			ctx.drawImage(imgJoinServer, canvas.width/2-60, canvas.height/2-140,120,80);
+			ctx.drawImage(imgJoinServer, canvas.width/2-60, canvas.height/2-40,120,80);
+		}
 	}
 	else if(scene ==="stash"){
 		ctx.drawImage(imgStashBack, 0,0,1152,648);

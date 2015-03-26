@@ -103,7 +103,6 @@ CollisionManager.prototype.enemy = function(enemyManager,player,lvlManager){
 		player.bomb.reset();
 	}
 	
-	
 	for (var j = 0; j < enemyManager.enemy.length; ++j) {
 		for(var i = 0; i < enemyManager.enemy[j].bullets.length; ++i){
 			if(this.circleOnCircle(enemyManager.enemy[j].bullets[i].radius,enemyManager.enemy[j].bullets[i].x,

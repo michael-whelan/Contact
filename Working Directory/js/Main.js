@@ -3,7 +3,7 @@ var sceneManager;
 function main()
 {
 	//change version number if you suspect a problem with caching
-	console.log("sprint 3");
+	console.log("sprint 4");
 	sceneManager = new SceneManager();
 
 	sceneManager.loadScene("menu","titleScreen");

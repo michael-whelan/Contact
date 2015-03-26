@@ -13,8 +13,9 @@ function Client(){
 var that=this;
 
 //var host='149.153.102.45';
-var host = '149.153.102.45';
-var port=8080;
+//var host = '149.153.102.45';
+var host = '23.97.140.22';
+var port=28000;
 
 this.ws = new WebSocket("ws://" + host + ":" + port +'/wstest');
 
@@ -22,7 +23,9 @@ this.ws.onmessage = function(evt) {that.handleMessage(evt); };
 
 this.ws.onclose = function(evt) { console.log("Connection close"); game.goMenu = true;};
 
-this.ws.onopen = function(evt) { console.log('open connection'); };         
+this.ws.onopen = function(evt) { console.log('open connection'); };    
+
+    this.connecting = false;     
 }
 
 Client.prototype.generateId = function () {
@@ -45,7 +48,7 @@ Client.prototype.join = function(){
 }
 
 Client.prototype.setLevel = function(level){
-	message.pid = _name;
+	//message.pid = _name;
 	message.type = "setLevel";
 	message.data = level;
 	var mess = JSON.stringify(message);
@@ -54,7 +57,7 @@ Client.prototype.setLevel = function(level){
 
 Client.prototype.update = function(x,y,o,shootBool){
 //console.log("updating multiplayer");
-	message.pid = _name;
+	//message.pid = _name;
 	message.type = "updatePos";
 	message.data = [x,y,o,shootBool];
 	var mess = JSON.stringify(message);
@@ -62,7 +65,7 @@ Client.prototype.update = function(x,y,o,shootBool){
 }
 Client.prototype.killEnemy = function(j){
 //console.log("updating multiplayer");
-	message.pid = _name;
+	//message.pid = _name;
 	message.type = "killEnemy";
 	message.data = j;
 	var mess = JSON.stringify(message);
@@ -70,7 +73,7 @@ Client.prototype.killEnemy = function(j){
 }
 Client.prototype.worldUpdate = function(arr){
 //console.log("updating multiplayer");
-	message.pid = _name;
+	//message.pid = _name;
 	message.type = "worldUp";
 	message.data = arr;
 	var mess = JSON.stringify(message);
@@ -80,7 +83,7 @@ Client.prototype.worldUpdate = function(arr){
 
 Client.prototype.bossState = function(effect){
 //console.log("updating multiplayer");
-	message.pid = _name;
+	//message.pid = _name;
 	message.type = effect;
 	message.data = "junk";
 	var mess = JSON.stringify(message);
@@ -89,14 +92,14 @@ Client.prototype.bossState = function(effect){
 
 Client.prototype.bossHole = function(arr){
 //console.log("updating multiplayer");
-	message.pid = _name;
+	//message.pid = _name;
 	message.type = "bossHole";
 	message.data = arr;
 	var mess = JSON.stringify(message);
 	this.ws.send(mess);
 }
 Client.prototype.bossPos = function(x,y,state){
-	message.pid = _name;
+	//message.pid = _name;
 	message.type = "bossPos";
 	message.data = [x,y,state];
 	var mess = JSON.stringify(message);
@@ -105,7 +108,7 @@ Client.prototype.bossPos = function(x,y,state){
 
 Client.prototype.deathAlert = function(){
 //console.log("updating multiplayer");
-	message.pid = _name;
+	//message.pid = _name;
 	message.type = "playerDeath";
 	message.data = 0;
 	var mess = JSON.stringify(message);
@@ -116,7 +119,7 @@ Client.prototype.handleMessage = function(evt){
 
 	var mess = JSON.parse(evt.data);
 	//console.log(mess);
-	console.log(mess.data);
+	//console.log(mess.data);
 	if (mess.type ==="state"){
 		p2Ip = mess.dest;
 		if(mess.data === WAITING_FOR_PLAYERS){
@@ -124,6 +127,7 @@ Client.prototype.handleMessage = function(evt){
 		_name = "player1";
 		}
 		else if(mess.data === STARTING_GAME){
+			this.connecting = true;
 			console.log("Starting Game");
 			if(_name ==="junk"){
 				_name = "player2";

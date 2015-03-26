@@ -3,6 +3,7 @@ var imgHighlight = new Image();
 var TextManager=function(){
 	//put each piece of text here. rename all you want it will need to be mentioned in the index too.
 	var strLoading;
+    var strWaitingForPlayers;
     var strAmmo;
     var ammoInt;
     var strHealth;
@@ -71,8 +72,10 @@ TextManager.prototype.init = function(){
     var temp5 = document.getElementById("txtBoss1").innerHTML;
     var temp6 = document.getElementById("txtBoss2").innerHTML;
     var temp7 = document.getElementById("txtCoins").innerHTML;
+    var temp8 = document.getElementById("txtConnecting").innerHTML;
 
     strLoading = '<class="whiteBig">' + temp + '</class>';
+    strWaitingForPlayers = '<class="whiteBig">' + temp8 + '</class>';
     strAmmo = '<class="whiteGame">' + temp2 + '</class>';
     strHealth= '<class="whiteGame">' + temp3 + '</class>';
     strPlayerDiedMessage= '<class="whiteBig">' + temp4 + '</class>';
@@ -104,6 +107,16 @@ TextManager.prototype.end = function(txt){
     ctx.textBaseline = 'bottom';
     //txtAmmo = txtAmmo + numBullets.toString();
     ctx.strokeText("Swarms Survived: "+txt+". "+"Continue  Y/N", 300, 100);
+}
+
+TextManager.prototype.connecting = function(){
+    CT.textAlign = 'center';
+    CT.drawText({
+        text:strWaitingForPlayers,
+        x: canvas.width / 2,
+        y: canvas.height/2,
+        boxWidth:800
+    }); 
 }
 
 TextManager.prototype.controller = function(level){
