@@ -43,7 +43,20 @@ class MessageHandler:
 		for s in sessionList:
 			if s.getSession(pid):
 				return s
-	
+				
+	def hostGame(self,data,socket):
+		self.createSession()
+		#data['type'] = 'host'
+		if(str(sessionList[len(sessionList)-1].getState()) == "-1"):
+			success = sessionList[len(sessionList)-1].addPlayer(data['pid'])
+			#data['pid'] = 'player1'
+			self.addToConnectionList(socket, data)
+			
+		if(success):
+			self.sendToAll(data['pid'], "state",str(str(sessionList[len(sessionList)-1].getState())))
+		else:
+			self.sendMessage(data['pid'], "error", "Unexpected error with hosting") 
+				
 	def handleIncomingMsg(self, data, socket,pid):
 		try:
 			print ('message received %s' %data)
@@ -60,23 +73,14 @@ class MessageHandler:
 			print('except')
 					
 		if type == "host":
-			self.createSession()
-			if(str(sessionList[len(sessionList)-1].getState()) == "-1"):
-				success = sessionList[len(sessionList)-1].addPlayer(data['pid'])
-				#data['pid'] = 'player1'
-				self.addToConnectionList(socket, data)
-			
-			if(success):
-				self.sendToAll(data['pid'], "state",str(str(sessionList[len(sessionList)-1].getState())))
-			else:
-				self.sendMessage(data['pid'], "error", "Unexpected error with hosting") 	
+			self.hostGame(data,socket)
 				
 				
 				
 		elif type == "join":
 			#add to connection list
 			
-			
+			iter = 0;
 			for s in sessionList:
 				print('Session return, '+ str(s.getState()))
 				if(s.getState() == 0):
@@ -88,6 +92,10 @@ class MessageHandler:
 			
 					if(success):
 						self.sendToAll(data['pid'], "state",str(s.getState()))
+				++iter
+			if iter >= len(sessionList):
+				print(iter)
+				self.hostGame(data, socket)
 			#else:
 			#	self.sendMessage(data['pid'], "error", "No available space: Two players already in the game!") 
 			

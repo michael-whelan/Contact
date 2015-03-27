@@ -164,10 +164,10 @@ Menu.prototype.mouseDown= function(e){
 			this.returnVals = ["menu","titleScreen"];
 			transitionTimer=0;
 		}
-		else if(e.clientX>490 && e.clientX < 635&& e.clientY >200 && e.clientY < 280){
+		/*else if(e.clientX>490 && e.clientX < 635&& e.clientY >200 && e.clientY < 280){
 			client.host();
 			client.connecting = true;
-		}
+		}*/
 		else if(e.clientX>490 && e.clientX < 635&& e.clientY >300 && e.clientY < 380){
 			client.join();
 		}
@@ -354,7 +354,7 @@ Menu.prototype.draw = function(scene){
 			textManager.connecting();
 		}
 		else{
-			ctx.drawImage(imgJoinServer, canvas.width/2-60, canvas.height/2-140,120,80);
+		//	ctx.drawImage(imgJoinServer, canvas.width/2-60, canvas.height/2-140,120,80);
 			ctx.drawImage(imgJoinServer, canvas.width/2-60, canvas.height/2-40,120,80);
 		}
 	}

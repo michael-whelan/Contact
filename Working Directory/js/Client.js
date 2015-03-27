@@ -12,9 +12,9 @@ var STARTING_GAME="1";
 function Client(){
 var that=this;
 
-//var host='149.153.102.45';
+var host='192.168.15.13';
 //var host = '149.153.102.45';
-var host = '23.97.140.22';
+//var host = '23.97.140.22';
 var port=28000;
 
 this.ws = new WebSocket("ws://" + host + ":" + port +'/wstest');
@@ -123,6 +123,7 @@ Client.prototype.handleMessage = function(evt){
 	if (mess.type ==="state"){
 		p2Ip = mess.dest;
 		if(mess.data === WAITING_FOR_PLAYERS){
+			this.connecting = true;
 		console.log("waiting for players");
 		_name = "player1";
 		}
