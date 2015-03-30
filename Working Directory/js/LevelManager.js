@@ -1,6 +1,6 @@
 var imgBack = new Image();
 var imgTutorialBack = new Image();
-var backTrack = new Audio();
+var backTrack = null;
 
 
 function LevelManager (){

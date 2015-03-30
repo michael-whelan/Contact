@@ -1,6 +1,6 @@
 var imgCircle= new Image();
 
-var imgSquare = new Audio();
+var imgSquare = new Image();
 
 var Obstacle=function (){
 	this.x = 0;

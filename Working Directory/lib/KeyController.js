@@ -12,6 +12,7 @@ Key = new (function() {
 	this.Y = 89;
 	this.N = 78;
 	this.B = 66;
+	this.P = 80;
 })(); 
 
 

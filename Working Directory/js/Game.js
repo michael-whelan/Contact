@@ -82,7 +82,7 @@ Game.prototype.reset = function(lvl){
 	levelWin = false;
 	textManager.reset();
 	lvlManager.mapSetup();
-	this.playBackgroundLoop();
+	//this.playBackgroundLoop(backTrack);
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].active = false;
 	}
@@ -164,15 +164,16 @@ Game.prototype.touchEnd = function(e){
 	}
 }
 
-Game.prototype.playBackgroundLoop = function(){
-	//an alternative method 
-	backTrack.addEventListener('canplaythrough', function() {
-	    this.currentTime = 0;
-	    this.play();
-	}, false);
-	backTrack.play();
-};
 
+
+Game.prototype.playBackgroundLoop = function(buffer) {
+	console.log(buffer);
+  var source = context.createBufferSource();
+  source.buffer = buffer;
+  source.loop = true;
+  source.connect(context.destination);
+  source.start(time);
+}
 function getDistance(x1,y1,x2,y2){
 	var xs = 0;
   	var ys = 0;

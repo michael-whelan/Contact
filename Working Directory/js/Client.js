@@ -12,10 +12,10 @@ var STARTING_GAME="1";
 function Client(){
 var that=this;
 
-var host='192.168.15.13';
-//var host = '149.153.102.45';
+//var host='192.168.15.13';
+var host = '149.153.102.45';
 //var host = '23.97.140.22';
-var port=28000;
+var port=8080;
 
 this.ws = new WebSocket("ws://" + host + ":" + port +'/wstest');
 

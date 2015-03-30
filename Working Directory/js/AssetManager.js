@@ -1,3 +1,4 @@
+
 var AssetManager=function (){
     this.loadQueueImg = [];
     this.loadQueueSnd = [];
@@ -5,7 +6,8 @@ var AssetManager=function (){
     this.cache = {};
     this.successCount = 0;
     this.errorCount = 0;
-
+    this.successCountSnd = 0;
+    this.errorCountSnd = 0;
 };
 
 AssetManager.prototype.queueLoadImg = function(path) {
@@ -60,8 +62,9 @@ AssetManager.prototype.loadTitleImages = function(loadCallback) {
         var that = this;
         img.addEventListener("load", function() {
             that.successCount += 1;
+
             //console.log(that.isDone(that.loadQueueImg));
-            if (that.isDone(that.loadQueueImg)) {
+            if (that.isDone(that.loadQueueImg, that.successCount,that.errorCount)) {
                 that.successCount = 0;
                 that.errorCount=0;
                 while(that.loadQueueImg.length > 0) {
@@ -72,9 +75,9 @@ AssetManager.prototype.loadTitleImages = function(loadCallback) {
             }
         }, false);
         img.addEventListener("error", function() {
-            that.errorCount += 1;
+            that.errorCountImg += 1;
             console.log("Error file: "+path);
-            if (that.isDone(that.loadQueueImg)) {
+            if (that.isDone(that.loadQueueImg, that.successCount,that.errorCount)) {
                 loadCallback();
             }
     }, false);
@@ -83,41 +86,42 @@ AssetManager.prototype.loadTitleImages = function(loadCallback) {
         this.cache[path] = img;
     }
 }
-AssetManager.prototype.loadTitleSounds = function(loadCallback) {
+
+AssetManager.prototype.loadSnd = function(loadCallback) {
     if (this.loadQueueSnd.length === 0) {
-      loadCallback();
+        loadCallback();
     }
     for (var i = 0; i < this.loadQueueSnd.length; i++) {
-        var path = this.loadQueueSnd[i];
-        var img = new Audio();
+        var url = this.loadQueueSnd[i];
+
+        var request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        request.responseType = 'arraybuffer';
+
+      // Decode asynchronously
         var that = this;
-        img.addEventListener("load", function() {
-            that.successCount += 1;
-            //console.log(that.isDone(that.loadQueueImg));
-            if (that.isDone(that.loadQueueSnd)) {
-                that.successCount = 0;
-                that.errorCount=0;
-                while(that.loadQueueSnd.length > 0) {
-                    that.loadQueueSnd.pop();
+        request.onload = function() {
+            context.decodeAudioData(request.response, function(buffer) {
+                that.cache[url] = buffer;
+                //titleMusic = buffer;
+                that.successCountSnd += 1;
+                //console.log(that.isDone(that.loadQueueImg));
+                if (that.successCountSnd>=that.loadQueueSnd.length) {
+                    that.successCountSnd = 0;
+                    that.errorCountSnd=0;
+                    while(that.loadQueueSnd.length > 0) {
+                        that.loadQueueSnd.pop();
+                    }
+                    loadCallback();
                 }
-                loadCallback();
-
-            }
-        }, false);
-        img.addEventListener("error", function() {
-            that.errorCount += 1;
-            console.log("Error file: "+path);
-            if (that.isDone(that.loadQueueSnd)) {
-                loadCallback();
-            }
-    }, false);
-
-        img.src = path;
-        this.cache[path] = img;
+            }, function(e){"Error with decoding audio data" + e.err});
+        }
+        request.send();
     }
 }
+function errorfunction(){
 
-
+}
 AssetManager.prototype.loadLvlSelectImages = function(loadCallback) {
     if (this.loadQueueImg.length === 0) {
       loadCallback();
@@ -129,7 +133,7 @@ AssetManager.prototype.loadLvlSelectImages = function(loadCallback) {
         img.addEventListener("load", function() {
             that.successCount += 1;
             //console.log(that.isDone(that.loadQueueImg));
-            if (that.isDone(that.loadQueueImg)) {
+            if (that.isDone(that.loadQueueImg, that.successCount,that.errorCount)) {
                 that.successCount = 0;
                 that.errorCount=0;
                 while(that.loadQueueImg.length > 0) {
@@ -142,7 +146,7 @@ AssetManager.prototype.loadLvlSelectImages = function(loadCallback) {
         img.addEventListener("error", function() {
             that.errorCount += 1;
             console.log("Error file: "+path);
-            if (that.isDone(that.loadQueueImg)) {
+            if (that.isDone(that.loadQueueImg, that.successCount,that.errorCount)) {
                 loadCallback();
             }
     }, false);
@@ -162,7 +166,7 @@ AssetManager.prototype.loadCommonImages = function(loadCallback) {
         var that = this;
         img.addEventListener("load", function() {
             that.successCount += 1;
-            if (that.isDone(that.loadQueueImg)) {
+            if (that.isDone(that.loadQueueImg, that.successCount,that.errorCount)) {
                 that.successCount = 0;
                 that.errorCount=0;
                 while(that.loadQueueImg.length > 0) {
@@ -175,7 +179,7 @@ AssetManager.prototype.loadCommonImages = function(loadCallback) {
         img.addEventListener("error", function() {
             that.errorCount += 1;
             console.log("Error file: "+path);
-            if (that.isDone(that.loadQueueImg)) {
+            if (that.isDone(that.loadQueueImg, that.successCount,that.errorCount)) {
                 loadCallback();
             }
     }, false);
@@ -231,7 +235,7 @@ AssetManager.prototype.loadLvl1Images = function(loadCallback) {
         var that = this;
         img.addEventListener("load", function() {
             that.successCount += 1;
-            if (that.isDone(that.loadQueueImg)) {
+            if (that.isDone(that.loadQueueImg, that.successCount,that.errorCount)) {
                 that.successCount = 0;
                 that.errorCount=0;
                 while(that.loadQueueImg.length > 0) {
@@ -244,7 +248,7 @@ AssetManager.prototype.loadLvl1Images = function(loadCallback) {
         img.addEventListener("error", function() {
             that.errorCount += 1;
             console.log("Error file: "+path);
-            if (that.isDone(that.loadQueueImg)) {
+            if (that.isDone(that.loadQueueImg, that.successCount,that.errorCount)) {
                 loadCallback();
             }
     }, false);
@@ -291,10 +295,9 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
     }
 }
 
-AssetManager.prototype.isDone = function(queue) {
+AssetManager.prototype.isDone = function(queue,s,e) {
   //  console.log("queue len "+queue.length, this.successCount,this.errorCount);
-
-    return (queue.length == this.successCount + this.errorCount);
+    return (queue.length == s + e);
 }
 
 AssetManager.prototype.getAsset = function(path) {

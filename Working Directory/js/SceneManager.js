@@ -37,6 +37,21 @@ function SceneManager(){
 	canvas.style.width = canvas.width/scaleRatio;
 };
 
+
+
+var context;
+window.addEventListener('load', init, false);
+function init() {
+  try {
+    // Fix up for prefixing
+    window.AudioContext = window.AudioContext||window.webkitAudioContext;
+    context = new AudioContext();
+  }
+  catch(e) {
+    alert('Web Audio API is not supported in this browser');
+  }
+}
+
 SceneManager.prototype.initCanvas=function () { 
 	canvas = document.createElement('canvas'); 
 	ctx = canvas.getContext('2d');
@@ -69,7 +84,6 @@ function mouseDown(e){
 	else{
 		game.mouseDown(e);
 	}
-	console.log("mouse");
 }
 
 function touchStart(e){
@@ -149,6 +163,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/choose_temp.png");
 	assetManager.queueLoadImg("images/armoryScreen.png");
 	assetManager.queueLoadImg("images/exit_temp.png");
+	
 	assetManager.queueLoadSnd("sounds/music/123.mp3");
 
 	//temp
@@ -179,6 +194,7 @@ SceneManager.prototype.setTitleImages = function(){
 	imgSelectX =  assetManager.getAsset("images/selected.png");
 	imgCustBtn = assetManager.getAsset("images/custBtn.png");
 	imgShopBtn = assetManager.getAsset("images/shopBtn.png");
+
 	loadedImages=true;
 }
 SceneManager.prototype.setTitleSounds = function(){
@@ -221,6 +237,7 @@ SceneManager.prototype.setGameImages = function(){
 	imgShield = assetManager.getAsset("images/shield.png");
 	imgBombP = assetManager.getAsset("images/bomb.png");
 	imgCoin = assetManager.getAsset("images/coin.png");
+	console.log("loaded images");
 	loadedImages = true;
 }
 
@@ -231,6 +248,7 @@ SceneManager.prototype.setGameSounds = function(){
 	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.mp3");
 	emptySnd = assetManager.getAsset("sounds/sfx/gun_empty.mp3");
 	loseHealthSnd = assetManager.getAsset("sounds/sfx/health_lost.mp3");
+	console.log("load soanfd" , loadedSounds);
 	loadedSounds = true;
 }
 
@@ -294,6 +312,7 @@ SceneManager.prototype.gameLoop = function (){
 		if(transitionTimer<200){
 			transitionTimer++;
 		}
+
 		if(sc.gameState ==="gameplay"){
 			game.reset(sc.gameScene);
 			if(!contains(loadedScenes,sc.gameScene)){
@@ -323,7 +342,13 @@ SceneManager.prototype.gameLoop = function (){
 
 	window.requestAnimFrame(sc.gameLoop);
 }
-
+function playSound(buffer) {
+	var source = context.createBufferSource(); // creates a sound source
+	source.buffer = buffer;                    // tell the source which sound to play
+	source.connect(context.destination);       // connect the source to the context's destination (the speakers)
+	source.start(0);                           // play the source now
+                                             // note: on older systems, may have to use deprecated noteOn(time);
+}
 
 SceneManager.prototype.loadScene = function(state,scene){
 	loading = true;
@@ -341,10 +366,9 @@ SceneManager.prototype.loadScene = function(state,scene){
 			assetManager.loadTitleImages(function() {
     			sc.setTitleImages()
 			});
-			/*assetManager.loadTitleSounds(function() {
+			assetManager.loadSnd(function() {
     			sc.setTitleSounds()
-			});*/
-			loadedSounds=true;
+			});
 		}
 		else if(scene ==="levelSelect"){
 			
@@ -371,10 +395,10 @@ SceneManager.prototype.loadScene = function(state,scene){
 			assetManager.loadLvl1Images(function() {
     			sc.setGameImages()
 			});
-			loadedSounds = true;
-			/*assetManager.loadLvl1Sounds(function() {
+			//loadedSounds = true;
+			assetManager.loadSnd(function() {
     			sc.setGameSounds()
-			});*/
+			});
 		//}
 	}
 	else if(state === "credits"){

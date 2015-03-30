@@ -4,13 +4,13 @@ var imgPlayerDead = new Image();
 
 var imgShield = new Image();
 
-var spawnSnd = new Audio();
+var spawnSnd = null;
 
-var reloadSnd = new Audio();
+var reloadSnd =null;
 
-var emptySnd = new Audio();
+var emptySnd = null;
 
-var loseHealthSnd = new Audio();
+var loseHealthSnd = null;
 
 var equipment = [-1,-1];
 
@@ -338,7 +338,7 @@ Player.prototype.respawn = function(){
 	this.x = this.startX;
 	this.y = this.startY;
 	this.flash = true;
-	spawnSnd.play();
+	//spawnSnd.play();
 }
 
 
