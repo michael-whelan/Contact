@@ -1,4 +1,4 @@
-var game,menu;
+var game,menu,soundManager;
 var canvas, ctx,CT;
 var assetManager;
 var timeSpent;
@@ -16,10 +16,13 @@ var transitionTimer=200;
 var playerCash = 0;
 
 function SceneManager(){
-	game = new Game();
+	
 	menu = new Menu();
+
+	soundManager = new SoundManager();
 	assetManager = new AssetManager();
 	textManager = new TextManager();
+	game = new Game();
 	this.initCanvas();
 	textManager.init();
 	this.gameState="0";
@@ -114,7 +117,6 @@ function touchEnd(e){
 	else if(sc.gameState === "gameplay"){
 		game.touchEnd(e);
 	}	
-
 }
 
 
@@ -146,11 +148,11 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/coin.png");
 	//sounds
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
-	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
-	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.mp3");
-	assetManager.queueLoadSnd("sounds/sfx/gun_pew.mp3");
-	assetManager.queueLoadSnd("sounds/sfx/gun_empty.mp3");
-	assetManager.queueLoadSnd("sounds/sfx/health_lost.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/player_spawn.wav");
+	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.wav");
+	assetManager.queueLoadSnd("sounds/sfx/gun_pew.wav");
+	assetManager.queueLoadSnd("sounds/sfx/gun_empty.wav");
+	assetManager.queueLoadSnd("sounds/sfx/health_lost.wav");
 }
 
 
@@ -242,13 +244,14 @@ SceneManager.prototype.setGameImages = function(){
 }
 
 SceneManager.prototype.setGameSounds = function(){
-	spawnSnd = assetManager.getAsset("sounds/sfx/player_spawn.mp3");
+	spawnSnd = assetManager.getAsset("sounds/sfx/player_spawn.wav");
 	backTrack = assetManager.getAsset("sounds/music/gameplay_theme_idea.mp3");
-	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.mp3");
-	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.mp3");
-	emptySnd = assetManager.getAsset("sounds/sfx/gun_empty.mp3");
-	loseHealthSnd = assetManager.getAsset("sounds/sfx/health_lost.mp3");
-	console.log("load soanfd" , loadedSounds);
+	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.wav");
+	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.wav");
+	//console.log(gunshot);
+	emptySnd = assetManager.getAsset("sounds/sfx/gun_empty.wav");
+	loseHealthSnd = assetManager.getAsset("sounds/sfx/health_lost.wav");
+
 	loadedSounds = true;
 }
 
@@ -283,6 +286,12 @@ SceneManager.prototype.gameLoop = function (){
    			loadedImages = false;
    			loadedSounds =false;
    			//game.reset(sc.gameScene);
+   		if(sc.gameState ==="gameplay"){
+   			game.reset(sc.gameScene);
+   		}
+   		else if(sc.gameState ==="menu" &&sc.gameScene ==="titleScreen"){
+   			menu.reset();
+   		}
    	}
    	//no updateing or drawing allowed until loading is complete
    	if(loading){
@@ -314,14 +323,14 @@ SceneManager.prototype.gameLoop = function (){
 		}
 
 		if(sc.gameState ==="gameplay"){
-			game.reset(sc.gameScene);
+			
 			if(!contains(loadedScenes,sc.gameScene)){
 				//sc.loadScene(sc.gameState,sc.gameScene);
 				sc.loadScene(sc.gameState,sc.gameScene);
 			}
-			//if(!contains(loadedScenes,"tutorial")){
-				
-			//}
+			else{
+				game.reset(sc.gameScene);
+			}
 		}
 		if(sc.gameScene==="levelSelect"){
 			//game.reset();
@@ -343,6 +352,7 @@ SceneManager.prototype.gameLoop = function (){
 	window.requestAnimFrame(sc.gameLoop);
 }
 function playSound(buffer) {
+//	console.log(buffer);
 	var source = context.createBufferSource(); // creates a sound source
 	source.buffer = buffer;                    // tell the source which sound to play
 	source.connect(context.destination);       // connect the source to the context's destination (the speakers)
@@ -351,6 +361,8 @@ function playSound(buffer) {
 }
 
 SceneManager.prototype.loadScene = function(state,scene){
+	loadedImages = false;
+   			loadedSounds =false;
 	loading = true;
 	assetManager.queueLoadEssen("images/load_Screen.png");
 	    assetManager.loadEssential(function() {
@@ -368,7 +380,7 @@ SceneManager.prototype.loadScene = function(state,scene){
 			});
 			assetManager.loadSnd(function() {
     			sc.setTitleSounds()
-			});
+			},0);
 		}
 		else if(scene ==="levelSelect"){
 			
@@ -398,7 +410,7 @@ SceneManager.prototype.loadScene = function(state,scene){
 			//loadedSounds = true;
 			assetManager.loadSnd(function() {
     			sc.setGameSounds()
-			});
+			},0);
 		//}
 	}
 	else if(state === "credits"){

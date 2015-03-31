@@ -3,7 +3,7 @@ var AssetManager=function (){
     this.loadQueueImg = [];
     this.loadQueueSnd = [];
     this.loadQueueEssen = [];
-    this.cache = {};
+    this.cache = new ParallelArray();
     this.successCount = 0;
     this.errorCount = 0;
     this.successCountSnd = 0;
@@ -87,37 +87,55 @@ AssetManager.prototype.loadTitleImages = function(loadCallback) {
     }
 }
 
-AssetManager.prototype.loadSnd = function(loadCallback) {
-    if (this.loadQueueSnd.length === 0) {
-        loadCallback();
-    }
-    for (var i = 0; i < this.loadQueueSnd.length; i++) {
-        var url = this.loadQueueSnd[i];
-
-        var request = new XMLHttpRequest();
-        request.open('GET', url, true);
-        request.responseType = 'arraybuffer';
-
-      // Decode asynchronously
-        var that = this;
-        request.onload = function() {
+AssetManager.prototype.soundLoader = function(pos){
+    var url = this.loadQueueSnd[pos];
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.responseType = 'arraybuffer';
+  var that = this;
+    request.onload = function() {
             context.decodeAudioData(request.response, function(buffer) {
                 that.cache[url] = buffer;
-                //titleMusic = buffer;
                 that.successCountSnd += 1;
-                //console.log(that.isDone(that.loadQueueImg));
                 if (that.successCountSnd>=that.loadQueueSnd.length) {
                     that.successCountSnd = 0;
                     that.errorCountSnd=0;
                     while(that.loadQueueSnd.length > 0) {
                         that.loadQueueSnd.pop();
                     }
-                    loadCallback();
+                    that.loadSnd("null",0);
+                }
+                else{
+                    ++pos;
+                    that.loadSnd("another",pos);
                 }
             }, function(e){"Error with decoding audio data" + e.err});
         }
         request.send();
+}
+
+AssetManager.prototype.loadSnd = function(loadCallback,pos) {
+    if (this.loadQueueSnd.length === 0) {
+        if(loadCallback ==="null"){
+            caller();
+        }
+        else {
+            loadCallback();
+        }
     }
+    else{
+    if(loadCallback==="another"){
+            this.soundLoader(pos);
+        }
+        else if(loadCallback!="null"){
+            caller = loadCallback;
+            this.soundLoader(pos);
+        }
+        else{
+            caller();
+        }
+    }
+
 }
 function errorfunction(){
 

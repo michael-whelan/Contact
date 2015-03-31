@@ -15,14 +15,14 @@ var loseHealthSnd = null;
 var equipment = [-1,-1];
 
 
-var Player=function (x,y,name){
+var Player=function (name){
 	this.gun = "shotgun";
 	this.bullets =[];
 	this.rotSpeed = 0.01;
 	this.width = 128;
 	this.height = 101;//135
-	this.startX = x;
-	this.startY = y;
+	this.startX = 100;
+	this.startY = 100;
 	this.speed = 2;
 	this.name = name;
 	//bullet = new Bullet();
@@ -40,7 +40,7 @@ var Player=function (x,y,name){
 	this.aimAssistRadius = 400;
 	this.allowAimAssist = false;
 	this.assistPositions = [];
-	this.reset(x,y);
+	//this.reset(x,y);
 	this.gridTimer =0;
 	this.shootBool = false;this.dead = false;//multiplayer
 	this.moveStep =false;
@@ -57,7 +57,7 @@ var Player=function (x,y,name){
 	this.shieldStrength=0;
 	this.maxShieldStrength=0;
 	this.maxHealth = 100;
-
+	this.playOnce = false;
 	this.dmgMult=1;
 //triangle variables
 	this.aX=0,this.aY=0,this.bX=0,this.bY=0,this.cX=0,this.cY=0;
@@ -68,6 +68,7 @@ Player.prototype.reload = function(){
 	this.reloadTimer--;
 
 	if(this.reloadTimer<=0){
+		this.playOnce=false;
 		this.reloadTimer = this.reloadDelay;
 		this.numBullets = this.fullMag;
 		this.startReload = false;
@@ -124,11 +125,11 @@ Player.prototype.setEquipment = function(t1,n1,t2,n2,wChoice){
 	}
 }
 
-Player.prototype.reset = function(x,y){
+Player.prototype.reset = function(){
 	this.numBullets = 30;
 	this.health=100;
-	this.x = x;
-	this.y = y;
+	this.x = 100;
+	this.y = 100;
 	this.xVel = 0;
 	this.yVel = 0;
 	this.xDirect = 0;
@@ -241,7 +242,11 @@ Player.prototype.shoot = function(){
 		}
 		else if(this.numBullets<=0){
 			//emptySnd.play();
-			emptySnd.play();
+			if(!this.playOnce){
+				this.playOnce = true;
+				soundManager.playSound(emptySnd);
+			}
+			//.play();
 			this.reload();
 		//	this.reload();
 		}
@@ -314,7 +319,10 @@ Player.prototype.controller = function(b1,b2){
 		this.setAssistPostitions();
 		//console.log("Reloading...");
 		this.startReload = true;
-		reloadSnd.play();
+		if(!this.playOnce){
+			this.playOnce = true;
+			soundManager.playSound(reloadSnd);
+		}
 		//console.log("reload");
 	}
 	if(b1){
@@ -339,6 +347,7 @@ Player.prototype.respawn = function(){
 	this.y = this.startY;
 	this.flash = true;
 	//spawnSnd.play();
+	soundManager.playSound(spawnSnd);
 }
 
 
@@ -397,10 +406,10 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 			this.yFacing = y2;
 			this.angle = this.getAngle(0,this.xFacing,0,this.yFacing);
 			//this.angle = this.aimAssist();
-			if(this.xFacing!=0 ||this.yFacing!=0)
+			if((this.xFacing!=0 ||this.yFacing!=0)&& !this.startReload)
 			this.shoot();
 		}
-		else if(KeyController.isKeyDown(Key.SPACE)){
+		else if(KeyController.isKeyDown(Key.SPACE) && !this.startReload){
 			this.angle = this.aimAssist();
 			this.shoot();
 		}
@@ -453,16 +462,17 @@ Player.prototype.update = function(x1,y1,x2,y2,b1,b2){
 
 
 Player.prototype.takeDmg = function(i){
-	/*var tmp = i;
+	var tmp = i;
 	if(this.shieldStrength>0){
 		this.shieldStrength-=i;
 		tmp-=i;
 	}
 	if(tmp>0){
 		this.health-=tmp;
-		loseHealthSnd.play();
+		soundManager.playSound(loseHealthSnd);
+		//loseHealthSnd.play();
 	}
-	this.lastHitTime = Date.now();*/
+	this.lastHitTime = Date.now();
 }
 
 Player.prototype.debugDraw = function(){

@@ -260,7 +260,7 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 				player.setPickup(pickUps[i].type);
 			}
 		}
-		console.log(pickUps[i]);
+	//	console.log(pickUps[i]);
 	}
 	for (var i = 0; i < pickUps.length; ++i) {
     	if (!pickUps[i].alive) {

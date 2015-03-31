@@ -41,8 +41,8 @@ var timer =0;
 var pauseTimer;
 
 function Game (){
-	player = new Player(200,100,"player1");
-	player2 = new Player(100,100,"player2");
+	player = new Player("player1");
+	player2 = new Player("player2");
 	sticks = [new Stick(inputSize), new Stick(inputSize)];
 	fsm = new FSM();
 	lvlManager = new LevelManager();
@@ -82,7 +82,7 @@ Game.prototype.reset = function(lvl){
 	levelWin = false;
 	textManager.reset();
 	lvlManager.mapSetup();
-	//this.playBackgroundLoop(backTrack);
+	soundManager.playSoundLoop(backTrack,"gameBack");
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].active = false;
 	}
@@ -166,14 +166,7 @@ Game.prototype.touchEnd = function(e){
 
 
 
-Game.prototype.playBackgroundLoop = function(buffer) {
-	console.log(buffer);
-  var source = context.createBufferSource();
-  source.buffer = buffer;
-  source.loop = true;
-  source.connect(context.destination);
-  source.start(time);
-}
+
 function getDistance(x1,y1,x2,y2){
 	var xs = 0;
   	var ys = 0;
@@ -412,6 +405,7 @@ Game.prototype.update = function(lvl){
 	if(this.goMenu){
 		//backTrack.pause();
 		//backTrack.currentTime=0;
+		soundManager.stopSound("gameBack");
 		multiplayer = false;
 		return "menu";
 	}

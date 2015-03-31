@@ -36,7 +36,6 @@ function Menu (){
     this.timer=0;
     this.selectedGun = "assault";
     //custom upgrades
-
 }
 
 Menu.prototype.reset = function() {
@@ -46,7 +45,8 @@ Menu.prototype.reset = function() {
 	this.lvl1X = 1152;
 	this.lvlTutX=0;
     this.drawExit = false;
-    this.playBackgroundLoop();
+    soundManager.playSoundLoop(titleMusic,"menuBack");
+    //this.playBackgroundLoop();
 }
 
 Menu.prototype.update = function() {
@@ -69,18 +69,14 @@ Menu.prototype.update = function() {
 		}
 	}
 	var temp = this.returnVals;
+	if(this.returnVals[0] ==="gameplay"){
+		soundManager.stopSound("menuBack");
+	}
 	//this.returnVals = ["null","null"];
 	return temp;
 }
 
-Menu.prototype.playBackgroundLoop = function(){
-	//an alternative method 
-	titleMusic.addEventListener('ended', function() {
-	    this.currentTime = 0;
-	    this.play();
-	}, false);
-	titleMusic.play();
-};
+
 
 
 //temp
