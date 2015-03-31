@@ -148,11 +148,11 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/coin.png");
 	//sounds
 	assetManager.queueLoadSnd("sounds/music/gameplay_theme_idea.mp3");
-	assetManager.queueLoadSnd("sounds/sfx/player_spawn.wav");
-	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.wav");
-	assetManager.queueLoadSnd("sounds/sfx/gun_pew.wav");
-	assetManager.queueLoadSnd("sounds/sfx/gun_empty.wav");
-	assetManager.queueLoadSnd("sounds/sfx/health_lost.wav");
+	assetManager.queueLoadSnd("sounds/sfx/player_spawn.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/gun_crecharge.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/gun_pew.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/gun_empty.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/health_lost.mp3");
 }
 
 
@@ -244,13 +244,13 @@ SceneManager.prototype.setGameImages = function(){
 }
 
 SceneManager.prototype.setGameSounds = function(){
-	spawnSnd = assetManager.getAsset("sounds/sfx/player_spawn.wav");
+	spawnSnd = assetManager.getAsset("sounds/sfx/player_spawn.mp3");
 	backTrack = assetManager.getAsset("sounds/music/gameplay_theme_idea.mp3");
-	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.wav");
-	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.wav");
+	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.mp3");
+	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.mp3");
 	//console.log(gunshot);
-	emptySnd = assetManager.getAsset("sounds/sfx/gun_empty.wav");
-	loseHealthSnd = assetManager.getAsset("sounds/sfx/health_lost.wav");
+	emptySnd = assetManager.getAsset("sounds/sfx/gun_empty.mp3");
+	loseHealthSnd = assetManager.getAsset("sounds/sfx/health_lost.mp3");
 
 	loadedSounds = true;
 }
