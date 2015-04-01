@@ -39,6 +39,11 @@ class MessageHandler:
 		sessionList.append(session1)
 		print(len(sessionList))
 	
+	def register(self, name):
+		print(name)
+		with open('Output.txt', 'w') as f:
+			f.write("Name '{0}'".format(name))
+	
 	def getSession(self, pid):
 		for s in sessionList:
 			if s.getSession(pid):
@@ -101,6 +106,8 @@ class MessageHandler:
 			
 		elif type == "test":
 			self.sendToAll(pid,type,1)
+		elif type == "register":
+			self.register(data1)
 		elif type == "updatePos":
 			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "bossHit":

@@ -47,6 +47,16 @@ Client.prototype.join = function(){
 	this.ws.send(mess);
 }
 
+Client.prototype.register = function(name){
+	console.log("register");
+	message.pid =this.generateId();
+	message.type = "register";
+	message.data = name;
+	var mess = JSON.stringify(message);
+	this.ws.send(mess);
+}
+
+
 Client.prototype.setLevel = function(level){
 	//message.pid = _name;
 	message.type = "setLevel";

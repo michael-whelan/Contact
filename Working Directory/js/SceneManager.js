@@ -14,11 +14,11 @@ var textManager;
 var client;
 var transitionTimer=200;
 var playerCash = 0;
+var input ;
 
 function SceneManager(){
 	
 	menu = new Menu();
-
 	soundManager = new SoundManager();
 	assetManager = new AssetManager();
 	textManager = new TextManager();
@@ -351,14 +351,7 @@ SceneManager.prototype.gameLoop = function (){
 
 	window.requestAnimFrame(sc.gameLoop);
 }
-function playSound(buffer) {
-//	console.log(buffer);
-	var source = context.createBufferSource(); // creates a sound source
-	source.buffer = buffer;                    // tell the source which sound to play
-	source.connect(context.destination);       // connect the source to the context's destination (the speakers)
-	source.start(0);                           // play the source now
-                                             // note: on older systems, may have to use deprecated noteOn(time);
-}
+
 
 SceneManager.prototype.loadScene = function(state,scene){
 	loadedImages = false;

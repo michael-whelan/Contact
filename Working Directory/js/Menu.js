@@ -86,8 +86,10 @@ Menu.prototype.mouseDown= function(e){
 	if(this.scene=== "titleScreen"){
 		if(this.drawExit){
 			if(e.clientX >  350  && e.clientX <585&&e.clientY>330&&e.clientY<400){//770,190,955,375
-				console.log("Exit");
-				window.close();
+				//console.log("Exit");
+				//window.close();
+				 //window.location = "/register.html";
+
 			}
 			else if(e.clientX >  600  && e.clientX <825&&e.clientY>330&&e.clientY<400){//770,190,955,375
 				this.drawExit = false;
@@ -344,6 +346,9 @@ Menu.prototype.draw = function(scene){
 		ctx.drawImage(imgCustBtn,this.custBtnPos[0]-50,this.custBtnPos[1]-50,100,100);
 	}
 	else if(scene ==="multiplayer"){
+		if(KeyController.isKeyDown(Key.P)){
+				client.register("michael");
+			}
 		ctx.drawImage(imgMultiplayerBack, 0,0,1152,648);
 		if(client.connecting){
 			ctx.drawImage(imgLoader, 0,0,canvas.width ,canvas.height);
