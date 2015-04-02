@@ -47,11 +47,11 @@ Client.prototype.join = function(){
 	this.ws.send(mess);
 }
 
-Client.prototype.register = function(name){
+Client.prototype.register = function(name,pass){
 	console.log("register");
 	message.pid =this.generateId();
 	message.type = "register";
-	message.data = name;
+	message.data = [name,pass];
 	var mess = JSON.stringify(message);
 	this.ws.send(mess);
 }

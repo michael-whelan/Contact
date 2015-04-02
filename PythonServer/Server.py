@@ -39,10 +39,10 @@ class MessageHandler:
 		sessionList.append(session1)
 		print(len(sessionList))
 	
-	def register(self, name):
-		print(name)
+	def register(self, data):
+		print(data[0],data[1])
 		with open('Output.txt', 'w') as f:
-			f.write("Name '{0}'".format(name))
+			f.write("Name '{0}' Pass '{1}'".format(data[0],data[1]))
 	
 	def getSession(self, pid):
 		for s in sessionList:

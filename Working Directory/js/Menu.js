@@ -88,7 +88,7 @@ Menu.prototype.mouseDown= function(e){
 			if(e.clientX >  350  && e.clientX <585&&e.clientY>330&&e.clientY<400){//770,190,955,375
 				//console.log("Exit");
 				//window.close();
-				 //window.location = "/register.html";
+				window.location = "/register.html";
 
 			}
 			else if(e.clientX >  600  && e.clientX <825&&e.clientY>330&&e.clientY<400){//770,190,955,375
@@ -347,7 +347,8 @@ Menu.prototype.draw = function(scene){
 	}
 	else if(scene ==="multiplayer"){
 		if(KeyController.isKeyDown(Key.P)){
-				client.register("michael");
+				var temp = Account.getVals();
+				console.log(temp[0],temp[1]);
 			}
 		ctx.drawImage(imgMultiplayerBack, 0,0,1152,648);
 		if(client.connecting){

@@ -15,7 +15,6 @@ var client;
 var transitionTimer=200;
 var playerCash = 0;
 var input ;
-
 function SceneManager(){
 	
 	menu = new Menu();
