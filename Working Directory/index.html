@@ -78,7 +78,20 @@
 		alert(name, pass);
 	}
 </script>
-<!--<iframe src="register.html"></iframe>-->
+
+
+<script>
+	function destroyIframe(name,pass){
+		console.log(name,pass);
+		var iframes = document.getElementsByTagName('iframe');
+		for (var i = 0; i < iframes.length; i++) {
+			iframes[i].parentNode.removeChild(iframes[i]);
+		}
+		var can = document.getElementById('canvasId');
+		can.style.visibility = "visible";
+	}
+</script>
+<!--<iframe id = "registerpage" src="register.html"></iframe>-->
 
 <!--This is where all of the game text can be written and pulled onto the gamescreen-->
 <noembed id="txtLoading"></noembed>

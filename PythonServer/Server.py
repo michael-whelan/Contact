@@ -10,6 +10,8 @@ connections={}
 #session = Session()
 sessionList = list()
 
+_REG_USERS = 'data/registeredUsers.txt'
+
 class WSHandler(tornado.websocket.WebSocketHandler):
 	def check_origin(self, origin):
 		return True
@@ -39,10 +41,26 @@ class MessageHandler:
 		sessionList.append(session1)
 		print(len(sessionList))
 	
-	def register(self, data):
+	def register(self, data,pid):
 		print(data[0],data[1])
-		with open('Output.txt', 'w') as f:
-			f.write("Name '{0}' Pass '{1}'".format(data[0],data[1]))
+		if(self.checkRegister(_REG_USERS,data[0])):
+			print("already taken")
+			self.sendMessage(pid, "alreadyTaken", data)
+			#call the already used method
+		else:
+			with open(_REG_USERS, 'a') as f:
+				print(data[0],data[1], sep=',', file=f)
+				self.sendMessage(pid, "reg", data)
+			#f.write("Name '{0}', Pass '{1}';\n".format(data[0],data[1]))
+		
+	def checkRegister(self,file,name):
+		with open(file) as f:
+			for line in f:
+				u, p = line.strip().split(',')
+				if name == u:
+					return True
+			return False
+
 	
 	def getSession(self, pid):
 		for s in sessionList:
@@ -107,7 +125,8 @@ class MessageHandler:
 		elif type == "test":
 			self.sendToAll(pid,type,1)
 		elif type == "register":
-			self.register(data1)
+			self.addToConnectionList(socket, data)
+			self.register(data1,data['pid'])
 		elif type == "updatePos":
 			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "bossHit":

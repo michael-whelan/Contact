@@ -12,8 +12,8 @@ var STARTING_GAME="1";
 function Client(){
 var that=this;
 
-//var host='192.168.15.13';
-var host = '149.153.102.45';
+var host='192.168.15.7';
+//var host = '149.153.102.45';
 //var host = '23.97.140.22';
 var port=8080;
 
@@ -154,6 +154,14 @@ Client.prototype.handleMessage = function(evt){
 	else if(mess.type === "updatePos"){
 		var messA = mess.data;
 		player2.setPos(messA[0],messA[1],messA[2],messA[3]);
+	}
+	else if(mess.type === "alreadyTaken"){
+		console.log("alreadyTaken");
+		
+	}
+	else if(mess.type === "reg"){
+		createAccount();
+		
 	}
 	else if(mess.type === "bossHit"){
 		enemyManager.boss1.health--;

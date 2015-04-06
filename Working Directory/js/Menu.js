@@ -11,6 +11,7 @@ var imgCustomBack = new Image();
 var imgExitPrompt = new Image();
 var titleMusic = null;
 var imgSelectX = new Image();
+var imgLoginBtn = new Image();
 var imgCustBtn = new Image();
 var imgShopBtn = new Image();
 var shop;
@@ -82,7 +83,18 @@ Menu.prototype.update = function() {
 //temp
 Menu.prototype.mouseDown= function(e){
 	//console.log(e.clientX ,e.clientY);
-	
+	/*var iframes = document.getElementsByTagName('iframe');
+	for (var i = 0; i < iframes.length; i++) {
+		iframes[i].parentNode.removeChild(iframes[i]);
+	}
+	var iframe = document.createElement('iframe');
+iframe.style.visibility="visible";
+iframe.src = "register.html";
+document.body.appendChild(iframe);
+var can = document.getElementById('canvasId');
+can.style.visibility = "hidden";*/
+console.log(e.clientX ,e.clientY);
+
 	if(this.scene=== "titleScreen"){
 		if(this.drawExit){
 			if(e.clientX >  350  && e.clientX <585&&e.clientY>330&&e.clientY<400){//770,190,955,375
@@ -107,6 +119,21 @@ Menu.prototype.mouseDown= function(e){
 			else if(e.clientX >  820  && e.clientX <1100&&e.clientY>450&&e.clientY<510){//770,190,955,375
 				this.returnVals = ["menu","stash"];
 				transitionTimer=0;
+			}
+			else if(e.clientX >  820  && e.clientX <1100&&e.clientY>450&&e.clientY<510){//770,190,955,375
+				this.returnVals = ["menu","stash"];
+				transitionTimer=0;
+			}
+			else if(e.clientX >  100  && e.clientX <389&&e.clientY>100&&e.clientY<209){//770,190,955,375
+				var iframe = document.createElement('iframe');
+				iframe.style.visibility="visible";
+				iframe.style.position = "absolute";
+				iframe.style.left="30px";
+				iframe.style.top="30px";
+				iframe.src = "login.html";
+				document.body.appendChild(iframe);
+				var can = document.getElementById('canvasId');
+				can.style.visibility = "hidden";
 			}
 			else if(e.clientX >  820  && e.clientX <1100&&e.clientY>550&&e.clientY<610){//770,190,955,375
 				//Exit
@@ -332,7 +359,7 @@ Menu.prototype.draw = function(scene){
 	if(scene ==="titleScreen"){
 
 		ctx.drawImage(imgTitleScreen, 0,0,1152,648);
-
+		ctx.drawImage(imgLoginBtn,100,100,289,109);
 		if(this.drawExit){
 			ctx.drawImage(imgExitPrompt, 0,0,1152,648);
 		}

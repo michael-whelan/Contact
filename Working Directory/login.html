@@ -1,23 +1,21 @@
-
-{% extends "base.html" %}
-
-{% block body %}
-
-        <p>Please login to use this system:</p>
-
-        <form method="POST" action="/login">
-            <table>
-                <tr>
-                    <td>Username:</td> <td><input type="TEXT" name="userid" /></td>
-                </tr>
-                <tr>
-                    <td>Password:</td> <td><input type="PASSWORD" name="passwd" /></td>
-                </tr>
-                <tr>
-                    <td></td><td><input type="SUBMIT" value="Login" /></td>
-                </tr>
-            </table>
-        </form>
-        New user? <a href="/register">Register here</a>.
-
-{% endblock %}
+<p>Please login to use this system:</p>
+<script src="js/Client.js"></script>
+	<table>
+		<tr>
+			<td>Username:</td> <td><input type="TEXT" name="userid" id="userid"/></td>
+		</tr>
+		<tr>
+			<td>Password:</td> <td><input type="PASSWORD" name="passwd" id="passwd"/></td>
+		</tr>
+		<tr>
+			<td></td><td><input type="SUBMIT" value="Login" onclick = "redirectLog()"/></td>
+			<script>
+				var client = new Client();
+				function redirectLog(){
+					//client.register(document.getElementById('userid').value,document.getElementById('passwd').value);
+					parent.destroyIframe(document.getElementById('userid').value,document.getElementById('passwd').value);
+				}
+			</script>
+		</tr>
+	</table>
+New user? <a href="/register.html">Register here</a>.

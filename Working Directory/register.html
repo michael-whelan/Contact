@@ -1,6 +1,4 @@
-
 <p>Please register to use this system:</p>
-<script src="js/Account.js"></script>
 <script src="js/Client.js"></script>
 <table>
 	<tr>
@@ -10,14 +8,16 @@
 		<td>Password:</td> <td><input type="PASSWORD" id="passwd" /></td>
 	</tr>
 	<tr>
-		<td></td><td><input type="SUBMIT" value="Register" onclick = "redirect()"/>
+		<td></td><td><input type="SUBMIT" value="Register" onclick = "redirectReg()"/>
 		<script>
 		var client = new Client();
-		function redirect(){
-			
+		function redirectReg(){
 			client.register(document.getElementById('userid').value,document.getElementById('passwd').value);
-			Account.registerPlayer(document.getElementById('userid').value,document.getElementById('passwd').value);
-			window.location = "/index.html";
+		}
+		
+		function createAccount(){
+			window.location = 'login.html';
+			//parent.destroyIframe(document.getElementById('userid').value,document.getElementById('passwd').value)
 		}
 		</script>
 		</td>

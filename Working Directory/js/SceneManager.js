@@ -56,6 +56,7 @@ function init() {
 
 SceneManager.prototype.initCanvas=function () { 
 	canvas = document.createElement('canvas'); 
+	canvas.id = "canvasId";
 	ctx = canvas.getContext('2d');
 	CT = new CanvasText(); 
 	document.body.appendChild(canvas);
@@ -164,7 +165,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/choose_temp.png");
 	assetManager.queueLoadImg("images/armoryScreen.png");
 	assetManager.queueLoadImg("images/exit_temp.png");
-	
+	assetManager.queueLoadImg("images/LoginBtn.png");
 	assetManager.queueLoadSnd("sounds/music/123.mp3");
 
 	//temp
@@ -190,6 +191,7 @@ SceneManager.prototype.setTitleImages = function(){
 	imgCustomBack = assetManager.getAsset("images/choose_temp.png");
 	imgArmoryBack = assetManager.getAsset("images/armoryScreen.png");
 	imgExitPrompt = assetManager.getAsset("images/exit_temp.png");
+	imgLoginBtn = assetManager.getAsset("images/LoginBtn.png");
 
 	//temp
 	imgSelectX =  assetManager.getAsset("images/selected.png");
