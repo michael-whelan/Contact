@@ -81,14 +81,15 @@
 
 
 <script>
-	function destroyIframe(name,pass){
-		console.log(name,pass);
+	function destroyIframe(name,pass,money,shield,dmg,bomb,health,reload,radar){
 		var iframes = document.getElementsByTagName('iframe');
 		for (var i = 0; i < iframes.length; i++) {
 			iframes[i].parentNode.removeChild(iframes[i]);
 		}
 		var can = document.getElementById('canvasId');
 		can.style.visibility = "visible";
+
+		account.setVals(name,pass,money,shield,dmg,bomb,health,reload,radar);
 	}
 </script>
 <!--<iframe id = "registerpage" src="register.html"></iframe>-->

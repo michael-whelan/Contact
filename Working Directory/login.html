@@ -13,7 +13,11 @@
 				var client = new Client();
 				function redirectLog(){
 					//client.register(document.getElementById('userid').value,document.getElementById('passwd').value);
-					parent.destroyIframe(document.getElementById('userid').value,document.getElementById('passwd').value);
+					client.checkLogin(document.getElementById('userid').value,document.getElementById('passwd').value);
+				}
+				
+				function allowLogin(name,money,shield,dmg,bomb,health,reload,radar){
+					parent.destroyIframe(name,document.getElementById('passwd').value,money,shield,dmg,bomb,health,reload,radar);
 				}
 			</script>
 		</tr>

@@ -59,7 +59,7 @@ Menu.prototype.update = function() {
 		this.updateScroll();
 	}
 	if(this.returnVals[1] === "multiplayer"&&this.allow1){
-		client = new Client();
+		//client = new Client();
 		this.allow1=false;
 	}
 	if(this.scene ==="multiplayer"){
@@ -219,6 +219,8 @@ console.log(e.clientX ,e.clientY);
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","stash"];
 			transitionTimer=0;
+			var temp = account.getVals();
+			client.updateProfile(temp[0],temp[1],temp[2],temp[3],temp[4],temp[5],temp[6],temp[7],temp[8]);
 		}
 		shop.update(e.clientX,e.clientY);
 	}

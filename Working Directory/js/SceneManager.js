@@ -15,6 +15,8 @@ var client;
 var transitionTimer=200;
 var playerCash = 0;
 var input ;
+var account;
+
 function SceneManager(){
 	
 	menu = new Menu();
@@ -22,6 +24,8 @@ function SceneManager(){
 	assetManager = new AssetManager();
 	textManager = new TextManager();
 	game = new Game();
+	account = new Account();
+	client = new Client();
 	this.initCanvas();
 	textManager.init();
 	this.gameState="0";

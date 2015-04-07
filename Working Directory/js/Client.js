@@ -12,8 +12,8 @@ var STARTING_GAME="1";
 function Client(){
 var that=this;
 
-var host='192.168.15.7';
-//var host = '149.153.102.45';
+//var host='192.168.15.7';
+var host = '149.153.102.45';
 //var host = '23.97.140.22';
 var port=8080;
 
@@ -48,10 +48,24 @@ Client.prototype.join = function(){
 }
 
 Client.prototype.register = function(name,pass){
-	console.log("register");
 	message.pid =this.generateId();
 	message.type = "register";
 	message.data = [name,pass];
+	var mess = JSON.stringify(message);
+	this.ws.send(mess);
+}
+Client.prototype.checkLogin = function(name,pass){
+	message.pid =this.generateId();
+	message.type = "checkLogin";
+	message.data = [name,pass];
+	var mess = JSON.stringify(message);
+	this.ws.send(mess);
+}
+
+Client.prototype.updateProfile = function(name,pass,money,shield,dmg,bomb,health,reload,radar){
+	//message.pid =this.generateId();
+	message.type = "updateProfile";
+	message.data = [name,pass,money,shield,dmg,bomb,health,reload,radar];
 	var mess = JSON.stringify(message);
 	this.ws.send(mess);
 }
@@ -156,12 +170,16 @@ Client.prototype.handleMessage = function(evt){
 		player2.setPos(messA[0],messA[1],messA[2],messA[3]);
 	}
 	else if(mess.type === "alreadyTaken"){
-		console.log("alreadyTaken");
-		
+		console.log("alreadyTaken");	
 	}
 	else if(mess.type === "reg"){
-		createAccount();
-		
+		createAccount();//moves to login page	
+	}
+	else if(mess.type === "loginApproved"){
+		var messA = mess.data;
+		//console.log(messA);
+		allowLogin(messA[0],messA[3],messA[4],messA[5],messA[6],messA[7],messA[8],messA[9]);
+		//account.setVals(messA[0],messA[1]);
 	}
 	else if(mess.type === "bossHit"){
 		enemyManager.boss1.health--;
