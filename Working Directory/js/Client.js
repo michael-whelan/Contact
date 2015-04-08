@@ -1,6 +1,6 @@
 var multiplayer = false;
 var message = {
-	pid: "",
+	pid: "null",
 	type: "",
 	data:""
 };
@@ -16,8 +16,10 @@ var that=this;
 var host = '149.153.102.45';
 //var host = '23.97.140.22';
 var port=8080;
+var port2=8090;
 
 this.ws = new WebSocket("ws://" + host + ":" + port +'/wstest');
+this.ws2 = new WebSocket("ws://" + host + ":" + port2 +'/wstest');
 
 this.ws.onmessage = function(evt) {that.handleMessage(evt); };
 
@@ -25,8 +27,17 @@ this.ws.onclose = function(evt) { console.log("Connection close"); game.goMenu =
 
 this.ws.onopen = function(evt) { console.log('open connection'); };    
 
-    this.connecting = false;     
+this.ws2.onmessage = function(evt) {that.handleMessage(evt); };
+
+this.ws2.onclose = function(evt) { console.log("Connection close"); game.goMenu = true;};
+
+this.ws2.onopen = function(evt) { console.log('open connection'); };    
+
+    this.connecting = false; 
+
 }
+
+
 
 Client.prototype.generateId = function () {
 	var rand= Math.random()*(50-1) +1; 
@@ -52,14 +63,14 @@ Client.prototype.register = function(name,pass){
 	message.type = "register";
 	message.data = [name,pass];
 	var mess = JSON.stringify(message);
-	this.ws.send(mess);
+	this.ws2.send(mess);
 }
 Client.prototype.checkLogin = function(name,pass){
 	message.pid =this.generateId();
 	message.type = "checkLogin";
 	message.data = [name,pass];
 	var mess = JSON.stringify(message);
-	this.ws.send(mess);
+	this.ws2.send(mess);
 }
 
 Client.prototype.updateProfile = function(name,pass,money,shield,dmg,bomb,health,reload,radar){
@@ -67,7 +78,7 @@ Client.prototype.updateProfile = function(name,pass,money,shield,dmg,bomb,health
 	message.type = "updateProfile";
 	message.data = [name,pass,money,shield,dmg,bomb,health,reload,radar];
 	var mess = JSON.stringify(message);
-	this.ws.send(mess);
+	this.ws2.send(mess);
 }
 
 

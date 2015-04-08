@@ -11,6 +11,8 @@ connections={}
 #session = Session()
 sessionList = list()
 
+_REG_USERS = 'data/registeredUsers.txt'
+
 class WSHandler(tornado.websocket.WebSocketHandler):
 	def check_origin(self, origin):
 		return True
@@ -38,25 +40,71 @@ class MessageHandler:
 		session1 = Session()
 		sessionList.append(session1)
 		print(len(sessionList))
-					
+		
+	def getTime(self):
+		# replace datetime.datetime.now() with your datetime object
+		tempTime = time.mktime(datetime.datetime.now().timetuple()) * 1000
+		return int(tempTime)
+
+	def register(self, data,pid):
+		print(data[0],data[1])
+		if(self.checkRegister(_REG_USERS,data[0])):
+			print("already taken")
+			self.sendMessage(pid, "alreadyTaken", data)
+			#call the already used method
+		else:
+			with open(_REG_USERS, 'a') as f:
+				print(data[0],0,data[1],0,0,0,0,0,0,0, sep=',', file=f)
+				self.sendMessage(pid, "reg", data)
+			#f.write("Name '{0}', Pass '{1}';\n".format(data[0],data[1]))
+			
+	def checkRegister(self,file,name):
+		with open(file) as f:
+			for line in f:
+				u,tStamp, p,money,shield,dmg,bomb,health,reload,radar = line.strip().split(',')
+				if name == u:
+					return True
+			return False
+	
+	def checkLogin(self,data,pid,file):
+		with open(file) as f:
+			for line in f:
+				u,tStamp, p,money,shield,dmg,bomb,health,reload,radar = line.strip().split(',')
+				if data[0] == u:
+					if data[1] == p:
+						newData = [u,tStamp, p,money,shield,dmg,bomb,health,reload,radar]
+						print("pid"+str(pid))
+						self.sendMessage(pid, "loginApproved", newData)#will also need to send message saying username/pass wrong
+
+	def replace( self,filePath, text):
+		f = open(filePath,"r")
+		lines = f.readlines()
+		print(lines)
+		f.close()
+		f = open(filePath,"w")
+		for line in lines:
+			if line!=text:
+				f.write(line)
+		f.close()
+	
+	def updateProfile(self,data,file):
+		with open(file, 'r+') as f:
+			lines = f.readlines()
+			for i, line in enumerate(lines):
+				if line.startswith(data[0]):
+					print(data[0])
+					tempLine = line;
+					u,tStamp, p,money,shield,dmg,bomb,health,reload,radar = line.strip().split(',')
+					if self.getTime() > int(tStamp):
+						self.replace(file,line)
+		with open(file, 'a') as f:
+			print(data[0],self.getTime(),data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8], sep=',', file=f)
+						
 	
 	def getSession(self, pid):
 		for s in sessionList:
 			if s.getSession(pid):
 				return s
-			
-	def hostGame(self,data,socket):
-		self.createSession()
-		#data['type'] = 'host'
-		if(str(sessionList[len(sessionList)-1].getState()) == "-1"):
-			success = sessionList[len(sessionList)-1].addPlayer(data['pid'])
-			#data['pid'] = 'player1'
-			self.addToConnectionList(socket, data)
-			
-		if(success):
-			self.sendToAll(data['pid'], "state",str(str(sessionList[len(sessionList)-1].getState())))
-		else:
-			self.sendMessage(data['pid'], "error", "Unexpected error with hosting") 
 				
 	def handleIncomingMsg(self, data, socket,pid):
 		try:
@@ -73,58 +121,14 @@ class MessageHandler:
 			type = 'error'
 			print('except')
 					
-		if type == "host":
-			self.hostGame(data,socket)		
-		elif type == "join":
-			#add to connection list
-			
-			iter = 0;
-			for s in sessionList:
-				print('Session return, '+ str(s.getState()))
-				if(s.getState() == 0):
-					print('p2')
-					success = s.addPlayer(data['pid'])
-					print('Session return2, '+ str(s.getState()))
-					#data['pid'] = 'player2'
-					self.addToConnectionList(socket, data)
-			
-					if(success):
-						self.sendToAll(data['pid'], "state",str(s.getState()))
-				++iter
-			if iter >= len(sessionList):
-				print(iter)
-				self.hostGame(data, socket)
-			#else:
-			#	self.sendMessage(data['pid'], "error", "No available space: Two players already in the game!") 
-			
-		elif type == "test":
-			self.sendToAll(pid,type,1)
-		elif type == "updatePos":
-			self.sendToOtherPlayer(pid,type,data1)
-		elif type == "bossHit":
-			self.sendToOtherPlayer(pid,type,data1)
-		elif type == "bossTarget":
-			self.sendToOtherPlayer(pid,type,data1)
-		elif type == "bossPos":
-			self.sendToOtherPlayer(pid,type,data1)
-		elif type == "bossHole":
-			self.sendToOtherPlayer(pid,type,data1)
-		elif type == "worldUp":
-			self.sendToOtherPlayer(pid,type,data1)
-		elif type == "killEnemy":
-			self.sendToOtherPlayer(pid,type,data1)
-		elif type == "playerDeath":
-			#print('Number Died: '+numberOfDeaths)
-			#numberOfDeaths+=1
-			#if(numberOfDeaths==2):
-			#	self.sendToAll("server","lose","gameover")
-			#else:
-			self.sendToOtherPlayer(pid,type,data1)
-		elif type == "setLevel":
-			self.sendToAll(pid,type,str(data1))
-		elif type == "updateState":
-			self.updateState(pid, data1)
-			
+		if type == "register":
+			self.addToConnectionList(socket, data)
+			self.register(data1,data['pid'])
+		elif type == "checkLogin":
+			self.addToConnectionList(socket, data)
+			self.checkLogin(data1,data['pid'],_REG_USERS)
+		elif type == "updateProfile":
+			self.updateProfile(data1,_REG_USERS)
 		else:
 			msg = 'Error reading game request. Please make sure message type is either join, updateState, or...'
 			message={'type':'error', "data":msg}
@@ -178,5 +182,5 @@ app= tornado.web.Application([
 ])
  
 if __name__ == '__main__':
-	app.listen(8080)
+	app.listen(8090)
 	tornado.ioloop.IOLoop.instance().start()
