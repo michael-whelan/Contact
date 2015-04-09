@@ -36,12 +36,14 @@ function Menu (){
     shop = new Shop();
     this.timer=0;
     this.selectedGun = "assault";
+    this.currLvl = 0;
     //custom upgrades
 }
 
 Menu.prototype.reset = function() {
 	this.returnVals = ["null","null"]; //[state,scene]
 	this.scene;
+	this.currLvl = 0;
 	this.scrollX = 0;
 	this.lvl1X = 1152;
 	this.lvlTutX=0;
@@ -158,29 +160,34 @@ console.log(e.clientX ,e.clientY);
 			this.returnVals = ["menu","armory"];
 			transitionTimer=0;
 		}
-		else if(e.clientX >  this.lvl1X+300  && e.clientX <this.lvl1X+700&&e.clientY>300&&e.clientY<500){//770,190,955,375
-			this.returnVals = ["gameplay","level1"];
-			if(multiplayer){
-				client.setLevel("level1");
+		else if(e.clientX >  300  && e.clientX <700&&e.clientY>300&&e.clientY<500){//770,190,955,375
+			if(this.currLvl ===0){
+				this.returnVals = ["gameplay","tutorial"];
+				client.setLevel("tutorial");
 			}
-		}
-		else if(e.clientX >  (this.lvl1X+1152)+300  && e.clientX <(this.lvl1X+1152)+700&&e.clientY>300&&e.clientY<500){//770,190,955,375
-			this.returnVals = ["gameplay","level2"];
-			if(multiplayer){
-				client.setLevel("level2");
+			else if(this.currLvl ===1){
+				this.returnVals = ["gameplay","level1"];
+				if(multiplayer){
+					client.setLevel("level1");
+				}
 			}
+			else if(this.currLvl ===2){
+				this.returnVals = ["gameplay","level2"];
+				if(multiplayer){
+					client.setLevel("level2");
+				}
+			}
+			
 		}
-		else if(e.clientX >  this.lvlTutX+300  && e.clientX <this.lvlTutX+700&&e.clientY>300&&e.clientY<500){//770,190,955,375
-			this.returnVals = ["gameplay","tutorial"];
-			client.setLevel("tutorial");
-		}
-		else if(e.clientX < 300){
+		else if(e.clientX < 300 && this.currLvl >0){
 			//scroll left
+			this.currLvl--;
 			console.log("scrollX");
 			this.scrollX += 1152;
 		}	
-		else if(e.clientX > 700){
+		else if(e.clientX > 700 && this.currLvl <2){
 			//scroll right
+			this.currLvl++;
 			this.scrollX -=1152;
 		}
 	}

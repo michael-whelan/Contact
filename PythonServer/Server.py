@@ -47,6 +47,7 @@ class MessageHandler:
 			
 	def hostGame(self,data,socket):
 		self.createSession()
+		print("create ses")
 		#data['type'] = 'host'
 		if(str(sessionList[len(sessionList)-1].getState()) == "-1"):
 			success = sessionList[len(sessionList)-1].addPlayer(data['pid'])
@@ -90,7 +91,10 @@ class MessageHandler:
 			
 					if(success):
 						self.sendToAll(data['pid'], "state",str(s.getState()))
-				++iter
+				else:
+					print(iter)
+					iter+=1
+					print(iter, len(sessionList))
 			if iter >= len(sessionList):
 				print(iter)
 				self.hostGame(data, socket)
