@@ -176,7 +176,7 @@ CollisionManager.prototype.bossCol = function(amount){
 	if(this.bossColTimer>100){
 		player.health-=amount;
 		this.bossColTimer =0;
-		loseHealthSnd.play();
+		//loseHealthSnd.play();
 		player.lastHitTime = Date.now();
 	}
 }
@@ -197,7 +197,7 @@ CollisionManager.prototype.playerVsBoss = function(enemyManager,player){
 		if(this.circleOnCircle(enemyManager.boss1.bullets[i].radius,enemyManager.boss1.bullets[i].x,
 		enemyManager.boss1.bullets[i].y,player.radius,player.x,player.y) && enemyManager.boss1.bullets[i].alive&& player.flash === false){
 			player.health-=2;
-			loseHealthSnd.play();
+			//loseHealthSnd.play();
 			player.lastHitTime = Date.now();
 			enemyManager.boss1.bullets[i].kill();
 		}

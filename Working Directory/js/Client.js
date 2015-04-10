@@ -13,10 +13,13 @@ function Client(){
 var that=this;
 
 //var host='192.168.15.7';
-var host = '149.153.102.45';
-//var host = '23.97.140.22';
-var port=8080;
-var port2=8090;
+//var host = '149.153.102.45';
+var host = '23.97.140.22';
+//var port=8080;
+//var port2=8090;
+var port=28000;
+var port2=28002;
+
 
 this.ws = new WebSocket("ws://" + host + ":" + port +'/wstest');
 this.ws2 = new WebSocket("ws://" + host + ":" + port2 +'/wstest');

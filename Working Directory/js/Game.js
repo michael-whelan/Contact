@@ -320,7 +320,9 @@ Game.prototype.update = function(lvl){
 		}
 		if(levelWin){
 			pause = true;
-			this.overlayType = "win";	
+			this.overlayType = "win";
+			var temp = account.getVals();
+			client.updateProfile(temp[0],temp[1],temp[2],temp[3],temp[4],temp[5],temp[6],temp[7],temp[8]);
 		}
 
 		calculateFps(Date.now());
