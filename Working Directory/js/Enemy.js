@@ -53,7 +53,7 @@ Enemy.prototype.reset = function(){
 
 Enemy.prototype.spawnEnemy = function(x,y){
 	this.alive = true;
-	this.angle = Math.random()*(8-1) +1;
+	this.angle = random();//Math.random()*(8-1) +1;
 	//Math.floor(Math.random()*(this.max-this.min) +this.min);
 	this.x = x;
 	this.y = y;
@@ -336,7 +336,7 @@ Enemy.prototype.scatter = function(xPos,yPos){
 	this.moveDirection = "forward";
 	//causes regular changes in direction
 	if(this.timeSinceDirectChange>40){
-		this.angle = Math.random()*(8-1) +1;
+		this.angle = random();//Math.random()*(8-1) +1;
 		this.timeSinceDirectChange = 0;
 	}
 	if(this.moveDirection == "forward"){
@@ -355,12 +355,17 @@ Enemy.prototype.closeToPos = function(xPos,yPos){
 	}
 	return false;
 }
+var seed = 1;
+function random() {
+    var x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+}
 
 Enemy.prototype.moveBasic = function(){
 	this.moveDirection = "forward";
 	//causes regular changes in direction
 	if(this.timeSinceDirectChange>40){
-		this.angle = Math.random()*(8-1) +1;
+		this.angle = random();//Math.random()*(8-1) +1;
 		this.timeSinceDirectChange = 0;
 	}
 	if(this.moveDirection == "forward"){

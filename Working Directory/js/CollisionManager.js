@@ -95,7 +95,7 @@ CollisionManager.prototype.enemy = function(enemyManager,player,lvlManager){
 			if(this.circleOnCircle(player.bomb.radius,player.x-player.width/2,player.y-player.height/2,enemyManager.enemy[j].hitRadius,enemyManager.enemy[j].x-enemyManager.enemy[j].width/2,enemyManager.enemy[j].y-enemyManager.enemy[j].height/2)){
 				enemyManager.enemy[j].health-=player.bomb.damage;
 				if(enemyManager.enemy[j].health <1){
-					this.killEnemy(j);
+					this.killEnemy(j,true);
 					j--;
 				}
 			}
@@ -211,9 +211,9 @@ CollisionManager.prototype.playerVsBoss = function(enemyManager,player){
 }
 
 
-CollisionManager.prototype.killEnemy = function(j){
+CollisionManager.prototype.killEnemy = function(j,bool){
 	var x = enemyManager.enemy[j].x; var y = enemyManager.enemy[j].y;
-	if(multiplayer){
+	if(multiplayer&& bool ===true){
 		client.killEnemy(j);
 	}
 	
@@ -287,7 +287,7 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 				if(this.circleOnCircle(player.bullets[i].radius,player.bullets[i].x,player.bullets[i].y,enemyManager.enemy[j].hitRadius,enemyManager.enemy[j].x,enemyManager.enemy[j].y)){
 						enemyManager.enemy[j].health--;
 						if(enemyManager.enemy[j].health <=0){
-							this.killEnemy(j);
+							this.killEnemy(j,true);
 						}
 					player.bullets[i].kill();
 				}

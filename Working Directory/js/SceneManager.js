@@ -376,6 +376,7 @@ SceneManager.prototype.loadScene = function(state,scene){
 			assetManager.loadTitleImages(function() {
     			sc.setTitleImages()
 			});
+			//loadedSounds =true;
 			assetManager.loadSnd(function() {
     			sc.setTitleSounds()
 			},0);

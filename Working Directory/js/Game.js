@@ -253,6 +253,14 @@ Game.prototype.updateGUI = function(tX,tY){
 	//1106.699951171875 252.48899841308594 
 }
 
+Game.prototype.checkDif=function(n1,n2,dif){
+	if(n1 - n2 >=dif ||n2 - n1 >=dif){
+		return true;
+	}
+	return false;
+}
+
+
 Game.prototype.controlMultiplayer = function(stick,stick2){
 	this.sendTimer++;
 	this.worldSendTimer++;
@@ -261,10 +269,15 @@ Game.prototype.controlMultiplayer = function(stick,stick2){
 		if(stick2.active){
 			tmpint = 1;
 		}
-		client.update(player.x,player.y,player.angle,tmpint);
-		this.sendTimer =0;
+		if(this.checkDif(player.x,client.lastX,15)||this.checkDif(player.y,client.lastY,15)||this.checkDif(player.angle,client.lastAng,0.4)){
+			client.update(player.x,player.y,player.angle,tmpint);
+			client.lastX = player.x;
+			client.lastY = player.y;
+			client.lastAng = player.angle;
+			this.sendTimer =0;
+		}
 	}
-	if(_name === "player1" && this.worldSendTimer > 15 && !enemyManager.boss1.alive){//player 1 will be put in control as the authoritive player. His is the correct game world.
+	if(_name === "player1" && this.worldSendTimer > 25 && !enemyManager.boss1.alive){//player 1 will be put in control as the authoritive player. His is the correct game world.
 		var tempArr = new Array();
 		for(var i = 0; i < enemyManager.enemy.length; ++i){
 			var temp2 = new Array();
@@ -277,7 +290,7 @@ Game.prototype.controlMultiplayer = function(stick,stick2){
 			tempArr.push(temp2);
 		}
 		this.worldSendTimer =0;
-		client.worldUpdate(tempArr);
+		//client.worldUpdate(tempArr);
 	}
 	else if(_name === "player1" && this.worldSendTimer > 30 && enemyManager.boss1.alive){
 		this.worldSendTimer =0;
