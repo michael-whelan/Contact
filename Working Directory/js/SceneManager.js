@@ -171,6 +171,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/exit_temp.png");
 	assetManager.queueLoadImg("images/LoginBtn.png");
 	assetManager.queueLoadSnd("sounds/music/123.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/silence.mp3");
 
 	//temp
 	assetManager.queueLoadImg("images/selected.png");
@@ -206,6 +207,7 @@ SceneManager.prototype.setTitleImages = function(){
 }
 SceneManager.prototype.setTitleSounds = function(){
 	titleMusic = assetManager.getAsset("sounds/music/123.mp3");
+	silence = assetManager.getAsset("sounds/sfx/silence.mp3");
 	loadedSounds=true;
 }
 

@@ -82,7 +82,9 @@ Game.prototype.reset = function(lvl){
 	levelWin = false;
 	textManager.reset();
 	lvlManager.mapSetup();
-	soundManager.playSoundLoop(backTrack,"gameBack");
+	//if(!window.mobileAndTabletcheck()){
+		soundManager.playSoundLoop(backTrack,"gameBack");
+	//}
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].active = false;
 	}
@@ -246,6 +248,10 @@ Game.prototype.updateGUI = function(tX,tY){
 	else if(tX> 1100&& tX < 1100 + this.btnScale &&
 		tY > 250 && tY < 250 + this.btnScale){
 		player.startReload = true;
+		if(!player.playOnce){
+			player.playOnce = true;
+			soundManager.playSound(reloadSnd);
+		}
 		if(this.currentLvl === "tutorial"){
 			textManager.upTutorial(2);
 		}
@@ -420,7 +426,9 @@ Game.prototype.update = function(lvl){
 	if(this.goMenu){
 		//backTrack.pause();
 		//backTrack.currentTime=0;
-		soundManager.stopSound("gameBack");
+		if(!window.mobileAndTabletcheck()){
+			soundManager.stopSound("gameBack");
+		}
 		multiplayer = false;
 		return "menu";
 	}

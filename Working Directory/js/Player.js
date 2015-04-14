@@ -59,9 +59,8 @@ var Player=function (name){
 	this.maxHealth = 100;
 	this.playOnce = false;
 	this.dmgMult=1;
-//triangle variables
+	//triangle variables
 	this.aX=0,this.aY=0,this.bX=0,this.bY=0,this.cX=0,this.cY=0;
-
 };
 
 Player.prototype.reload = function(){

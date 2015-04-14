@@ -6,7 +6,7 @@ var SoundManager = function()
 
 
 SoundManager.prototype.playSound= function(buffer) {
-	console.log(buffer);
+	//console.log(buffer);
 	var source = context.createBufferSource(); // creates a sound source
 	source.buffer = buffer;                    // tell the source which sound to play
 	source.connect(context.destination);       // connect the source to the context's destination (the speakers)
@@ -30,9 +30,9 @@ SoundManager.prototype.playSoundLoop = function(buffer,soundName) {
 
 SoundManager.prototype.stopSound = function(soundName) {
 	if(soundName === "gameBack"&& this.backT!==undefined){
-		//this.backT.stop();
+		this.backT.stop();
 	}
 	else if(soundName === "menuBack"&& this.menuBack!==undefined){
-		//this.menuBack.stop();
+		this.menuBack.stop();
 	}
 }
