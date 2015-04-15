@@ -169,6 +169,11 @@ Player.prototype.setPos = function(x,y,o,_int){//used for multiplayer for second
 	else {this.shootBool = false;}	
 }
 
+Player.prototype.initP2 = function(color,gun){//used for multiplayer for second player
+	this.gun = gun;
+}
+
+
 Player.prototype.setAssistPostitions = function(){
 	for (var i = 0; i<this.assistPositions.length; ++i){
 		//console.log(this.assistPositions[i]);

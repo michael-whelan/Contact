@@ -113,8 +113,8 @@ console.log(e.clientX ,e.clientY);
 		if(this.drawExit){
 			if(e.clientX >  350  && e.clientX <585&&e.clientY>330&&e.clientY<400){//770,190,955,375
 				//console.log("Exit");
-				//window.close();
-				window.location = "/register.html";
+				window.close();
+			//	window.location = "/register.html";
 
 			}
 			else if(e.clientX >  600  && e.clientX <825&&e.clientY>330&&e.clientY<400){//770,190,955,375
@@ -177,18 +177,21 @@ console.log(e.clientX ,e.clientY);
 				this.returnVals = ["gameplay","tutorial"];
 				if(multiplayer){
 					client.setLevel("tutorial");
+					client.setPlayer("blue",this.selectedGun);
 				}
 			}
 			else if(this.currLvl ===1){
 				this.returnVals = ["gameplay","level1"];
 				if(multiplayer){
 					client.setLevel("level1");
+					client.setPlayer("blue",this.selectedGun);
 				}
 			}
 			else if(this.currLvl ===2){
 				this.returnVals = ["gameplay","level2"];
 				if(multiplayer){
 					client.setLevel("level2");
+					client.setPlayer("blue",this.selectedGun);
 				}
 			}
 			

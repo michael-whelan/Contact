@@ -56,7 +56,7 @@ TextManager.prototype.init = function(){
         fontStyle: "normal",
         textShadow: "0px 2px 0px #660000"
     });
-     CT.defineClass("warning",{
+    CT.defineClass("warning",{
         fontSize: "40px",
         fontColor: "#f01717",
         fontFamily: "osr",
@@ -125,19 +125,20 @@ TextManager.prototype.controller = function(level){
         //this.gameText();
         var count=0;
         for(var j =0; j<3; j++){
-        for(var i = 0; i < 10;i++){
-            count++;
-            if(count <= player.numBullets){
-            ctx.drawImage(imgSquare,(8*i)+50,(j*15)+50,5,10);}
+            for(var i = 0; i < 10;i++){
+                count++;
+                if(count <= player.numBullets){
+                    ctx.drawImage(imgSquare,(8*i)+50,(j*15)+50,5,10);
+                }
+            }
         }
-    }
     }
     else{
         ctx.strokeStyle = "#003300";
-        ctx.font = '40px san-serif';
+        ctx.font = 'normal 40px Arial';
         ctx.textBaseline = 'bottom';
         //txtAmmo = txtAmmo + numBullets.toString();
-        ctx.strokeText("R to Reload", 300, 100);
+        ctx.fillText("R to Reload", 300, 100);
     }
     var tempH = player.health.toString();
     tempH = '<class="whiteGame">' + tempH + '</class>';
@@ -147,9 +148,9 @@ TextManager.prototype.controller = function(level){
         x: 50,
         y: 20
     });
-      if(enemyManager.boss1.alive){
-            ctx.drawImage(imgHealthBar,550,50,enemyManager.boss1.health*1.5,20);
-        }
+    if(enemyManager.boss1.alive){
+        ctx.drawImage(imgHealthBar,550,50,enemyManager.boss1.health*1.5,20);
+    }
  
     //txtAmmo = txtAmmo + numBullets.toString();
     //ctx.strokeText("fps: "+fps.toFixed(), 680, 150);
@@ -158,16 +159,34 @@ TextManager.prototype.controller = function(level){
     }
     ctx.strokeText("fps: "+this.lowestFps.toFixed(), 680, 50);*/
 }
-
+var once = false;
 TextManager.prototype.drawShop = function(shieldLvl,AmmoLvl,BombLvl,HealthLvl,other1Lvl,other2Lvl){
-    var tempC = playerCash.toString();
-    tempC = '<class="whiteBig">' + tempC + '</class>';
+    var tempC = '<class="whiteBig">' + playerCash.toString() + '</class>';
     CT.textAlign = 'left';
     CT.drawText({
         text:coins+ tempC,
         x: 400,
         y: 50
     });
+    var tempArr = new Array();
+    tempArr.push(shieldLvl);
+    tempArr.push(AmmoLvl);
+    tempArr.push(BombLvl);
+    tempArr.push(HealthLvl);
+    tempArr.push(other1Lvl);
+    tempArr.push(other2Lvl);
+    var count=0;
+    for(var j =0; j<2; ++j){
+        for(var i = 0; i < 3;++i){
+            ctx.drawImage(imgSquare,(362*i)+90,(j*270)+100,(tempArr[count]*49)+2,20);
+           // ctx.drawImage(imgSquare,(200*i)+50,(j*200)+150,500,500);
+            count++;
+        }
+    }
+   // ctx.drawImage(imgSquare,(200)+50,(200)+150,500,500);
+    once = true;
+    /*
+
     var tempNum =  '<class="whiteBig">'+shieldLvl.toString()+ '</class>';
     CT.textAlign = 'left';
     CT.drawText({
@@ -209,7 +228,7 @@ TextManager.prototype.drawShop = function(shieldLvl,AmmoLvl,BombLvl,HealthLvl,ot
         text:tempNum,
         x: 810,
         y: 400
-    });
+    });*/
 }
 
 TextManager.prototype.gameText=function(){

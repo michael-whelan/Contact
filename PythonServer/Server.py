@@ -105,6 +105,8 @@ class MessageHandler:
 			self.sendToAll(pid,type,1)
 		elif type == "updatePos":
 			self.sendToOtherPlayer(pid,type,data1)
+		elif type == "setPlayer":
+			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "bossHit":
 			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "bossTarget":

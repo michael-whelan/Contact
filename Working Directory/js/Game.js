@@ -194,30 +194,33 @@ function sqrt(x) {
 }
 
 Game.prototype.updateOverlay = function(e){
+	console.log(scaleRatio);
+	var touchX = e.clientX;//*scaleRatio;
+	var touchY = e.clientY;//*scaleRatio;
 	if(this.overlayType=== "pause"){
-		if(e.clientX> 475 && e.clientX < 540 && e.clientY >260&&e.clientY <320){
+		if(touchX> 475 && touchX < 540 && touchY >260&&touchY <320){
 			this.reset(this.currentLvl);
 		}
-		else if(e.clientX> 600 && e.clientX < 670 && e.clientY >260&&e.clientY <320){
+		else if(touchX> 600 && touchX < 670 && touchY >260&&touchY <320){
 			this.goMenu = true;
 			//console.log("go to menu");
 		}
-		else if(e.clientX> 725 && e.clientX < 800 && e.clientY >260&&e.clientY <320){
+		else if(touchX> 725 && touchX < 800 && touchY >260&&touchY <320){
 			pause = false;
 			console.log("hit");
 		}
 	}
 	else if(this.overlayType === "win"){
-		if(e.clientX> 475 && e.clientX < 540 && e.clientY >260&&e.clientY <320){
+		if(touchX> 475 && touchX < 540 && touchY >260&&touchY <320){
 			this.reset(this.currentLvl);
 			if(multiplayer && _name === "player1"){
 				client.setLevel(this.currentLvl);
 			}
 		}
-		else if(e.clientX> 600 && e.clientX < 670 && e.clientY >260&&e.clientY <320){
+		else if(touchX> 600 && touchX < 670 && touchY >260&&touchY <320){
 			this.goMenu = true;
 		}
-		else if(e.clientX> 725 && e.clientX < 800 && e.clientY >260&&e.clientY <320){
+		else if(touchX> 725 && touchX < 800 && touchY >260&&touchY <320){
 			//lvlManager.setLevel();
 			this.reset(lvlManager.getNextLevel());
 			if(multiplayer && _name === "player1"){
@@ -227,19 +230,21 @@ Game.prototype.updateOverlay = function(e){
 		}	
 	}
 	else if(this.overlayType === "lose"){
-		if(e.clientX> 540 && e.clientX < 600 && e.clientY >260&&e.clientY <325){
+		if(touchX> 540 && touchX < 600 && touchY >260&&touchY <325){
 			this.reset(this.currentLvl);
 			if(multiplayer && _name === "player1"){
 				client.setLevel(this.currentLvl);
 			}
 		}
-		else if(e.clientX> 680 && e.clientX < 744 && e.clientY >260&&e.clientY <320){
+		else if(touchX> 680 && touchX < 744 && touchY >260&&touchY <320){
 			this.goMenu = true;
 		}
 	}
 }
 
-Game.prototype.updateGUI = function(tX,tY){
+Game.prototype.updateGUI = function(tX_,tY_){
+	var tX = tX_*scaleRatio;
+	var tY = tY_*scaleRatio;
 	if(tX< this.pauseX+this.btnScale && tX > this.pauseX &&
 		tY> this.pauseY && tY < this.pauseY+this.btnScale){
 		pause = true;
@@ -286,17 +291,21 @@ Game.prototype.controlMultiplayer = function(stick,stick2){
 	if(_name === "player1" && this.worldSendTimer > 25 && !enemyManager.boss1.alive){//player 1 will be put in control as the authoritive player. His is the correct game world.
 		var tempArr = new Array();
 		for(var i = 0; i < enemyManager.enemy.length; ++i){
-			var temp2 = new Array();
-			temp2.push(enemyManager.enemy[i].x);
-			temp2.push(enemyManager.enemy[i].y);
-			temp2.push(enemyManager.enemy[i].angle);
-			temp2.push(enemyManager.enemy[i].state);
-			temp2.push(enemyManager.enemy[i].targetPosX);
-			temp2.push(enemyManager.enemy[i].targetPosY);
-			tempArr.push(temp2);
+			if(this.checkDif(enemyManager.enemy[i].x,enemyManager.enemy[i].lastX,15)||this.checkDif(enemyManager.enemy[i].y,enemyManager.enemy[i].lastY,15)||
+				this.checkDif(enemyManager.enemy[i].angle,enemyManager.enemy[i].lastAng,0.4)){
+				var temp2 = new Array();
+				temp2.push(enemyManager.enemy[i].x);
+				temp2.push(enemyManager.enemy[i].y);
+				temp2.push(enemyManager.enemy[i].angle);
+				temp2.push(enemyManager.enemy[i].state);
+				temp2.push(enemyManager.enemy[i].targetPosX);
+				temp2.push(enemyManager.enemy[i].targetPosY);
+				tempArr.push(temp2);
+				this.worldSendTimer =0;
+				
+			}
 		}
-		this.worldSendTimer =0;
-		//client.worldUpdate(tempArr);
+		client.worldUpdate(tempArr);
 	}
 	else if(_name === "player1" && this.worldSendTimer > 30 && enemyManager.boss1.alive){
 		this.worldSendTimer =0;

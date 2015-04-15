@@ -39,8 +39,7 @@ function SceneManager(){
 	this.onceTitle = false;
 	this.onceLvl1 = false;
 	this.onceLvlSel = false;
-	scaleRatio = canvas.height/ parseInt(canvas.style.height, 10);
-	canvas.style.width = canvas.width/scaleRatio;
+	scaleRatio = 1;
 };
 
 
@@ -67,7 +66,7 @@ SceneManager.prototype.initCanvas=function () {
 	//set canvas to size of the screen.
 	canvas.width = 1152;//1152
 	canvas.height = 648;//648 
-	resizeGame();
+	//resizeGame();
 	/*canvas.msg = new MSGesture();
     canvas.msg.target = canvas;*/
 	canvas.addEventListener("touchstart",touchStart,false);
@@ -77,11 +76,12 @@ SceneManager.prototype.initCanvas=function () {
 }
 
 function resizeGame(){
-	canvas.style.height = window.parent.document.getElementById("getHeight").style.height;
-  	canvas.style.width = window.parent.document.getElementById("getWidth").style.width;
-	scaleRatio = canvas.height/ parseInt(canvas.style.height, 10);
-	canvas.style.width = canvas.width/scaleRatio;
-	
+	if(window.innerWidth < 1300){
+		canvas.style.height = window.innerHeight;
+	  	canvas.style.width = window.innerWidth;
+		scaleRatio = canvas.width/ parseInt(canvas.style.width, 10);
+		canvas.style.height = canvas.height/scaleRatio;
+	}
 }
 
 function mouseDown(e){
@@ -94,8 +94,7 @@ function mouseDown(e){
 }
 
 function touchStart(e){
-	//e.preventDefault();
-	console.log("touchstart"); 
+	//e.preventDefault(); 
 	if(sc.gameState ==="menu"){
 		//menu.touchStart(e);
 	}
@@ -105,8 +104,7 @@ function touchStart(e){
 	//
 }
 function touchMove(e){
-	e.preventDefault(); 
-	console.log("touchstart");
+	e.preventDefault();
 	if(sc.gameState ==="menu"){
 		menu.touchMove(e);
 	}
@@ -146,8 +144,6 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/GoTo.png");
 	assetManager.queueLoadImg("images/shield.png");
 	assetManager.queueLoadImg("images/circle.png");
-	assetManager.queueLoadImg("images/square.png");
-	assetManager.queueLoadImg("images/health.png");
 	assetManager.queueLoadImg("images/bomb.png");
 	assetManager.queueLoadImg("images/coin.png");
 	//sounds
@@ -176,6 +172,8 @@ SceneManager.prototype.queueTitleAssets = function(){
 	//temp
 	assetManager.queueLoadImg("images/selected.png");
 	assetManager.queueLoadImg("images/shopBtn.png");
+	assetManager.queueLoadImg("images/health.png");
+	assetManager.queueLoadImg("images/square.png");
 	assetManager.queueLoadImg("images/custBtn.png");
 }
 
@@ -201,7 +199,9 @@ SceneManager.prototype.setTitleImages = function(){
 	//temp
 	imgSelectX =  assetManager.getAsset("images/selected.png");
 	imgCustBtn = assetManager.getAsset("images/custBtn.png");
+	imgHealthBar = assetManager.getAsset("images/health.png");
 	imgShopBtn = assetManager.getAsset("images/shopBtn.png");
+	imgSquare = assetManager.getAsset("images/square.png");
 
 	loadedImages=true;
 }
@@ -235,14 +235,12 @@ SceneManager.prototype.setGameImages = function(){
 	imgLoseMenu = assetManager.getAsset("images/lose_menu.png");
 	imgPauseBtn = assetManager.getAsset("images/pause_button.png");
 	imgReloadBtn = assetManager.getAsset("images/reload_button.png");
-	imgHealthBar = assetManager.getAsset("images/health.png");
 	imgBoss1 = assetManager.getAsset("images/boss1.png");
 	imgHole =  assetManager.getAsset("images/hole.png");
 	//temp images
 	imgRadarPUp = assetManager.getAsset("images/GoTo.png");
 	imgViewRad = assetManager.getAsset("images/ViewRange.png");
 	imgCircle = assetManager.getAsset("images/circle.png");
-	imgSquare = assetManager.getAsset("images/square.png");
 	imgShield = assetManager.getAsset("images/shield.png");
 	imgBombP = assetManager.getAsset("images/bomb.png");
 	imgCoin = assetManager.getAsset("images/coin.png");

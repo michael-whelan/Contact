@@ -29,7 +29,9 @@ var Enemy=function (rank,life){
 	this.bullets = [];
 	this.reset();
 	this.health=life;
-
+	this.lastX=0;
+	this.lastY=0;
+	this.lastAng=0;
 	this.nodeArray = new Array();
 
 	//triangle variables

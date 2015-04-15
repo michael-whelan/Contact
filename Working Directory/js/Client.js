@@ -36,9 +36,10 @@ this.ws.onopen = function(evt) { console.log('Milti open connection'); };
 
 this.ws2.onmessage = function(evt) {that.handleMessage(evt); };
 
-this.ws2.onclose = function(evt) { console.log("Reg Connection close"); game.goMenu = true;};
+this.ws2.onclose = function(evt) { console.log("Reg Connection close"); };
 
-this.ws2.onopen = function(evt) { console.log('Reg open connection'); };    
+this.ws2.onopen = function(evt) { console.log('Reg open connection'); //window.location = "/register.html";
+};    
     this.connecting = false; 
 }
 
@@ -91,6 +92,13 @@ Client.prototype.setLevel = function(level){
 	//message.pid = _name;
 	message.type = "setLevel";
 	message.data = level;
+	var mess = JSON.stringify(message);
+	this.ws.send(mess);
+}
+
+Client.prototype.setPlayer = function(playerCol,gun){
+	message.type = "setPlayer";
+	message.data = [playerCol,gun];
 	var mess = JSON.stringify(message);
 	this.ws.send(mess);
 }
@@ -180,6 +188,10 @@ Client.prototype.handleMessage = function(evt){
 	//lvlManager.setLevel(mess.data);
 		menu.returnVals = ["gameplay",mess.data];
 		game.reset(mess.data);
+	}
+	else if(mess.type === "setPlayer"){
+		var messA = mess.data;
+		player2.initP2(messA[0],messA[1]);
 	}
 	else if(mess.type === "updatePos"){
 		var messA = mess.data;
