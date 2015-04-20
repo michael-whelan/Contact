@@ -16,7 +16,7 @@ var equipment = [-1,-1];
 
 
 var Player=function (name){
-	this.gun = "shotgun";
+	this.gun = "assault";
 	this.bullets =[];
 	this.rotSpeed = 0.01;
 	this.width = 128;
@@ -170,6 +170,7 @@ Player.prototype.setPos = function(x,y,o,_int){//used for multiplayer for second
 }
 
 Player.prototype.initP2 = function(color,gun){//used for multiplayer for second player
+	console.log(gun);
 	this.gun = gun;
 }
 
@@ -204,9 +205,9 @@ Player.prototype.shoot = function(){
 	//if(KeyController.isKeyDown(Key.SPACE)){
 		this.angle = this.aimAssist();
 		if(this.numBullets>0 && this.bulletTimer>this.shotDelay){
-			if(this.name === "player2"){
+			/*if(this.name === "player2"){
 				console.log("player 2 shoot" +this.numBullets+this.bulletTimer);
-			}
+			}*/
 			if(this.gun ==="assault"){
 				var bullet = new Bullet();
 				bullet.spawnBullet(this.xFacing,this.yFacing,this.bulletX,this.bulletY,this.angle);

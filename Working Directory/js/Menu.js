@@ -15,6 +15,20 @@ var imgSelectX = new Image();
 var imgLoginBtn = new Image();
 var imgCustBtn = new Image();
 var imgShopBtn = new Image();
+
+var imgTPlayBtn = new Image();
+var imgTMultBtn = new Image();
+var imgTStashBtn = new Image();
+var imgTExitBtn = new Image();
+var imgTInfo = new Image();
+var imgTSnd = new Image();
+var imgLeftArrow = new Image();
+var imgRightArrow = new Image();
+
+var imgChar1 = new Image();
+var imgChar2 = new Image();
+var imgChar3 = new Image();
+
 var shop;
 
 function Menu (){
@@ -38,6 +52,11 @@ function Menu (){
     this.timer=0;
     this.selectedGun = "assault";
     this.currLvl = 0;
+    this.currChar = 0;
+    this.char1X = 218;
+    this.char1XTarg = 218;
+    this.doOnce = true;
+    this.titleSelected = false;
     //custom upgrades
 }
 
@@ -61,7 +80,26 @@ window.mobileAndTabletcheck = function() {
   return check;
 }
 
+Menu.prototype.setBtn = function(){
+	this.titleBtnPos = [[970,240,"levelSelect",imgTPlayBtn,370,277],[965,380,"multiplayer",imgTMultBtn,480,153],
+						[965,480,"stash",imgTStashBtn,480,140],[965,575,"Exit",imgTExitBtn,480,110]];
+	this.titleBtnPos2 = [[250,164,imgLoginBtn,290,110],[95,570,imgTInfo,190,180],[250,570,imgTSnd,190,180]];
+	this.charArrowPos = [[270,560,imgLeftArrow],[500,560,imgRightArrow]];
+}
+
 Menu.prototype.update = function() {
+	if(this.doOnce){
+		this.setBtn();
+		this.doOnce = false;
+	}
+
+
+	if(this.char1X< this.char1XTarg){
+		this.char1X+=5;
+	}
+	else if(this.char1X> this.char1XTarg){
+		this.char1X-=5;
+	}
 	this.timer++;
 	if(this.returnVals[0] === "null"){
 		return ["menu","titleScreen"];
@@ -77,7 +115,7 @@ Menu.prototype.update = function() {
 		if(multiplayer && _name ==="player1"){
 			console.log("multiplayer");
 			this.returnVals =["menu","levelSelect"];
-			return ["menu","levelSelect"];
+			//return ["menu","levelSelect"];
 		}
 	}
 	var temp = this.returnVals;
@@ -86,7 +124,23 @@ Menu.prototype.update = function() {
 			soundManager.stopSound("menuBack");
 		}
 	}
+	if(this.returnVals[1] ==="titleScreen" && this.scene !=="titleScreen"){
+		this.setBtn();
+		this.titleSelected = false;
+	}
 	//this.returnVals = ["null","null"];
+	if(this.titleSelected === true){
+		for(var i =0; i< this.titleBtnPos.length; ++i){
+			this.titleBtnPos[i][0]+=3*i+1;
+		}
+		for(var i =0; i< 3; ++i){
+			this.titleBtnPos2[i][0]-=3*i+1;
+		}
+		
+	}
+	if(this.titleBtnPos[0][0] >= 1600){
+		this.titleSelected = false;
+	}
 	return temp;
 }
 
@@ -108,6 +162,8 @@ document.body.appendChild(iframe);
 var can = document.getElementById('canvasId');
 can.style.visibility = "hidden";*/
 console.log(e.clientX ,e.clientY);
+	var mX = e.clientX;
+	var mY = e.clientY;
 
 	if(this.scene=== "titleScreen"){
 		if(this.drawExit){
@@ -122,23 +178,21 @@ console.log(e.clientX ,e.clientY);
 			}
 		}
 		else {
-			if(e.clientX >  860  && e.clientX <1075&&e.clientY>160&&e.clientY<315){//770,190,955,375
-				this.returnVals = ["menu","levelSelect"];
-				transitionTimer=0;
+			for(var i =0; i< this.titleBtnPos.length; ++i){
+				if((mX > this.titleBtnPos[i][0]-this.titleBtnPos[i][4]/2) &&(this.titleBtnPos[i][4]/2+this.titleBtnPos[i][0] >mX) &&
+					(this.titleBtnPos[i][1]-this.titleBtnPos[i][5]/2 <mY)&&(this.titleBtnPos[i][5]/2+this.titleBtnPos[i][1] >mY)){
+					if(i === 3){
+						this.drawExit = true;
+					}
+					else{	
+						this.returnVals = ["menu",this.titleBtnPos[i][2]];
+						transitionTimer=0;
+						this.titleSelected = true;
+					}
+				}
 			}
-			else if(e.clientX >  820  && e.clientX <1100&&e.clientY>350&&e.clientY<410){//770,190,955,375
-				this.returnVals = ["menu","multiplayer"];
-				transitionTimer=0;
-			}
-			else if(e.clientX >  820  && e.clientX <1100&&e.clientY>450&&e.clientY<510){//770,190,955,375
-				this.returnVals = ["menu","stash"];
-				transitionTimer=0;
-			}
-			else if(e.clientX >  820  && e.clientX <1100&&e.clientY>450&&e.clientY<510){//770,190,955,375
-				this.returnVals = ["menu","stash"];
-				transitionTimer=0;
-			}
-			else if(e.clientX >  100  && e.clientX <389&&e.clientY>100&&e.clientY<209){//770,190,955,375
+			if(e.clientX >  this.titleBtnPos2[0][0] - this.titleBtnPos2[0][3]/2  && e.clientX <this.titleBtnPos2[0][0]+this.titleBtnPos2[0][0]/2
+			&&e.clientY>this.titleBtnPos2[0][1] - this.titleBtnPos2[0][1]/2&&e.clientY<this.titleBtnPos2[0][1] +this.titleBtnPos2[0][1]/2){//770,190,955,375
 				var iframe = document.createElement('iframe');
 				iframe.style.visibility="visible";
 				iframe.style.position = "absolute";
@@ -148,11 +202,6 @@ console.log(e.clientX ,e.clientY);
 				document.body.appendChild(iframe);
 				var can = document.getElementById('canvasId');
 				can.style.visibility = "hidden";
-			}
-			else if(e.clientX >  820  && e.clientX <1100&&e.clientY>550&&e.clientY<610){//770,190,955,375
-				//Exit
-				console.log("Exit");
-				this.drawExit = true;
 			}
 		}
 	}
@@ -194,12 +243,10 @@ console.log(e.clientX ,e.clientY);
 					client.setPlayer("blue",this.selectedGun);
 				}
 			}
-			
 		}
 		else if(e.clientX < 300 && this.currLvl >0){
 			//scroll left
 			this.currLvl--;
-			console.log("scrollX");
 			this.scrollX += 1152;
 		}	
 		else if(e.clientX > 700 && this.currLvl <2){
@@ -270,6 +317,21 @@ function sqrt(x) {
 }
 
 Menu.prototype.updateCustom = function(mX,mY){
+
+	for(var i =0; i< this.charArrowPos.length; ++i){
+		if((mX > this.charArrowPos[i][0]-70/2) &&(70/2+this.charArrowPos[i][0] >mX) &&
+			(this.charArrowPos[i][1]-122/2 <mY)&&(122/2+this.charArrowPos[i][1] >mY)){
+			if(i ===0){
+				this.currChar--;
+				this.char1XTarg -=400;
+			}
+			else{
+				this.currChar++;
+				this.char1XTarg +=400;
+			}
+		}
+	}
+
 	//0 = radar, 1 = bomb, 2 = shield
 	for(var j =0; j<5;++j){
 		if(sqrt((this.btnPos[j][0] -mX)*(this.btnPos[j][0] -mX) +(this.btnPos[j][1] -mY)*(this.btnPos[j][1] -mY)) <40){
@@ -385,7 +447,15 @@ Menu.prototype.draw = function(scene){
 	if(scene ==="titleScreen"){
 
 		ctx.drawImage(imgTitleScreen, 0,0,1152,648);
-		ctx.drawImage(imgLoginBtn,100,100,289,109);
+		//ctx.drawImage(imgLoginBtn,100,100,289,109);
+		for(var i =0; i< this.titleBtnPos.length; ++i){
+			ctx.drawImage(this.titleBtnPos[i][3],this.titleBtnPos[i][0]-(this.titleBtnPos[i][4]/1.7)/2,
+				this.titleBtnPos[i][1] -(this.titleBtnPos[i][5]/1.7)/2 ,this.titleBtnPos[i][4]/1.7,this.titleBtnPos[i][5]/1.7);
+		}
+		for(var i =0; i< this.titleBtnPos2.length; ++i){
+			ctx.drawImage(this.titleBtnPos2[i][2],this.titleBtnPos2[i][0]-(this.titleBtnPos2[i][3]/1.7)/2,
+				this.titleBtnPos2[i][1] -(this.titleBtnPos2[i][4]/1.7)/2 ,this.titleBtnPos2[i][3]/1.7,this.titleBtnPos2[i][4]/1.7);
+		}
 		if(this.drawExit){
 			ctx.drawImage(imgExitPrompt, 0,0,1152,648);
 		}
@@ -420,7 +490,14 @@ Menu.prototype.draw = function(scene){
 		shop.draw();
 	}
 	else if(scene ==="custom"){
+		ctx.drawImage(imgLvlSelBack,-300,0,1152,648);
+		ctx.drawImage(imgChar1,this.char1X,50,340,600);
+		ctx.drawImage(imgChar2,this.char1X+400,50,340,600);
+		ctx.drawImage(imgChar3,this.char1X+800,50,340,600);
 		ctx.drawImage(imgCustomBack, 0,0,1152,648);
+		for(var i =0; i< this.charArrowPos.length; ++i){
+			ctx.drawImage(this.charArrowPos[i][2], this.charArrowPos[i][0]-70/2,this.charArrowPos[i][1]-122/2,70,122);
+		}
 		if(equipment[0]!==-1){
 			ctx.drawImage(imgSelectX,this.btnPos[equipment[0]][0]-50,this.btnPos[equipment[0]][1]-35,100,70);
 		}

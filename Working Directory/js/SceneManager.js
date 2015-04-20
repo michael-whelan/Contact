@@ -166,6 +166,20 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/armoryScreen.png");
 	assetManager.queueLoadImg("images/exit_temp.png");
 	assetManager.queueLoadImg("images/LoginBtn.png");
+	assetManager.queueLoadImg("images/play_button.png");
+	assetManager.queueLoadImg("images/multiplayer_button.png");
+	assetManager.queueLoadImg("images/stash_button.png");
+	assetManager.queueLoadImg("images/exit_button.png");
+	assetManager.queueLoadImg("images/info_button.png");
+	assetManager.queueLoadImg("images/soundOn_button.png");
+	assetManager.queueLoadImg("images/LeftArrow.png");
+	assetManager.queueLoadImg("images/RightArrow.png");
+	assetManager.queueLoadImg("images/worldSelectFloat_01.png");
+	
+	assetManager.queueLoadImg("images/char1.png");
+	assetManager.queueLoadImg("images/char2.png");
+	assetManager.queueLoadImg("images/char3.png");
+
 	assetManager.queueLoadSnd("sounds/music/123.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/silence.mp3");
 
@@ -178,7 +192,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 }
 
 SceneManager.prototype.queueLvlSelectAssets = function(){
-	assetManager.queueLoadImg("images/worldSelectFloat_01.png");
+	
 	assetManager.queueLoadImg("images/world1.png");
 	assetManager.queueLoadImg("images/world2.png");
 	assetManager.queueLoadImg("images/worldTutorial.png");
@@ -195,6 +209,19 @@ SceneManager.prototype.setTitleImages = function(){
 	imgArmoryBack = assetManager.getAsset("images/armoryScreen.png");
 	imgExitPrompt = assetManager.getAsset("images/exit_temp.png");
 	imgLoginBtn = assetManager.getAsset("images/LoginBtn.png");
+	imgTPlayBtn =  assetManager.getAsset("images/play_button.png");
+	imgTMultBtn =  assetManager.getAsset("images/multiplayer_button.png");
+	imgTStashBtn =  assetManager.getAsset("images/stash_button.png");
+	imgTExitBtn = assetManager.getAsset("images/exit_button.png");
+	imgTInfo =  assetManager.getAsset("images/info_button.png");
+	imgTSnd = assetManager.getAsset("images/soundOn_button.png");
+	imgLeftArrow =  assetManager.getAsset("images/LeftArrow.png");
+	imgRightArrow = assetManager.getAsset("images/RightArrow.png");
+	imgLvlSelBack = assetManager.getAsset("images/worldSelectFloat_01.png");
+
+	imgChar1 = assetManager.getAsset("images/char1.png");
+	imgChar2 = assetManager.getAsset("images/char2.png");
+	imgChar3 = assetManager.getAsset("images/char3.png");
 
 	//temp
 	imgSelectX =  assetManager.getAsset("images/selected.png");
@@ -212,7 +239,7 @@ SceneManager.prototype.setTitleSounds = function(){
 }
 
 SceneManager.prototype.setLvlSelectImages = function(){
-	imgLvlSelBack = assetManager.getAsset("images/worldSelectFloat_01.png");
+	
 	imgLvlSel1 = assetManager.getAsset("images/world1.png");
 	imgLvlSel2 = assetManager.getAsset("images/world2.png");
 	imgLvlSelTut = assetManager.getAsset("images/worldTutorial.png");

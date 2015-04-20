@@ -181,6 +181,7 @@ Enemy.prototype.update = function(){
 
 Enemy.prototype.debugDraw = function(){
 	ctx.drawImage(imgViewRad,this.x- this.viewRadius, this.y - this.viewRadius, this.viewRadius*2, this.viewRadius*2);
+	ctx.drawImage(imgViewRad,this.x- this.hitRadius, this.y - this.hitRadius, this.hitRadius*2, this.hitRadius*2);
 	if(this.drawLast){
 		ctx.drawImage(imgBullet,this.targetPosX, this.targetPosY, 8, 8);
 	}
@@ -367,7 +368,7 @@ Enemy.prototype.moveBasic = function(){
 	this.moveDirection = "forward";
 	//causes regular changes in direction
 	if(this.timeSinceDirectChange>40){
-		this.angle = random();//Math.random()*(8-1) +1;
+		this.angle = Math.random()*(8-1) +1;
 		this.timeSinceDirectChange = 0;
 	}
 	if(this.moveDirection == "forward"){
