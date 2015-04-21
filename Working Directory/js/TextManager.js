@@ -133,13 +133,6 @@ TextManager.prototype.controller = function(level){
             }
         }
     }
-    else{
-        ctx.strokeStyle = "#003300";
-        ctx.font = 'normal 40px Arial';
-        ctx.textBaseline = 'bottom';
-        //txtAmmo = txtAmmo + numBullets.toString();
-        ctx.fillText("R to Reload", 300, 100);
-    }
     var tempH = player.health.toString();
     tempH = '<class="whiteGame">' + tempH + '</class>';
     CT.textAlign = 'left';

@@ -6,3 +6,4 @@ User,1428760202000,pass,0,0,0,0,0,0,0
 User1,0,Pass1,0,0,0,0,0,0,0
 user2,0,pass2,0,0,0,0,0,0,0
 playertest,0,passtest,0,0,0,0,0,0,0
+usertesting,0,pass1,0,0,0,0,0,0,0

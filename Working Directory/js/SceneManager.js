@@ -128,6 +128,8 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/Enemy.png");
 	assetManager.queueLoadImg("images/Enemy_Commander.png");
 	assetManager.queueLoadImg("images/character_05.png");
+	assetManager.queueLoadImg("images/character_02.png");
+	assetManager.queueLoadImg("images/character_03.png");
 	assetManager.queueLoadImg("images/character_dead.png");
 	assetManager.queueLoadImg("images/Bullet.png");
 	assetManager.queueLoadImg("images/pause_menu.png");
@@ -174,7 +176,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/soundOn_button.png");
 	assetManager.queueLoadImg("images/LeftArrow.png");
 	assetManager.queueLoadImg("images/RightArrow.png");
-	assetManager.queueLoadImg("images/worldSelectFloat_01.png");
+	
 	
 	assetManager.queueLoadImg("images/char1.png");
 	assetManager.queueLoadImg("images/char2.png");
@@ -192,7 +194,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 }
 
 SceneManager.prototype.queueLvlSelectAssets = function(){
-	
+	assetManager.queueLoadImg("images/worldSelectFloat_01.png");
 	assetManager.queueLoadImg("images/world1.png");
 	assetManager.queueLoadImg("images/world2.png");
 	assetManager.queueLoadImg("images/worldTutorial.png");
@@ -217,7 +219,7 @@ SceneManager.prototype.setTitleImages = function(){
 	imgTSnd = assetManager.getAsset("images/soundOn_button.png");
 	imgLeftArrow =  assetManager.getAsset("images/LeftArrow.png");
 	imgRightArrow = assetManager.getAsset("images/RightArrow.png");
-	imgLvlSelBack = assetManager.getAsset("images/worldSelectFloat_01.png");
+	
 
 	imgChar1 = assetManager.getAsset("images/char1.png");
 	imgChar2 = assetManager.getAsset("images/char2.png");
@@ -239,7 +241,7 @@ SceneManager.prototype.setTitleSounds = function(){
 }
 
 SceneManager.prototype.setLvlSelectImages = function(){
-	
+	imgLvlSelBack = assetManager.getAsset("images/worldSelectFloat_01.png");
 	imgLvlSel1 = assetManager.getAsset("images/world1.png");
 	imgLvlSel2 = assetManager.getAsset("images/world2.png");
 	imgLvlSelTut = assetManager.getAsset("images/worldTutorial.png");
@@ -249,7 +251,9 @@ SceneManager.prototype.setLvlSelectImages = function(){
 SceneManager.prototype.setGameImages = function(){
 	imgBack = assetManager.getAsset("images/Back.png");
 	imgTutorialBack = assetManager.getAsset("images/Back_Tutorial.png");
-	imgPlayer = assetManager.getAsset("images/character_05.png");
+	imgPlayer1 = assetManager.getAsset("images/character_05.png");
+	imgPlayer2 = assetManager.getAsset("images/character_02.png");
+	imgPlayer3 = assetManager.getAsset("images/character_03.png");
 	imgPlayerDead = assetManager.getAsset("images/character_dead.png");
 	imgGrunt = assetManager.getAsset("images/Enemy.png");
 	imgComdr = assetManager.getAsset("images/Enemy_Commander.png");

@@ -191,6 +191,9 @@ CollisionManager.prototype.playerVsBoss = function(enemyManager,player){
 		if(this.circleOnCircle(100,enemyManager.boss1.hitAreas[i][0],
 		enemyManager.boss1.hitAreas[i][1],player.radius,player.x,player.y) &&  player.flash === false){
 			this.bossCol(10);
+    		enemyManager.boss1.hitAreas.splice(i, 1);
+    		i--;
+    				
 		}
 	}
 	for(var i = 0; i<enemyManager.boss1.bullets.length; ++i){
@@ -254,20 +257,13 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 				player.health+=20;
 			}
 			else if(pickUps[i].type ==="coin"){
-				playerCash+=10;
+				playerCash+=100;
 			}
 			else{
 				player.setPickup(pickUps[i].type);
 			}
 		}
 	//	console.log(pickUps[i]);
-	}
-	for (var i = 0; i < pickUps.length; ++i) {
-    	if (!pickUps[i].alive) {
-    		var index =pickUps.indexOf(i);
-    		pickUps.splice(i, 1);
-    		i--;
-   		}
 	}
 	if(enemyManager.boss1.alive){
 		this.playerVsBoss(enemyManager,player);

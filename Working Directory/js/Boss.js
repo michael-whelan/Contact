@@ -126,6 +126,13 @@ Boss.prototype.update = function(){
 		}
 	if(this.health<=0){
 		this.alive = false;
+		for(var i = 0; i < 15; ++i){
+			var num = Math.floor(Math.random()*40) + 1; // this will get a number between 1 and 99;
+			num *= Math.floor(Math.random()*2) == 1 ? 1 : -1; 
+			var pickUp = new Pickup();
+			pickUp.spawn("coin",this.x+num,this.y+num);
+			pickUps.push(pickUp);
+		}
 	}
 	else if(this.health<= this.lastHealth-20){
 		this.state = fsm.boss1(this.state,"hurt");

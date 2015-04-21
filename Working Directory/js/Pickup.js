@@ -8,6 +8,8 @@ var Pickup=function (){
 	this.y = 0;
 	this.alive = false;
 	this.radius = 15;
+	this.timeToLive = 2500;
+	this.timer=0;
 };
 
 
@@ -19,6 +21,10 @@ Pickup.prototype.spawn = function(id,x,y){
 }
 
 Pickup.prototype.update = function(){
+		this.timer++;
+	if(this.timer > this.timeToLive){
+		this.alive = false;
+	}
 }
 
 

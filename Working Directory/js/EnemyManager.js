@@ -90,7 +90,7 @@ EnemyManager.prototype.hearShot = function(px,py){
 
 EnemyManager.prototype.setUp = function(){
 	if(this.currentLvl === "level1"){
-		this.totalSwarms = 7;
+		this.totalSwarms = 1;//7
 	}
 	else if(this.currentLvl === "level2"){
 		this.totalSwarms = 20;
@@ -107,7 +107,11 @@ EnemyManager.prototype.update = function(lvlMan){
 		this.enemySwarms--;
 		this.swarmsSurvived++;
 		if( this.enemySwarms>0){
-			this.spawnSwarm(5,5,lvlMan);//min,max
+			if(multiplayer){
+				this.spawnSwarm(5,9,lvlMan);//min,max
+			}else{	
+				this.spawnSwarm(3,6,lvlMan);//min,max
+			}
 			this.spawnTimer=0;
 		}
 	}
@@ -120,7 +124,7 @@ EnemyManager.prototype.update = function(lvlMan){
 			this.boss1.alive = true;
 			this.doonce = true;
 		}
-		else if(!this.boss1.alive){
+		else if(!this.boss1.alive && pickUps.length<1){
 			levelWin=true;
 		}
 		this.bossComing = true;

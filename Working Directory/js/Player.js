@@ -1,4 +1,7 @@
 var imgPlayer= new Image();
+var imgPlayer1= new Image();
+var imgPlayer2= new Image();
+var imgPlayer3= new Image();
 
 var imgPlayerDead = new Image();
 
@@ -86,7 +89,8 @@ Player.prototype.setAttributes = function(h,dmg,rS){
 	}
 }
 
-Player.prototype.setEquipment = function(t1,n1,t2,n2,wChoice){
+Player.prototype.setEquipment = function(t1,n1,t2,n2,wChoice,charChoice){
+	this.charChoice = charChoice;
 	t1 = menu.getEquipType(t1);
 	t2 = menu.getEquipType(t2);
 	this.pickupAbility = [t1,t2];
@@ -501,7 +505,13 @@ Player.prototype.draw = function(){
 	ctx.translate(this.x, this.y); //let's translate
 	ctx.rotate(this.angle); //increment the angle and rotate the image 
 	if(this.alive){
-		ctx.drawImage(imgPlayer,-this.width/2, -this.height/2, this.width, this.height);
+		if(this.charChoice ===0){
+			ctx.drawImage(imgPlayer1,-this.width/2, -this.height/2, this.width, this.height);
+		}else if(this.charChoice ===1){
+			ctx.drawImage(imgPlayer2,-this.width/2, -this.height/2, this.width, this.height);
+		}else{
+			ctx.drawImage(imgPlayer3,-this.width/2, -this.height/2, this.width, this.height);
+		}
 	}
 	else if (this.dead){
 		ctx.drawImage(imgPlayerDead,-this.width/2, -this.height/2, this.width, this.height);

@@ -66,7 +66,7 @@ Game.prototype.reset = function(lvl){
 	player.reset();
 	player2.reset();
 	player.setAttributes(shop.HealthLvl,shop.ammoLvl,shop.other1Lvl);
-	player.setEquipment(equipment[0],menu.getEquipLvl(equipment[0]),equipment[1],menu.getEquipLvl(equipment[1]),menu.selectedGun);
+	player.setEquipment(equipment[0],menu.getEquipLvl(equipment[0]),equipment[1],menu.getEquipLvl(equipment[1]),menu.selectedGun,menu.currChar);
 	this.shakeNum1=0;
 	this.shakeNum2 =0;
 	this.shakeTimer=0;
@@ -331,6 +331,15 @@ Game.prototype.update = function(lvl){
 		}
 		for (var j = 0; j < enemyManager.enemy.length; ++j) {
 			player.pointToEnemy(enemyManager.enemy[j].x,enemyManager.enemy[j].y);
+		}
+
+		for(var i = 0; i< pickUps.length;++i){
+			pickUps[i].update();
+	    	if (!pickUps[i].alive) {
+	    		var index =pickUps.indexOf(i);
+	    		pickUps.splice(i, 1);
+	    		i--;
+	   		}
 		}
 
 		enemyManager.update();

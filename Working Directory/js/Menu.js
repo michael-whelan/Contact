@@ -71,6 +71,7 @@ Menu.prototype.reset = function() {
     if(!window.mobileAndTabletcheck()){
 		soundManager.playSoundLoop(titleMusic,"menuBack");
 	}
+	this.setBtn();
     //soundManager.playSoundLoop(titleMusic,"menuBack");
     //this.playBackgroundLoop();
 }
@@ -321,13 +322,13 @@ Menu.prototype.updateCustom = function(mX,mY){
 	for(var i =0; i< this.charArrowPos.length; ++i){
 		if((mX > this.charArrowPos[i][0]-70/2) &&(70/2+this.charArrowPos[i][0] >mX) &&
 			(this.charArrowPos[i][1]-122/2 <mY)&&(122/2+this.charArrowPos[i][1] >mY)){
-			if(i ===0){
+			if(i ===0 && this.currChar>0){
 				this.currChar--;
-				this.char1XTarg -=400;
-			}
-			else{
-				this.currChar++;
 				this.char1XTarg +=400;
+			}
+			else if(i === 1 &&this.currChar <2){
+				this.char1XTarg -=400;
+				this.currChar++;
 			}
 		}
 	}
