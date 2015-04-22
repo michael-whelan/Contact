@@ -26,6 +26,9 @@ SoundManager.prototype.playSoundLoop = function(buffer,soundName) {
 	else if(soundName === "menuBack"){
 		this.menuBack = source;
 	}
+	else if(soundName === "flurrySnd"){
+		this.flurry = source;
+	}
 }
 
 SoundManager.prototype.stopSound = function(soundName) {
@@ -34,5 +37,9 @@ SoundManager.prototype.stopSound = function(soundName) {
 	}
 	else if(soundName === "menuBack"&& this.menuBack!==undefined){
 		this.menuBack.stop();
+	}
+
+	else if(soundName === "flurrySnd"&& this.flurry!==undefined){
+		this.flurry.stop();
 	}
 }

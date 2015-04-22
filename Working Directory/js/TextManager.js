@@ -135,12 +135,13 @@ TextManager.prototype.controller = function(level){
     }
     var tempH = player.health.toString();
     tempH = '<class="whiteGame">' + tempH + '</class>';
-    CT.textAlign = 'left';
+    /*CT.textAlign = 'left';
     CT.drawText({
         text:strHealth+ tempH,
         x: 50,
         y: 20
-    });
+    });*/
+    ctx.drawImage(imgHealthBar,50,20,player.health*1.5,20);
     if(enemyManager.boss1.alive){
         ctx.drawImage(imgHealthBar,550,50,enemyManager.boss1.health*1.5,20);
     }

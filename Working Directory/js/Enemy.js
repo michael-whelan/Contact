@@ -17,8 +17,8 @@ var Enemy=function (rank,life){
 	this.xDirect = 0;
 	this.yDirect = 0;
 	this.speed = 1.5;
-	this.viewRadius = 40;
-	this.hitRadius =25;
+	this.viewRadius = 50;
+	this.hitRadius =35;
 	//AI States
 	this.state = "wander";
 	this.drawLast = false;
@@ -51,6 +51,13 @@ Enemy.prototype.reset = function(){
 	this.numBullets = 2;
 	this.reloadTimer = 80;
 	this.startReload = false; 
+
+	if(this.rank ==="cmdr"){
+		this.width*=1.2;
+		this.height*=1.2;
+		this.hitRadius*=1.2;
+		this.viewRadius*=1.2;
+	}
 }
 
 Enemy.prototype.spawnEnemy = function(x,y){

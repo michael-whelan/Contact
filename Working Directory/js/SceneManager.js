@@ -16,6 +16,7 @@ var transitionTimer=200;
 var playerCash = 0;
 var input ;
 var account;
+var allowSound = true;
 
 function SceneManager(){
 	
@@ -155,6 +156,11 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadSnd("sounds/sfx/gun_pew.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/gun_empty.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/health_lost.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/shakeEasy.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/shake.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/pickup1.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/pickup2.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/pickup3.mp3");
 }
 
 
@@ -174,6 +180,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/exit_button.png");
 	assetManager.queueLoadImg("images/info_button.png");
 	assetManager.queueLoadImg("images/soundOn_button.png");
+	assetManager.queueLoadImg("images/soundOff_button.png");
 	assetManager.queueLoadImg("images/LeftArrow.png");
 	assetManager.queueLoadImg("images/RightArrow.png");
 	
@@ -217,6 +224,7 @@ SceneManager.prototype.setTitleImages = function(){
 	imgTExitBtn = assetManager.getAsset("images/exit_button.png");
 	imgTInfo =  assetManager.getAsset("images/info_button.png");
 	imgTSnd = assetManager.getAsset("images/soundOn_button.png");
+	imgTSndOff = assetManager.getAsset("images/soundOff_button.png");
 	imgLeftArrow =  assetManager.getAsset("images/LeftArrow.png");
 	imgRightArrow = assetManager.getAsset("images/RightArrow.png");
 	
@@ -287,7 +295,11 @@ SceneManager.prototype.setGameSounds = function(){
 	//console.log(gunshot);
 	emptySnd = assetManager.getAsset("sounds/sfx/gun_empty.mp3");
 	loseHealthSnd = assetManager.getAsset("sounds/sfx/health_lost.mp3");
-
+	shakeSnd = assetManager.getAsset("sounds/sfx/shakeEasy.mp3");
+	flurrySnd = assetManager.getAsset("sounds/sfx/shake.mp3");
+	pickUpSnd1 = assetManager.getAsset("sounds/sfx/pickup1.mp3");
+	pickUpSnd2 = assetManager.getAsset("sounds/sfx/pickup2.mp3");
+	pickUpSnd3 = assetManager.getAsset("sounds/sfx/pickup3.mp3");
 	loadedSounds = true;
 }
 

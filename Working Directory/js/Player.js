@@ -251,7 +251,7 @@ Player.prototype.shoot = function(){
 		}
 		else if(this.numBullets<=0){
 			//emptySnd.play();
-			if(!this.playOnce){
+			if(!this.playOnce&&allowSound){
 				this.playOnce = true;
 				soundManager.playSound(emptySnd);
 			}
@@ -328,7 +328,7 @@ Player.prototype.controller = function(b1,b2){
 		this.setAssistPostitions();
 		//console.log("Reloading...");
 		this.startReload = true;
-		if(!this.playOnce){
+		if(!this.playOnce&&allowSound){
 			this.playOnce = true;
 			soundManager.playSound(reloadSnd);
 		}
@@ -356,7 +356,9 @@ Player.prototype.respawn = function(){
 	this.y = this.startY;
 	this.flash = true;
 	//spawnSnd.play();
-	soundManager.playSound(spawnSnd);
+	if(allowSound){
+		soundManager.playSound(spawnSnd);
+	}
 }
 
 
@@ -478,7 +480,9 @@ Player.prototype.takeDmg = function(i){
 	}
 	if(tmp>0){
 		this.health-=tmp;
-		soundManager.playSound(loseHealthSnd);
+		if(allowSound){
+			soundManager.playSound(loseHealthSnd);
+		}
 		//loseHealthSnd.play();
 	}
 	this.lastHitTime = Date.now();

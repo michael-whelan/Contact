@@ -11,6 +11,8 @@ connections={}
 #session = Session()
 sessionList = list()
 
+_ERROR = 'data/error.txt'
+
 class WSHandler(tornado.websocket.WebSocketHandler):
 	def check_origin(self, origin):
 		return True
@@ -44,7 +46,11 @@ class MessageHandler:
 		for s in sessionList:
 			if s.getSession(pid):
 				return s
-			
+	
+	def writeError(self,pid,data):
+		with open(_ERROR, 'a') as f:
+				print(pid,data sep=',', file=f)
+	
 	def hostGame(self,data,socket):
 		self.createSession()
 		print("create ses")
@@ -105,6 +111,8 @@ class MessageHandler:
 			self.sendToAll(pid,type,1)
 		elif type == "updatePos":
 			self.sendToOtherPlayer(pid,type,data1)
+		elif type == "error":
+			self.writeError(pid,data1)
 		elif type == "setPlayer":
 			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "bossHit":

@@ -39,7 +39,9 @@ Bullet.prototype.spawnBullet = function(playXDirect,playYDirect,xPos,yPos,angle)
  	this.y = yPos;
  	this.timeOfBirth = Date.now();
  	//gunshot.play();
- 	soundManager.playSound(gunshot);
+ 	if(allowSound){
+ 		soundManager.playSound(gunshot);
+	}
 }
 
 

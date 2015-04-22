@@ -36,7 +36,7 @@ var _name="junk";
 var pickUps=[];
 
 var pause= false;
-var debugDrawer = false;
+var debugDrawer = true;
 var timer =0;
 var pauseTimer;
 
@@ -82,9 +82,9 @@ Game.prototype.reset = function(lvl){
 	levelWin = false;
 	textManager.reset();
 	lvlManager.mapSetup();
-	//if(!window.mobileAndTabletcheck()){
+	if(allowSound){
 		soundManager.playSoundLoop(backTrack,"gameBack");
-	//}
+	}
 	for (var i = 0; i < sticks.length; ++i) {
 		sticks[i].active = false;
 	}
@@ -253,7 +253,7 @@ Game.prototype.updateGUI = function(tX_,tY_){
 	else if(tX> 1100&& tX < 1100 + this.btnScale &&
 		tY > 250 && tY < 250 + this.btnScale){
 		player.startReload = true;
-		if(!player.playOnce){
+		if(!player.playOnce&&allowSound){
 			player.playOnce = true;
 			soundManager.playSound(reloadSnd);
 		}
@@ -414,6 +414,10 @@ Game.prototype.update = function(lvl){
 	}
 	else{
 		this.shake = false;
+		enemyManager.boss1.doOnce = true;
+		if(enemyManager.boss1.state !=="flurry"){
+			soundManager.stopSound(flurrySnd);
+		}
 	}
 	if((player.moveStep&&enemyManager.boss1.state ==="dig"&&enemyManager.boss1.canRise)||enemyManager.boss1.state ==="attack"){
 		enemyManager.boss1.canRise = false;
@@ -444,7 +448,7 @@ Game.prototype.update = function(lvl){
 	if(this.goMenu){
 		//backTrack.pause();
 		//backTrack.currentTime=0;
-		if(!window.mobileAndTabletcheck()){
+		if(!window.mobileAndTabletcheck()&&allowSound){
 			soundManager.stopSound("gameBack");
 		}
 		multiplayer = false;
@@ -509,7 +513,7 @@ Game.prototype.debugDraw = function(){
 	ctx.lineTo(innerX1,innerY1);
 	ctx.stroke();
 
-	textManager.flashText();
+	//textManager.flashText();
 	enemyManager.debugDraw();
 	player.debugDraw();
 	for (var i = 0; i < enemyManager.enemy.length; ++i) {

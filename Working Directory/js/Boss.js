@@ -1,6 +1,7 @@
 var imgBoss1 = new Image();
 var imgHole = new Image();
-
+var shakeSnd = null;
+var flurrySnd = null;
 
 var Boss=function (rank){
 	this.name = rank;
@@ -28,6 +29,7 @@ var Boss=function (rank){
 	this.attackTimer=0;
 	this.counter=0;
 	this.flurryTimer=0;
+	this.doOnce = true;
 	this.hitAreas=[];
 };
 //Boss.inherits(Enemy);
@@ -89,7 +91,12 @@ Boss.prototype.update = function(){
 		this.lastHealth = this.health;
 	}
 	else if(this.state === "flurry"){
+		if(this.doOnce){
+			soundManager.playSound(flurrySnd);
+			this.doOnce = false;
+		}
 		this.shake=true;
+
 		this.flurryTimer++;
 		if(this.flurryTimer>=150){
 			this.attackRandom();
@@ -101,8 +108,12 @@ Boss.prototype.update = function(){
 	}
 	else if(this.state === "comeUp"){
 		this.comeUp();
+		if(this.comeTimer ===0)
+		{
+			soundManager.playSound(shakeSnd);
+		}
 		this.comeTimer++;//foolish name
-		if(this.comeTimer>240){
+		if(this.comeTimer>380){
 			this.comeTimer = 0;
 			this.state = fsm.boss1(this.state,"rise");
 		}
@@ -220,6 +231,10 @@ Boss.prototype.turnTowardPlayer = function(){
 Boss.prototype.comeUp = function(){
 	this.x = this.targetPosX;
 	this.y = this.targetPosY;
+	if(!this.shake)
+		{
+			soundManager.playSound(shakeSnd);
+		}
 	this.shake = true;
 }
 
