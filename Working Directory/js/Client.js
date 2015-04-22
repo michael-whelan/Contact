@@ -32,7 +32,7 @@ this.ws.onmessage = function(evt) {that.handleMessage(evt); };
 
 this.ws.onclose = function(evt) { console.log("Multi Connection close"); game.goMenu = true;};
 
-this.ws.onopen = function(evt) { console.log('Milti open connection'); };    
+this.ws.onopen = function(evt) { console.log('Milti open connection');};    
 
 this.ws2.onmessage = function(evt) {that.handleMessage(evt); };
 
@@ -77,6 +77,13 @@ Client.prototype.checkLogin = function(name,pass){
 	message.data = [name,pass];
 	var mess = JSON.stringify(message);
 	this.ws2.send(mess);
+}
+
+Client.prototype.writeError = function(error){
+	message.type = "error";
+	message.data = error;
+	var mess = JSON.stringify(message);
+	this.ws.send(mess);
 }
 
 Client.prototype.updateProfile = function(name,pass,money,shield,dmg,bomb,health,reload,radar){

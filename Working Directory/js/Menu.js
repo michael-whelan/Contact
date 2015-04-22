@@ -22,6 +22,7 @@ var imgTStashBtn = new Image();
 var imgTExitBtn = new Image();
 var imgTInfo = new Image();
 var imgTSnd = new Image();
+var imgTSndOff = new Image();
 var imgLeftArrow = new Image();
 var imgRightArrow = new Image();
 
@@ -68,7 +69,7 @@ Menu.prototype.reset = function() {
 	this.lvl1X = 1152;
 	this.lvlTutX=0;
     this.drawExit = false;
-    if(!window.mobileAndTabletcheck()){
+    if(!window.mobileAndTabletcheck()&&allowSound){
 		soundManager.playSoundLoop(titleMusic,"menuBack");
 	}
 	this.setBtn();
@@ -82,9 +83,9 @@ window.mobileAndTabletcheck = function() {
 }
 
 Menu.prototype.setBtn = function(){
-	this.titleBtnPos = [[970,240,"levelSelect",imgTPlayBtn,370,277],[965,380,"multiplayer",imgTMultBtn,480,153],
-						[965,480,"stash",imgTStashBtn,480,140],[965,575,"Exit",imgTExitBtn,480,110]];
-	this.titleBtnPos2 = [[250,164,imgLoginBtn,290,110],[95,570,imgTInfo,190,180],[250,570,imgTSnd,190,180]];
+	this.titleBtnPos = [[970,240,"levelSelect",imgTPlayBtn,220,160],[970,375,"multiplayer",imgTMultBtn,300,90],
+						[970,475,"stash",imgTStashBtn,300,90],[975,575,"Exit",imgTExitBtn,300,66]];
+	this.titleBtnPos2 = [[250,164,"login",imgLoginBtn,250,80],[85,560,"info",imgTInfo,100,100],[235,560,"sound",imgTSnd,100,100]];
 	this.charArrowPos = [[270,560,imgLeftArrow],[500,560,imgRightArrow]];
 }
 
@@ -121,7 +122,7 @@ Menu.prototype.update = function() {
 	}
 	var temp = this.returnVals;
 	if(this.returnVals[0] ==="gameplay"){
-		if(!window.mobileAndTabletcheck()){
+		if(!window.mobileAndTabletcheck()&&allowSound){
 			soundManager.stopSound("menuBack");
 		}
 	}
@@ -180,8 +181,8 @@ console.log(e.clientX ,e.clientY);
 		}
 		else {
 			for(var i =0; i< this.titleBtnPos.length; ++i){
-				if((mX > this.titleBtnPos[i][0]-this.titleBtnPos[i][4]/2) &&(this.titleBtnPos[i][4]/2+this.titleBtnPos[i][0] >mX) &&
-					(this.titleBtnPos[i][1]-this.titleBtnPos[i][5]/2 <mY)&&(this.titleBtnPos[i][5]/2+this.titleBtnPos[i][1] >mY)){
+				if((mX > this.titleBtnPos[i][0]-(this.titleBtnPos[i][4]/2)) &&((this.titleBtnPos[i][4]/2)+this.titleBtnPos[i][0] >mX) &&
+					(mY>this.titleBtnPos[i][1]-(this.titleBtnPos[i][5]/2))&&((this.titleBtnPos[i][5]/2)+this.titleBtnPos[i][1] >mY)){
 					if(i === 3){
 						this.drawExit = true;
 					}
@@ -192,19 +193,39 @@ console.log(e.clientX ,e.clientY);
 					}
 				}
 			}
-			if(e.clientX >  this.titleBtnPos2[0][0] - this.titleBtnPos2[0][3]/2  && e.clientX <this.titleBtnPos2[0][0]+this.titleBtnPos2[0][0]/2
-			&&e.clientY>this.titleBtnPos2[0][1] - this.titleBtnPos2[0][1]/2&&e.clientY<this.titleBtnPos2[0][1] +this.titleBtnPos2[0][1]/2){//770,190,955,375
-				var iframe = document.createElement('iframe');
-				iframe.style.visibility="visible";
-				iframe.style.position = "absolute";
-				iframe.style.left="30px";
-				iframe.style.top="30px";
-				iframe.src = "login.html";
-				document.body.appendChild(iframe);
-				var can = document.getElementById('canvasId');
-				can.style.visibility = "hidden";
-			}
-		}
+			for(var i =0; i< this.titleBtnPos2.length; ++i){
+				if((mX > this.titleBtnPos2[i][0]-(this.titleBtnPos2[i][4]/2)) &&((this.titleBtnPos2[i][4]/2)+this.titleBtnPos2[i][0] >mX) &&
+					(mY>this.titleBtnPos2[i][1]-(this.titleBtnPos2[i][5]/2))&&((this.titleBtnPos2[i][5]/2)+this.titleBtnPos2[i][1] >mY)){
+					if(this.titleBtnPos2[i][2]==="login"){
+						var iframe = document.createElement('iframe');
+						iframe.style.visibility="visible";
+						iframe.style.position = "absolute";
+						iframe.style.left="30px";
+						iframe.style.top="30px";
+						iframe.src = "login.html";
+						document.body.appendChild(iframe);
+						var can = document.getElementById('canvasId');
+						can.style.visibility = "hidden";
+					}
+					else if(this.titleBtnPos2[i][2]==="sound"){
+						if(allowSound){
+							if(!window.mobileAndTabletcheck()){
+								soundManager.stopSound("menuBack");
+							}
+							allowSound = false;
+							this.titleBtnPos2[2][3] = imgTSndOff;
+						}
+						else if(!allowSound){
+							allowSound = true;
+							this.titleBtnPos2[2][3] = imgTSnd;
+							if(!window.mobileAndTabletcheck()){
+								soundManager.playSoundLoop(titleMusic,"menuBack");
+							}
+						}
+					}
+				}//if a button selected
+			}//for buttons
+		}//draw exit
 	}
 	else if(this.scene=== "levelSelect" && (_name==="player1"|| !multiplayer)){
 		console.log(e.clientX ,e.clientY);
@@ -450,12 +471,12 @@ Menu.prototype.draw = function(scene){
 		ctx.drawImage(imgTitleScreen, 0,0,1152,648);
 		//ctx.drawImage(imgLoginBtn,100,100,289,109);
 		for(var i =0; i< this.titleBtnPos.length; ++i){
-			ctx.drawImage(this.titleBtnPos[i][3],this.titleBtnPos[i][0]-(this.titleBtnPos[i][4]/1.7)/2,
-				this.titleBtnPos[i][1] -(this.titleBtnPos[i][5]/1.7)/2 ,this.titleBtnPos[i][4]/1.7,this.titleBtnPos[i][5]/1.7);
+			ctx.drawImage(this.titleBtnPos[i][3],(this.titleBtnPos[i][0]-this.titleBtnPos[i][4]/2),
+				this.titleBtnPos[i][1] -this.titleBtnPos[i][5]/2 ,this.titleBtnPos[i][4],this.titleBtnPos[i][5]);
 		}
 		for(var i =0; i< this.titleBtnPos2.length; ++i){
-			ctx.drawImage(this.titleBtnPos2[i][2],this.titleBtnPos2[i][0]-(this.titleBtnPos2[i][3]/1.7)/2,
-				this.titleBtnPos2[i][1] -(this.titleBtnPos2[i][4]/1.7)/2 ,this.titleBtnPos2[i][3]/1.7,this.titleBtnPos2[i][4]/1.7);
+			ctx.drawImage(this.titleBtnPos2[i][3],this.titleBtnPos2[i][0]-this.titleBtnPos2[i][4]/2,
+				this.titleBtnPos2[i][1] -this.titleBtnPos2[i][5]/2 ,this.titleBtnPos2[i][4],this.titleBtnPos2[i][5]);
 		}
 		if(this.drawExit){
 			ctx.drawImage(imgExitPrompt, 0,0,1152,648);
@@ -491,7 +512,7 @@ Menu.prototype.draw = function(scene){
 		shop.draw();
 	}
 	else if(scene ==="custom"){
-		ctx.drawImage(imgLvlSelBack,-300,0,1152,648);
+		ctx.drawImage(imgCustomBack,210,0,1852,648);
 		ctx.drawImage(imgChar1,this.char1X,50,340,600);
 		ctx.drawImage(imgChar2,this.char1X+400,50,340,600);
 		ctx.drawImage(imgChar3,this.char1X+800,50,340,600);

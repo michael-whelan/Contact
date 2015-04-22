@@ -1,8 +1,14 @@
 var imgRadarPUp = new Image();
 var imgbombP = new Image();
 var imgCoin = new Image();
+var pickUpSnd1 = null;
+var pickUpSnd2 = null;
+var pickUpSnd3 = null;
+
+var pickUpSndArr =[];
 
 var Pickup=function (){
+	pickUpSndArr = [pickUpSnd1,pickUpSnd2,pickUpSnd3];
 	this.type ="Null"; 
 	this.x = 0;
 	this.y = 0;
@@ -26,7 +32,6 @@ Pickup.prototype.update = function(){
 		this.alive = false;
 	}
 }
-
 
 Pickup.prototype.draw = function(){
 	if(this.alive){

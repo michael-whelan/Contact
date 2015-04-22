@@ -3,6 +3,7 @@
 var CollisionManager=function ()
 {
 	this.bossColTimer=0;
+	this.currPickup=0;
 };
 
 
@@ -172,7 +173,7 @@ CollisionManager.prototype.obstacleCol = function(enemyManager,player,lvlManager
 }
 
 CollisionManager.prototype.bossCol = function(amount){
-	player.xVel = 20;
+	
 	if(this.bossColTimer>100){
 		player.health-=amount;
 		this.bossColTimer =0;
@@ -185,6 +186,7 @@ CollisionManager.prototype.playerVsBoss = function(enemyManager,player){
 	if(this.circleOnCircle(player.radius,player.x,player.y,enemyManager.boss1.height,enemyManager.boss1.x,enemyManager.boss1.y)&&
 		enemyManager.boss1.state ==="attack"){
 		this.bossCol(15);
+	player.xVel = 20;
 	}
 	this.bossColTimer++;
 	for(var i = 0; i<enemyManager.boss1.hitAreas.length; ++i){
@@ -252,6 +254,11 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 	for(var i =0; i < pickUps.length; ++i){
 		if(this.circleOnCircle(player.radius, player.x,player.y,pickUps[i].radius,pickUps[i].x,pickUps[i].y)&&
 			pickUps[i].alive){
+			soundManager.playSound(pickUpSndArr[this.currPickup]);
+			this.currPickup++;
+			if(this.currPickup>2){
+				this.currPickup=0;
+			}
 			pickUps[i].alive = false;
 			if(pickUps[i].type ==="health"){
 				player.health+=20;
@@ -261,6 +268,12 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 			}
 			else{
 				player.setPickup(pickUps[i].type);
+			}
+		}
+		if(multiplayer){
+			if(this.circleOnCircle(player2.radius, player2.x,player2.y,pickUps[i].radius,pickUps[i].x,pickUps[i].y)&&
+			pickUps[i].alive){
+				pickUps[i].alive = false;
 			}
 		}
 	//	console.log(pickUps[i]);
