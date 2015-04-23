@@ -65,20 +65,28 @@ EnemyManager.prototype.allEnemies = function(){
 }
 
 EnemyManager.prototype.setEnemyPos = function(arr){
+this.enemy=[];
+for(var i = 0; i< arr.length; i++){
+
+	var enemySingle = new Enemy("grunt",5);
+		//enemySingle.spawnEnemy(this.spawnPos[rand][0],this.spawnPos[rand][1]);
+		enemySingle.alive = true;
+		this.enemy.push(enemySingle);
+	}
 	for(var i = 0; i< arr.length; ++i){
 		try{
 			this.enemy[i].x = arr[i][0];
 			this.enemy[i].y = arr[i][1];
-			this.enemy[i].angle = arr[i][2];
-			this.enemy[i].state = arr[i][3];
-			this.enemy[i].targetPosX= arr[i][4];
-			this.enemy[i].targetPosY= arr[i][5];
+			this.enemy[i].rank = arr[i][2];
+			this.enemy[i].angle = arr[i][3];
+			this.enemy[i].state = arr[i][4];
+			this.enemy[i].targetPosX= arr[i][5];
+			this.enemy[i].targetPosY= arr[i][6];
 		}
 		catch(err){
 
 		}
 	}
-//	console.log("enemy Info: "+arr);
 }
 
 EnemyManager.prototype.hearShot = function(px,py){
@@ -90,7 +98,7 @@ EnemyManager.prototype.hearShot = function(px,py){
 
 EnemyManager.prototype.setUp = function(){
 	if(this.currentLvl === "level1"){
-		this.totalSwarms = 2;//9
+		this.totalSwarms = 9;//9
 	}
 	else if(this.currentLvl === "level2"){
 		this.totalSwarms = 20;
@@ -107,7 +115,7 @@ EnemyManager.prototype.update = function(lvlMan){
 		this.enemySwarms--;
 		this.swarmsSurvived++;
 		if( this.enemySwarms>0){
-			if(multiplayer){
+			if(multiplayer && _name ==="player1"){
 				this.spawnSwarm(5,9,lvlMan);//min,max
 			}else{	
 				this.spawnSwarm(3,6,lvlMan);//min,max
@@ -175,14 +183,14 @@ EnemyManager.prototype.kill = function(j){
 		this.possibleFear();
 	}
 
-	var rand= Math.floor(Math.random()*(12-1) +1);
-	if(rand === 2){
+	var rand= Math.floor(Math.random()*(20-1) +1);
+	if(rand < 3){
 		return 1;
 	}
-	else if(rand === 7){
+	else if(rand < 6){
 		return 2;
 	}
-	else if(rand >= 10){
+	else if(rand > 18){
 		return 3;
 	}
 	return 0;
@@ -210,6 +218,7 @@ EnemyManager.prototype.spawnSwarm = function(min,max,lvlMan){
 		enemySingle.spawnEnemy(this.spawnPos[rand][0],this.spawnPos[rand][1]);
 		this.enemy.push(enemySingle);
 	}
+
 //	this.setGrid(lvlMan);
 }
 

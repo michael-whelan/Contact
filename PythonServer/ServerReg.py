@@ -75,6 +75,10 @@ class MessageHandler:
 						newData = [u,tStamp, p,money,shield,dmg,bomb,health,reload,radar]
 						print("pid"+str(pid))
 						self.sendMessage(pid, "loginApproved", newData)#will also need to send message saying username/pass wrong
+					else:
+						self.sendMessage(pid, "loginError",0)
+				else:
+					self.sendMessage(pid, "loginError",0)
 
 	def replace( self,filePath, text):
 		f = open(filePath,"r")

@@ -8,6 +8,7 @@
 		<td>Password:</td> <td><input type="PASSWORD" id="passwd" /></td>
 	</tr>
 	<tr>
+	<font color="red"id="regText"></font>
 		<td></td><td><input type="SUBMIT" value="Register" onclick = "redirectReg()"/>
 		<script>
 		var client = new Client();
@@ -15,10 +16,17 @@
 			client.register(document.getElementById('userid').value,document.getElementById('passwd').value);
 		}
 		
-		function createAccount(){
-			window.location = 'login.html';
-			//parent.destroyIframe(document.getElementById('userid').value,document.getElementById('passwd').value)
+		function createAccount(b){
+			console.log(b);
+			if(b){
+				window.location = 'login.html';
+				//parent.destroyIframe(document.getElementById('userid').value,document.getElementById('passwd').value)
+			}
+			else{
+				document.getElementById('regText').innerHTML = "Username already taken.";
+			}
 		}
+		
 		</script>
 		</td>
 	</tr>

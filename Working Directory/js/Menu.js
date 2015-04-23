@@ -11,6 +11,7 @@ var imgCustomBack = new Image();
 var imgExitPrompt = new Image();
 var titleMusic = null;
 var silence = null;
+var buttonSnd = null;
 var imgSelectX = new Image();
 var imgLoginBtn = new Image();
 var imgCustBtn = new Image();
@@ -34,8 +35,8 @@ var shop;
 
 function Menu (){
 	this.returnVals = ["null","null"]; //[state,scene]
-	this.btnPos = [[1015,105],[1015,215],[1015,345],[1015,445],[1015,560]];
-	this.gunBtn = [[830,270],[830,400]];
+	this.btnPos = [[1015,83],[1015,205],[1015,325],[1015,445],[1015,560]];
+	this.gunBtn = [[830,270],[830,389]];
 	this.custBtnPos = [200,50];
 	this.shopBtnPos = [300,50];
 	this.selectedGunI = -1;
@@ -115,7 +116,6 @@ Menu.prototype.update = function() {
 	}
 	if(this.scene ==="multiplayer"){
 		if(multiplayer && _name ==="player1"){
-			console.log("multiplayer");
 			this.returnVals =["menu","levelSelect"];
 			//return ["menu","levelSelect"];
 		}
@@ -152,30 +152,22 @@ Menu.prototype.update = function() {
 //temp
 Menu.prototype.mouseDown= function(e){
 	soundManager.playSound(silence);
-	//console.log(e.clientX ,e.clientY);
-	/*var iframes = document.getElementsByTagName('iframe');
-	for (var i = 0; i < iframes.length; i++) {
-		iframes[i].parentNode.removeChild(iframes[i]);
-	}
-	var iframe = document.createElement('iframe');
-iframe.style.visibility="visible";
-iframe.src = "register.html";
-document.body.appendChild(iframe);
-var can = document.getElementById('canvasId');
-can.style.visibility = "hidden";*/
-console.log(e.clientX ,e.clientY);
 	var mX = e.clientX;
 	var mY = e.clientY;
 
 	if(this.scene=== "titleScreen"){
 		if(this.drawExit){
 			if(e.clientX >  350  && e.clientX <585&&e.clientY>330&&e.clientY<400){//770,190,955,375
-				//console.log("Exit");
-				window.close();
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}				window.close();
 			//	window.location = "/register.html";
 
 			}
 			else if(e.clientX >  600  && e.clientX <825&&e.clientY>330&&e.clientY<400){//770,190,955,375
+				if(allowSound){
+					soundManager.playSound(buttonSnd);
+				}
 				this.drawExit = false;
 			}
 		}
@@ -183,6 +175,9 @@ console.log(e.clientX ,e.clientY);
 			for(var i =0; i< this.titleBtnPos.length; ++i){
 				if((mX > this.titleBtnPos[i][0]-(this.titleBtnPos[i][4]/2)) &&((this.titleBtnPos[i][4]/2)+this.titleBtnPos[i][0] >mX) &&
 					(mY>this.titleBtnPos[i][1]-(this.titleBtnPos[i][5]/2))&&((this.titleBtnPos[i][5]/2)+this.titleBtnPos[i][1] >mY)){
+					if(allowSound){
+						soundManager.playSound(buttonSnd);
+					}
 					if(i === 3){
 						this.drawExit = true;
 					}
@@ -197,6 +192,9 @@ console.log(e.clientX ,e.clientY);
 				if((mX > this.titleBtnPos2[i][0]-(this.titleBtnPos2[i][4]/2)) &&((this.titleBtnPos2[i][4]/2)+this.titleBtnPos2[i][0] >mX) &&
 					(mY>this.titleBtnPos2[i][1]-(this.titleBtnPos2[i][5]/2))&&((this.titleBtnPos2[i][5]/2)+this.titleBtnPos2[i][1] >mY)){
 					if(this.titleBtnPos2[i][2]==="login"){
+						if(allowSound){
+							soundManager.playSound(buttonSnd);
+						}
 						var iframe = document.createElement('iframe');
 						iframe.style.visibility="visible";
 						iframe.style.position = "absolute";
@@ -217,6 +215,7 @@ console.log(e.clientX ,e.clientY);
 						}
 						else if(!allowSound){
 							allowSound = true;
+							soundManager.playSound(buttonSnd);
 							this.titleBtnPos2[2][3] = imgTSnd;
 							if(!window.mobileAndTabletcheck()){
 								soundManager.playSoundLoop(titleMusic,"menuBack");
@@ -228,22 +227,33 @@ console.log(e.clientX ,e.clientY);
 		}//draw exit
 	}
 	else if(this.scene=== "levelSelect" && (_name==="player1"|| !multiplayer)){
-		console.log(e.clientX ,e.clientY);
 		var mX = e.clientX;
 		var mY = e.clientY;
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","titleScreen"];
 			transitionTimer=0;
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 		}
 		else if(sqrt((this.custBtnPos[0] -mX)*(this.custBtnPos[0] -mX) +(this.custBtnPos[1] -mY)*(this.custBtnPos[1] -mY)) <50){
 			this.returnVals = ["menu","custom"];
 			transitionTimer=0;
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 		}
 		else if(sqrt((this.shopBtnPos[0] -mX)*(this.shopBtnPos[0] -mX) +(this.shopBtnPos[1] -mY)*(this.shopBtnPos[1] -mY)) <50){
 			this.returnVals = ["menu","armory"];
 			transitionTimer=0;
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 		}
 		else if(e.clientX >  300  && e.clientX <700&&e.clientY>300&&e.clientY<500){//770,190,955,375
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			if(this.currLvl ===0){
 				this.returnVals = ["gameplay","tutorial"];
 				if(multiplayer){
@@ -270,9 +280,15 @@ console.log(e.clientX ,e.clientY);
 			//scroll left
 			this.currLvl--;
 			this.scrollX += 1152;
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 		}	
 		else if(e.clientX > 700 && this.currLvl <2){
 			//scroll right
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			this.currLvl++;
 			this.scrollX -=1152;
 		}
@@ -281,29 +297,41 @@ console.log(e.clientX ,e.clientY);
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","titleScreen"];
 			transitionTimer=0;
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 		}
 		/*else if(e.clientX>490 && e.clientX < 635&& e.clientY >200 && e.clientY < 280){
 			client.host();
 			client.connecting = true;
 		}*/
 		else if(e.clientX>490 && e.clientX < 635&& e.clientY >300 && e.clientY < 380){
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			client.join();
 		}
 
 	}
 	else if(this.scene ==="stash"){
-		console.log(e.clientX ,e.clientY);
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","titleScreen"];
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			transitionTimer=0;
 		}
 		else if(e.clientX > 70  && e.clientX <580&&e.clientY>75&&e.clientY<630){
-			console.log("custom");
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			this.returnVals = ["menu","custom"];	
 			transitionTimer=0;
 		}
 		else if(e.clientX > 630  && e.clientX <1120&&e.clientY>75&&e.clientY<630){
-			console.log("upgrade");
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			this.returnVals = ["menu","armory"];
 			transitionTimer=0;
 		}
@@ -311,6 +339,9 @@ console.log(e.clientX ,e.clientY);
 	else if(this.scene === "armory"){
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","stash"];
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			transitionTimer=0;
 			var temp = account.getVals();
 			client.updateProfile(temp[0],temp[1],temp[2],temp[3],temp[4],temp[5],temp[6],temp[7],temp[8]);
@@ -320,6 +351,9 @@ console.log(e.clientX ,e.clientY);
 	else if(this.scene === "custom"){
 		if(e.clientX>this.backX && e.clientX < this.backX+this.backW&& e.clientY >this.backY && e.clientY < this.backY + this.backH){
 			this.returnVals = ["menu","stash"];
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			transitionTimer=0;
 		}
 		this.updateCustom(e.clientX,e.clientY);
@@ -333,7 +367,6 @@ function sqrt(x) {
     s=((x/2)+x/(x/2)) / 2; /*first guess*/
     for(i=1;i<=4;i++) { /*average of guesses*/
         s=(s+x/s)/2;
-      //console.log("s,",s);
     }
     return s;
 }
@@ -343,6 +376,9 @@ Menu.prototype.updateCustom = function(mX,mY){
 	for(var i =0; i< this.charArrowPos.length; ++i){
 		if((mX > this.charArrowPos[i][0]-70/2) &&(70/2+this.charArrowPos[i][0] >mX) &&
 			(this.charArrowPos[i][1]-122/2 <mY)&&(122/2+this.charArrowPos[i][1] >mY)){
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			if(i ===0 && this.currChar>0){
 				this.currChar--;
 				this.char1XTarg +=400;
@@ -357,6 +393,9 @@ Menu.prototype.updateCustom = function(mX,mY){
 	//0 = radar, 1 = bomb, 2 = shield
 	for(var j =0; j<5;++j){
 		if(sqrt((this.btnPos[j][0] -mX)*(this.btnPos[j][0] -mX) +(this.btnPos[j][1] -mY)*(this.btnPos[j][1] -mY)) <40){
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			for(var i = 0; i < 2;++i){
 				var q=0;
 				if(i ===0){
@@ -378,6 +417,9 @@ Menu.prototype.updateCustom = function(mX,mY){
 	}
 	for(var i =0;i<2;i++){
 		if(sqrt((this.gunBtn[i][0] -mX)*(this.gunBtn[i][0] -mX) +(this.gunBtn[i][1] -mY)*(this.gunBtn[i][1] -mY)) <40){
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			var q;
 			this.selectedGunI = i;
 			if(i ===0){
@@ -493,7 +535,6 @@ Menu.prototype.draw = function(scene){
 	else if(scene ==="multiplayer"){
 		if(KeyController.isKeyDown(Key.P)){
 				var temp = Account.getVals();
-				console.log(temp[0],temp[1]);
 			}
 		ctx.drawImage(imgMultiplayerBack, 0,0,1152,648);
 		if(client.connecting){
@@ -521,13 +562,13 @@ Menu.prototype.draw = function(scene){
 			ctx.drawImage(this.charArrowPos[i][2], this.charArrowPos[i][0]-70/2,this.charArrowPos[i][1]-122/2,70,122);
 		}
 		if(equipment[0]!==-1){
-			ctx.drawImage(imgSelectX,this.btnPos[equipment[0]][0]-50,this.btnPos[equipment[0]][1]-35,100,70);
+			ctx.drawImage(imgSelectX,this.btnPos[equipment[0]][0]-55,this.btnPos[equipment[0]][1]-30,115,84);
 		}
 		if(equipment[1]!==-1){
-			ctx.drawImage(imgSelectX,this.btnPos[equipment[1]][0]-50,this.btnPos[equipment[1]][1]-35,100,70);
+			ctx.drawImage(imgSelectX,this.btnPos[equipment[1]][0]-50,this.btnPos[equipment[1]][1]-35,115,84);
 		}
 		if(this.selectedGunI !==-1){
-			ctx.drawImage(imgSelectX,this.gunBtn[this.selectedGunI][0]-50,this.gunBtn[this.selectedGunI][1]-35,100,70);
+			ctx.drawImage(imgSelectX,this.gunBtn[this.selectedGunI][0]-55,this.gunBtn[this.selectedGunI][1]-30,120,80);
 		}
 	}
 	if(scene !=="titleScreen"){

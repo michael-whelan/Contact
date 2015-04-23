@@ -6,7 +6,6 @@ var SoundManager = function()
 
 
 SoundManager.prototype.playSound= function(buffer) {
-	//console.log(buffer);
 	var source = context.createBufferSource(); // creates a sound source
 	source.buffer = buffer;                    // tell the source which sound to play
 	source.connect(context.destination);       // connect the source to the context's destination (the speakers)

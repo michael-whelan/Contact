@@ -124,8 +124,8 @@ function touchEnd(e){
 
 
 SceneManager.prototype.queueGameAssets = function(){
+	assetManager.queueLoadImg("images/level1.png");
 	assetManager.queueLoadImg("images/Back.png");
-	assetManager.queueLoadImg("images/Back_Tutorial.png");
 	assetManager.queueLoadImg("images/Enemy.png");
 	assetManager.queueLoadImg("images/Enemy_Commander.png");
 	assetManager.queueLoadImg("images/character_05.png");
@@ -141,7 +141,8 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadImg("images/lose_menu.png");
 	assetManager.queueLoadImg("images/boss1.png");
 	assetManager.queueLoadImg("images/hole.png");
-
+	assetManager.queueLoadImg("images/tree1.png");
+	assetManager.queueLoadImg("images/rock.png");
 	//temp images
 	assetManager.queueLoadImg("images/ViewRange.png");
 	assetManager.queueLoadImg("images/GoTo.png");
@@ -161,6 +162,8 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadSnd("sounds/sfx/pickup1.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/pickup2.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/pickup3.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/pickup4.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/pickupLast.mp3");
 }
 
 
@@ -183,7 +186,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/soundOff_button.png");
 	assetManager.queueLoadImg("images/LeftArrow.png");
 	assetManager.queueLoadImg("images/RightArrow.png");
-	
+	assetManager.queueLoadImg("images/blnkSquare.png");
 	
 	assetManager.queueLoadImg("images/char1.png");
 	assetManager.queueLoadImg("images/char2.png");
@@ -191,6 +194,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 
 	assetManager.queueLoadSnd("sounds/music/123.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/silence.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/button.mp3");
 
 	//temp
 	assetManager.queueLoadImg("images/selected.png");
@@ -227,6 +231,7 @@ SceneManager.prototype.setTitleImages = function(){
 	imgTSndOff = assetManager.getAsset("images/soundOff_button.png");
 	imgLeftArrow =  assetManager.getAsset("images/LeftArrow.png");
 	imgRightArrow = assetManager.getAsset("images/RightArrow.png");
+	imgBlankSquare = assetManager.getAsset("images/blnkSquare.png");
 	
 
 	imgChar1 = assetManager.getAsset("images/char1.png");
@@ -245,6 +250,7 @@ SceneManager.prototype.setTitleImages = function(){
 SceneManager.prototype.setTitleSounds = function(){
 	titleMusic = assetManager.getAsset("sounds/music/123.mp3");
 	silence = assetManager.getAsset("sounds/sfx/silence.mp3");
+	buttonSnd = assetManager.getAsset("sounds/sfx/button.mp3");
 	loadedSounds=true;
 }
 
@@ -257,8 +263,8 @@ SceneManager.prototype.setLvlSelectImages = function(){
 }
 
 SceneManager.prototype.setGameImages = function(){
-	imgBack = assetManager.getAsset("images/Back.png");
-	imgTutorialBack = assetManager.getAsset("images/Back_Tutorial.png");
+	imgBack = assetManager.getAsset("images/level1.png");
+	imgTutorialBack = assetManager.getAsset("images/Back.png");
 	imgPlayer1 = assetManager.getAsset("images/character_05.png");
 	imgPlayer2 = assetManager.getAsset("images/character_02.png");
 	imgPlayer3 = assetManager.getAsset("images/character_03.png");
@@ -276,6 +282,8 @@ SceneManager.prototype.setGameImages = function(){
 	imgReloadBtn = assetManager.getAsset("images/reload_button.png");
 	imgBoss1 = assetManager.getAsset("images/boss1.png");
 	imgHole =  assetManager.getAsset("images/hole.png");
+	imgTree1 =  assetManager.getAsset("images/tree1.png");
+	imgRock =  assetManager.getAsset("images/rock.png");
 	//temp images
 	imgRadarPUp = assetManager.getAsset("images/GoTo.png");
 	imgViewRad = assetManager.getAsset("images/ViewRange.png");
@@ -283,7 +291,6 @@ SceneManager.prototype.setGameImages = function(){
 	imgShield = assetManager.getAsset("images/shield.png");
 	imgBombP = assetManager.getAsset("images/bomb.png");
 	imgCoin = assetManager.getAsset("images/coin.png");
-	console.log("loaded images");
 	loadedImages = true;
 }
 
@@ -292,7 +299,6 @@ SceneManager.prototype.setGameSounds = function(){
 	backTrack = assetManager.getAsset("sounds/music/gameplay_theme_idea.mp3");
 	reloadSnd = assetManager.getAsset("sounds/sfx/gun_crecharge.mp3");
 	gunshot = assetManager.getAsset("sounds/sfx/gun_pew.mp3");
-	//console.log(gunshot);
 	emptySnd = assetManager.getAsset("sounds/sfx/gun_empty.mp3");
 	loseHealthSnd = assetManager.getAsset("sounds/sfx/health_lost.mp3");
 	shakeSnd = assetManager.getAsset("sounds/sfx/shakeEasy.mp3");
@@ -300,6 +306,8 @@ SceneManager.prototype.setGameSounds = function(){
 	pickUpSnd1 = assetManager.getAsset("sounds/sfx/pickup1.mp3");
 	pickUpSnd2 = assetManager.getAsset("sounds/sfx/pickup2.mp3");
 	pickUpSnd3 = assetManager.getAsset("sounds/sfx/pickup3.mp3");
+	pickUpSnd4 = assetManager.getAsset("sounds/sfx/pickup4.mp3");
+	pickUpSndLast = assetManager.getAsset("sounds/sfx/pickupLast.mp3");
 	loadedSounds = true;
 }
 
@@ -326,7 +334,8 @@ SceneManager.prototype.gameLoop = function (){
    	var GAME_RUNNING=0;
    	//this.update();
    	window.onerror = function (errorMsg, url, lineNumber) {
-    	console.log('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
+    	//console.log('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
+    	client.writeError('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
 	}
 	if(loadedSounds &&loadedImages){
 			console.log("Load Time ",Date.now()-timeSpent);

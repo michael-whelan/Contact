@@ -52,8 +52,6 @@ Shop.prototype.update = function(mX,mY) {
 		this.other2Lvl++;
 		playerCash-= 100*this.other2Lvl;
 	}
-	
-	//console.log(mX,mY);
 }
 
 Shop.prototype.draw = function(){

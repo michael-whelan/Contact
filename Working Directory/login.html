@@ -8,12 +8,17 @@
 			<td>Password:</td> <td><input type="PASSWORD" name="passwd" id="passwd"/></td>
 		</tr>
 		<tr>
+		<font color="red"id="logText"></font>
 			<td></td><td><input type="SUBMIT" value="Login" onclick = "redirectLog()"/></td>
 			<script>
 				var client = new Client();
 				function redirectLog(){
 					//client.register(document.getElementById('userid').value,document.getElementById('passwd').value);
 					client.checkLogin(document.getElementById('userid').value,document.getElementById('passwd').value);
+				}
+				
+				function loginWrong(){
+					document.getElementById('logText').innerHTML = "Username or password are incorrect.";
 				}
 				
 				function allowLogin(name,money,shield,dmg,bomb,health,reload,radar,levels){

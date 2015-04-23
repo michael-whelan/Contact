@@ -150,7 +150,6 @@ AssetManager.prototype.loadLvlSelectImages = function(loadCallback) {
         var that = this;
         img.addEventListener("load", function() {
             that.successCount += 1;
-            //console.log(that.isDone(that.loadQueueImg));
             if (that.isDone(that.loadQueueImg, that.successCount,that.errorCount)) {
                 that.successCount = 0;
                 that.errorCount=0;
@@ -214,12 +213,10 @@ AssetManager.prototype.loadCommonSounds = function(loadCallback) {
         var path = this.loadQueueSnd[i];
         var snd = new Audio();
         var that = this;
-        console.log("len: " +this.loadQueueSnd.length);
         snd.addEventListener("loadeddata", function() {
          //   console.log("i= "+i, "len = "+that.loadQueueSnd.length);
 
             that.successCount += 1;
-            console.log("success1: "+that.successCount);
             if (that.isDone(that.loadQueueSnd)) {
                 
                 that.successCount = 0;
@@ -228,7 +225,6 @@ AssetManager.prototype.loadCommonSounds = function(loadCallback) {
                     that.loadQueueSnd.pop();
                 }
                 loadCallback();
-                console.log("isDone");
             }
         },false);
         snd.addEventListener("error", function() {
@@ -284,12 +280,9 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
         var path = this.loadQueueSnd[i];
         var snd = new Audio();
         var that = this;
-        console.log("len: " +this.loadQueueSnd.length);
         snd.addEventListener("loadeddata", function() {
-         //   console.log("i= "+i, "len = "+that.loadQueueSnd.length);
 
             that.successCount += 1;
- //           console.log("success1: "+that.successCount);
             if (that.isDone(that.loadQueueSnd)) {
                 
                 that.successCount = 0;
@@ -298,7 +291,6 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
                     that.loadQueueSnd.pop();
                 }
                 loadCallback();
-                console.log("isDone");
             }
         },false);
         snd.addEventListener("error", function() {
@@ -314,7 +306,6 @@ AssetManager.prototype.loadLvl1Sounds = function(loadCallback) {
 }
 
 AssetManager.prototype.isDone = function(queue,s,e) {
-  //  console.log("queue len "+queue.length, this.successCount,this.errorCount);
     return (queue.length == s + e);
 }
 

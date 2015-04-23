@@ -7,7 +7,7 @@ var Boss=function (rank){
 	this.name = rank;
 	this.x=0;
 	this.y=-200;
-	this.width = 200;
+	this.width = 290;
 	this.height=120;
 	this.state = "dig";
 	this.targetPosX=0;
@@ -167,7 +167,6 @@ Boss.prototype.attackRandom = function(){
 	var rand1= Math.floor(Math.random()*(13-0) +0);
 	var rand2= Math.floor(Math.random()*(20-0) +0);
 	this.hearTarget((rand2*100)-845,(rand1*100)-652);
-	//console.log(rand1*100,rand2*100);
 	var arr = [(rand2*100)-845,(rand1*100)-652];
 	this.hitAreas.push(arr);
 	this.counter++;
@@ -244,7 +243,6 @@ Boss.prototype.draw = function(){
 		this.bullets[i].draw();
 	}
 	for(var i=0;i<this.hitAreas.length; ++i){
-		//console.log("array ",this.hitAreas[i][0],this.hitAreas[i][1]);
 		ctx.drawImage(imgHole,this.hitAreas[i][0],this.hitAreas[i][1],100,100);
 	}
 

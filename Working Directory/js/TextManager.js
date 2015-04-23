@@ -105,7 +105,6 @@ TextManager.prototype.end = function(txt){
     ctx.strokeStyle = "#003300";
     ctx.font = '40px san-serif';
     ctx.textBaseline = 'bottom';
-    //txtAmmo = txtAmmo + numBullets.toString();
     ctx.strokeText("Swarms Survived: "+txt+". "+"Continue  Y/N", 300, 100);
 }
 
@@ -122,7 +121,6 @@ TextManager.prototype.connecting = function(){
 TextManager.prototype.controller = function(level){
     this.level = level;
     if(player.numBullets>0){
-        //this.gameText();
         var count=0;
         for(var j =0; j<3; j++){
             for(var i = 0; i < 10;i++){
@@ -135,23 +133,10 @@ TextManager.prototype.controller = function(level){
     }
     var tempH = player.health.toString();
     tempH = '<class="whiteGame">' + tempH + '</class>';
-    /*CT.textAlign = 'left';
-    CT.drawText({
-        text:strHealth+ tempH,
-        x: 50,
-        y: 20
-    });*/
     ctx.drawImage(imgHealthBar,50,20,player.health*1.5,20);
     if(enemyManager.boss1.alive){
         ctx.drawImage(imgHealthBar,550,50,enemyManager.boss1.health*1.5,20);
     }
- 
-    //txtAmmo = txtAmmo + numBullets.toString();
-    //ctx.strokeText("fps: "+fps.toFixed(), 680, 150);
-    /*if(fps<60){
-        this.lowestFps = fps;
-    }
-    ctx.strokeText("fps: "+this.lowestFps.toFixed(), 680, 50);*/
 }
 var once = false;
 TextManager.prototype.drawShop = function(shieldLvl,AmmoLvl,BombLvl,HealthLvl,other1Lvl,other2Lvl){
@@ -172,57 +157,12 @@ TextManager.prototype.drawShop = function(shieldLvl,AmmoLvl,BombLvl,HealthLvl,ot
     var count=0;
     for(var j =0; j<2; ++j){
         for(var i = 0; i < 3;++i){
-            ctx.drawImage(imgSquare,(362*i)+90,(j*270)+100,(tempArr[count]*49)+2,20);
-           // ctx.drawImage(imgSquare,(200*i)+50,(j*200)+150,500,500);
+            ctx.drawImage(imgBlankSquare,(362*i)+90,(j*270)+100,(tempArr[count]*49)+2,20);
             count++;
         }
     }
-   // ctx.drawImage(imgSquare,(200)+50,(200)+150,500,500);
     once = true;
-    /*
-
-    var tempNum =  '<class="whiteBig">'+shieldLvl.toString()+ '</class>';
-    CT.textAlign = 'left';
-    CT.drawText({
-        text:tempNum,
-        x: 92,
-        y: 100
-    });
-    tempNum = '<class="whiteBig">'+AmmoLvl.toString()+ '</class>';
-    CT.textAlign = 'left';
-    CT.drawText({
-        text:tempNum,
-        x: 450,
-        y: 100
-    });
-    tempNum ='<class="whiteBig">'+BombLvl.toString()+ '</class>';
-    CT.textAlign = 'left';
-    CT.drawText({
-        text:tempNum,
-        x: 810,
-        y: 100
-    });
-    tempNum = '<class="whiteBig">'+HealthLvl.toString()+ '</class>';
-    CT.textAlign = 'left';
-    CT.drawText({
-        text:tempNum,
-        x: 92,
-        y: 400
-    });
-    tempNum = '<class="whiteBig">'+other1Lvl.toString()+ '</class>';
-    CT.textAlign = 'left';
-    CT.drawText({
-        text:tempNum,
-        x: 450,
-        y: 400
-    });
-    tempNum = '<class="whiteBig">'+other2Lvl.toString()+ '</class>';
-    CT.textAlign = 'left';
-    CT.drawText({
-        text:tempNum,
-        x: 810,
-        y: 400
-    });*/
+   
 }
 
 TextManager.prototype.gameText=function(){
@@ -304,38 +244,6 @@ TextManager.prototype.controlTutorial = function(player){
         this.check1 = false;this.check2 = false;
         this.tutorialMsgNum =0;
     }
-
-   /* if(this.tutorialMsgNum ===0){
-        if(KeyController.isKeyDown(Key.RIGHT)){
-            this.check1 = true;
-        }
-        else if(KeyController.isKeyDown(Key.LEFT)){
-            this.check2 = true;
-        }
-    }
-
-    else if(this.tutorialMsgNum ===1){
-        if(KeyController.isKeyDown(Key.UP)){
-            this.check1 = true;
-        }
-        else if(KeyController.isKeyDown(Key.DOWN)){
-            this.check2 = true;
-        }
-    }
-    else if(this.tutorialMsgNum ===2){
-        if(KeyController.isKeyDown(Key.SPACE)){
-            this.check1 = true; this.check2 = true;
-        }
-    }
-    else if(this.tutorialMsgNum ===3){
-        if(KeyController.isKeyDown(Key.R)){
-            this.check1 = true; this.check2 = true;
-        }
-    }
-    if(this.check1&& this.check2){
-        this.tutorialMsgNum++;
-        this.check1 = false;this.check2 = false;
-    }*/
 }
 
 // This represents the main game Title

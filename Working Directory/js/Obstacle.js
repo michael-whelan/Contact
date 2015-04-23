@@ -1,6 +1,8 @@
 var imgCircle= new Image();
-
+var imgTree1= new Image();
 var imgSquare = new Image();
+var imgRock = new Image();
+var imgBlankSquare = new Image();
 
 var Obstacle=function (){
 	this.x = 0;
@@ -54,7 +56,10 @@ Obstacle.prototype.debugDraw = function(){
 
 Obstacle.prototype.draw = function(){
 	if(this.obj_id === "circle"){
-		ctx.drawImage(imgCircle,this.x, this.y, this.width, this.height);
+		ctx.drawImage(imgTree1,this.x, this.y, this.width, this.height);
+	}
+	else if(this.obj_id === "rock"){
+		ctx.drawImage(imgRock,this.x, this.y, this.width, this.height);
 	}
 	else{
 		ctx.drawImage(imgSquare,this.x, this.y, this.width, this.height);

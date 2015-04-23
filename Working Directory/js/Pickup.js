@@ -4,11 +4,13 @@ var imgCoin = new Image();
 var pickUpSnd1 = null;
 var pickUpSnd2 = null;
 var pickUpSnd3 = null;
+var pickUpSnd4 = null;
+var pickUpSndLast = null;
 
 var pickUpSndArr =[];
 
 var Pickup=function (){
-	pickUpSndArr = [pickUpSnd1,pickUpSnd2,pickUpSnd3];
+	pickUpSndArr = [pickUpSnd1,pickUpSnd2,pickUpSnd3,pickUpSnd4,pickUpSndLast];
 	this.type ="Null"; 
 	this.x = 0;
 	this.y = 0;

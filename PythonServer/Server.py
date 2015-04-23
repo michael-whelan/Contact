@@ -49,7 +49,7 @@ class MessageHandler:
 	
 	def writeError(self,pid,data):
 		with open(_ERROR, 'a') as f:
-				print(pid,data sep=',', file=f)
+				print(pid,data, sep=',', file=f)
 	
 	def hostGame(self,data,socket):
 		self.createSession()

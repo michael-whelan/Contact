@@ -50,7 +50,6 @@ Client.prototype.generateId = function () {
 	return rand;
 }
 Client.prototype.host = function(){
-	console.log("host button");
 	message.pid = this.generateId();
 	message.type = "host";
 	var mess = JSON.stringify(message);
@@ -111,24 +110,21 @@ Client.prototype.setPlayer = function(playerCol,gun){
 }
 
 Client.prototype.update = function(x,y,o,shootBool){
-//console.log("updating multiplayer");
-	//message.pid = _name;
+
 	message.type = "updatePos";
 	message.data = [x,y,o,shootBool];
 	var mess = JSON.stringify(message);
 	this.ws.send(mess);
 }
 Client.prototype.killEnemy = function(j){
-//console.log("updating multiplayer");
-	//message.pid = _name;
+
 	message.type = "killEnemy";
 	message.data = j;
 	var mess = JSON.stringify(message);
 	this.ws.send(mess);
 }
 Client.prototype.worldUpdate = function(arr){
-//console.log("updating multiplayer");
-	//message.pid = _name;
+
 	message.type = "worldUp";
 	message.data = arr;
 	var mess = JSON.stringify(message);
@@ -137,8 +133,6 @@ Client.prototype.worldUpdate = function(arr){
 
 
 Client.prototype.bossState = function(effect){
-//console.log("updating multiplayer");
-	//message.pid = _name;
 	message.type = effect;
 	message.data = "junk";
 	var mess = JSON.stringify(message);
@@ -146,15 +140,13 @@ Client.prototype.bossState = function(effect){
 }
 
 Client.prototype.bossHole = function(arr){
-//console.log("updating multiplayer");
-	//message.pid = _name;
 	message.type = "bossHole";
 	message.data = arr;
 	var mess = JSON.stringify(message);
 	this.ws.send(mess);
 }
 Client.prototype.bossPos = function(x,y,state){
-	//message.pid = _name;
+
 	message.type = "bossPos";
 	message.data = [x,y,state];
 	var mess = JSON.stringify(message);
@@ -162,8 +154,6 @@ Client.prototype.bossPos = function(x,y,state){
 }
 
 Client.prototype.deathAlert = function(){
-//console.log("updating multiplayer");
-	//message.pid = _name;
 	message.type = "playerDeath";
 	message.data = 0;
 	var mess = JSON.stringify(message);
@@ -173,8 +163,6 @@ Client.prototype.deathAlert = function(){
 Client.prototype.handleMessage = function(evt){
 
 	var mess = JSON.parse(evt.data);
-	//console.log(mess);
-	//console.log(mess.data);
 	if (mess.type ==="state"){
 		p2Ip = mess.dest;
 		if(mess.data === WAITING_FOR_PLAYERS){
@@ -204,17 +192,20 @@ Client.prototype.handleMessage = function(evt){
 		var messA = mess.data;
 		player2.setPos(messA[0],messA[1],messA[2],messA[3]);
 	}
-	else if(mess.type === "alreadyTaken"){
-		console.log("alreadyTaken");	
-	}
 	else if(mess.type === "reg"){
-		createAccount();//moves to login page	
+		createAccount(true);//moves to login page	
+	}
+	else if(mess.type === "alreadyTaken"){
+		createAccount(false);
+		//document.getElementById("regText") = "Username already taken.";
+	}
+	else if(mess.type === "loginError"){
+		loginWrong();
+		//document.getElementById("regText") = "Username already taken.";
 	}
 	else if(mess.type === "loginApproved"){
 		var messA = mess.data;
-		//console.log(messA);
 		allowLogin(messA[0],messA[3],messA[4],messA[5],messA[6],messA[7],messA[8],messA[9]);
-		//account.setVals(messA[0],messA[1]);
 	}
 	else if(mess.type === "bossHit"){
 		enemyManager.boss1.health--;

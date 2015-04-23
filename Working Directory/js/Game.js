@@ -36,7 +36,7 @@ var _name="junk";
 var pickUps=[];
 
 var pause= false;
-var debugDrawer = true;
+var debugDrawer = false;
 var timer =0;
 var pauseTimer;
 
@@ -65,6 +65,7 @@ function Game (){
 Game.prototype.reset = function(lvl){
 	player.reset();
 	player2.reset();
+	pickUps = [];
 	player.setAttributes(shop.HealthLvl,shop.ammoLvl,shop.other1Lvl);
 	player.setEquipment(equipment[0],menu.getEquipLvl(equipment[0]),equipment[1],menu.getEquipLvl(equipment[1]),menu.selectedGun,menu.currChar);
 	this.shakeNum1=0;
@@ -104,7 +105,7 @@ Game.prototype.touchMove= function(e){
 }
 
 Game.prototype.mouseDown= function(e){
-	//console.log(e.clientX, e.clientY);
+
 	if(pause){
 		this.updateOverlay(e);
 	}
@@ -137,10 +138,9 @@ Game.prototype.touchStart = function(e){
 				}		
 			}
 			else {
-				//console.log("grid pos: ",lvlManager.getGridPos(player.x,player.y));
+				
 				this.updateGUI(touch.pageX, touch.pageY);
 			}
-			//console.log(e.touches[0].pageX,e.touches[0].pageY);
 		}
 }
 
@@ -188,55 +188,84 @@ function sqrt(x) {
     s=((x/2)+x/(x/2)) / 2; /*first guess*/
     for(i=1;i<=4;i++) { /*average of guesses*/
         s=(s+x/s)/2;
-      //console.log("s,",s);
     }
     return s;
 }
 
 Game.prototype.updateOverlay = function(e){
-	console.log(scaleRatio);
 	var touchX = e.clientX;//*scaleRatio;
 	var touchY = e.clientY;//*scaleRatio;
 	if(this.overlayType=== "pause"){
 		if(touchX> 475 && touchX < 540 && touchY >260&&touchY <320){
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
+			if(allowSound){
+				soundManager.stopSound("gameBack");
+			}
+			alert("reset");
 			this.reset(this.currentLvl);
 		}
 		else if(touchX> 600 && touchX < 670 && touchY >260&&touchY <320){
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			this.goMenu = true;
-			//console.log("go to menu");
 		}
 		else if(touchX> 725 && touchX < 800 && touchY >260&&touchY <320){
 			pause = false;
-			console.log("hit");
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 		}
 	}
 	else if(this.overlayType === "win"){
 		if(touchX> 475 && touchX < 540 && touchY >260&&touchY <320){
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
+			if(allowSound){
+				soundManager.stopSound("gameBack");
+			}
 			this.reset(this.currentLvl);
 			if(multiplayer && _name === "player1"){
 				client.setLevel(this.currentLvl);
 			}
 		}
 		else if(touchX> 600 && touchX < 670 && touchY >260&&touchY <320){
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			this.goMenu = true;
 		}
 		else if(touchX> 725 && touchX < 800 && touchY >260&&touchY <320){
 			//lvlManager.setLevel();
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			this.reset(lvlManager.getNextLevel());
 			if(multiplayer && _name === "player1"){
 				client.setLevel(lvlManager.getNextLevel());
 			}
-			
 		}	
 	}
 	else if(this.overlayType === "lose"){
 		if(touchX> 540 && touchX < 600 && touchY >260&&touchY <325){
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			this.reset(this.currentLvl);
+			if(allowSound){
+				soundManager.stopSound("gameBack");
+			}
 			if(multiplayer && _name === "player1"){
 				client.setLevel(this.currentLvl);
 			}
 		}
 		else if(touchX> 680 && touchX < 744 && touchY >260&&touchY <320){
+			if(allowSound){
+				soundManager.playSound(buttonSnd);
+			}
 			this.goMenu = true;
 		}
 	}
@@ -288,14 +317,15 @@ Game.prototype.controlMultiplayer = function(stick,stick2){
 			this.sendTimer =0;
 		}
 	}
-	if(_name === "player1" && this.worldSendTimer > 25 && !enemyManager.boss1.alive){//player 1 will be put in control as the authoritive player. His is the correct game world.
+	if(_name === "player1" && this.worldSendTimer > 15 && !enemyManager.boss1.alive){//player 1 will be put in control as the authoritive player. His is the correct game world.
 		var tempArr = new Array();
 		for(var i = 0; i < enemyManager.enemy.length; ++i){
-			if(this.checkDif(enemyManager.enemy[i].x,enemyManager.enemy[i].lastX,15)||this.checkDif(enemyManager.enemy[i].y,enemyManager.enemy[i].lastY,15)||
-				this.checkDif(enemyManager.enemy[i].angle,enemyManager.enemy[i].lastAng,0.4)){
+			//if(this.checkDif(enemyManager.enemy[i].x,enemyManager.enemy[i].lastX,15)||this.checkDif(enemyManager.enemy[i].y,enemyManager.enemy[i].lastY,15)||
+			//	this.checkDif(enemyManager.enemy[i].angle,enemyManager.enemy[i].lastAng,0.4)){
 				var temp2 = new Array();
 				temp2.push(enemyManager.enemy[i].x);
 				temp2.push(enemyManager.enemy[i].y);
+				temp2.push(enemyManager.enemy[i].rank);
 				temp2.push(enemyManager.enemy[i].angle);
 				temp2.push(enemyManager.enemy[i].state);
 				temp2.push(enemyManager.enemy[i].targetPosX);
@@ -303,7 +333,7 @@ Game.prototype.controlMultiplayer = function(stick,stick2){
 				tempArr.push(temp2);
 				this.worldSendTimer =0;
 				
-			}
+			//}
 		}
 		client.worldUpdate(tempArr);
 	}
@@ -416,7 +446,7 @@ Game.prototype.update = function(lvl){
 		this.shake = false;
 		enemyManager.boss1.doOnce = true;
 		if(enemyManager.boss1.state !=="flurry"){
-			soundManager.stopSound(flurrySnd);
+			soundManager.stopSound("flurrySnd");
 		}
 	}
 	if((player.moveStep&&enemyManager.boss1.state ==="dig"&&enemyManager.boss1.canRise)||enemyManager.boss1.state ==="attack"){
@@ -476,13 +506,10 @@ Game.prototype.update = function(lvl){
 function calculateFps(now) {
    fps = 1000 / (now - lastAnimationFrameTime);
    lastAnimationFrameTime = now;
-  // console.log(now - lastAnimationFrameTime);
 
    if (now - lastFpsUpdateTime > 1000) {
       lastFpsUpdateTime = now;
-      //fpsElement.innerHTML = fps.toFixed(0) + ' fps';
    }
-   //console.log(fps);
    return fps;
 }
 
@@ -534,15 +561,14 @@ Game.prototype.radarDraw = function(){
 }
 
 Game.prototype.drawOverlay = function(){
-	//console.log("overlay type: ",this.overlayType);
 	if(this.overlayType === "pause"){
-		ctx.drawImage(imgPauseMenu, -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
+		ctx.drawImage(imgPauseMenu, -(300 + (mapWidth-2350)),-(200+mapHeight-1445),WIDTH, HEIGHT);
 	}
 	else if(this.overlayType=== "win"){
-		ctx.drawImage(imgWinMenu, -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
+		ctx.drawImage(imgWinMenu, -(300 + (mapWidth-2350)),-(200+mapHeight-1445),WIDTH, HEIGHT);
 	}
 	else if(this.overlayType === "lose"){
-		ctx.drawImage(imgLoseMenu,  -(300 + (mapWidth-2350)),-(200+mapHeight-1445),1152, 648);
+		ctx.drawImage(imgLoseMenu,  -(300 + (mapWidth-2350)),-(200+mapHeight-1445),WIDTH, HEIGHT);
 	}
 	this.overlayed = true;
 }

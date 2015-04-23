@@ -5,7 +5,6 @@ function Account(){
 Account.prototype.registerPlayer= function(name,pass){
 	this.gamerId = name;
 	this.gamerPass = pass;
-	console.log(name,pass);
 }
 
 

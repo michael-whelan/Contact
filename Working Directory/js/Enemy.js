@@ -62,7 +62,7 @@ Enemy.prototype.reset = function(){
 
 Enemy.prototype.spawnEnemy = function(x,y){
 	this.alive = true;
-	this.angle = random();//Math.random()*(8-1) +1;
+	this.angle = Math.random()*(8-1) +1;
 	//Math.floor(Math.random()*(this.max-this.min) +this.min);
 	this.x = x;
 	this.y = y;
@@ -85,21 +85,7 @@ Enemy.prototype.collisionReaction = function(obj){
 		this.nodeArray.push(tempArr2);
 		this.nodeArray.push(tempArr3);
 		this.state = fsm.stateControl(this.state,"obstacle");
-	}
-	/*if(this.x < obj.x+obj.width/2){
-		this.targetPosX = obj.n1X;
-	}
-	else{
-		this.targetPosX = obj.n2X;	
-	}
-	if(this.targetPosY < obj.y+obj.height/2){
-		this.targetPosy = obj.n1Y;	
-	}
-	else{
-		this.targetPosY = obj.n2Y;
-	}
-	this.state = fsm.stateControl(this.state,"hearShot");*/
-	
+	}	
 }
 
 Enemy.prototype.nearestNode = function(x,y,obj){
@@ -130,7 +116,6 @@ Enemy.prototype.update = function(){
 		if(this.state!="followPath"){
 			this.nodeArray.length = 0;
 		}
-
 		if(this.angle>6.3){
 			this.angle = 0;
 		}
@@ -346,7 +331,7 @@ Enemy.prototype.scatter = function(xPos,yPos){
 	this.moveDirection = "forward";
 	//causes regular changes in direction
 	if(this.timeSinceDirectChange>40){
-		this.angle = random();//Math.random()*(8-1) +1;
+		this.angle =Math.random()*(8-1) +1;
 		this.timeSinceDirectChange = 0;
 	}
 	if(this.moveDirection == "forward"){

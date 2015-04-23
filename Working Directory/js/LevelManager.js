@@ -17,6 +17,7 @@ LevelManager.prototype.placeLevels = function(){
 	/*
 		1 = square object
 		2 = circle object
+		3 = rock
 		9 = enemy spawn
 		*/
 	this.level1 = 
@@ -27,7 +28,7 @@ LevelManager.prototype.placeLevels = function(){
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
 		[9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0],
@@ -41,7 +42,7 @@ LevelManager.prototype.placeLevels = function(){
 		[0,0,0,0,0,0,0,9,0,0,0,0,0,9,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-		[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
+		[0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,9,0,0,0,0,0,9,0,0,0,0,0,0],
@@ -57,7 +58,6 @@ LevelManager.prototype.update = function() {
 LevelManager.prototype.setLevel = function(lvl){
 	this.currentLevel = lvl;
 	this.numCells = (2000/this.cellWidth) * (1300/this.cellHeight);
-	//console.log("numcells = ", (2000/this.cellWidth), (1300/this.cellHeight));
 	for(var i = 0; i < this.numCells; ++i){
 		this.cellArray[i] = new Array();
 	}
@@ -68,33 +68,25 @@ LevelManager.prototype.mapSetup = function(){
 	enemyManager.spawnPos = [];
 
 	if(this.currentLevel === "level1"){
-		/*var x = -(300 + (mapWidth-1450));var y = -(200+mapHeight-845);
-		var n = 0;
-		for(var i = 0; i < (2000/this.cellWidth); i++){		
-			for(var j = 0; j < (1300/this.cellHeight); j++){
-				this.cellArray[n][0] =x+ i*this.cellWidth;
-				this.cellArray[n][1] = y+j*this.cellHeight;
-				//console.log(this.cellArray[n]);
-				n++;
-			}
-		}
-		*/
 
 		for(var i = 0; i < 13; ++i){
 			for(var j = 0; j < 20; ++j){
 				if(this.level1[i][j] === 1){
 					var object = new Obstacle();
 					object.set((100*j)-845,(100*i)-652,100,100,"square");
-				//	object.gridPos=this.getGridPos((100*j)-845,(100*i)-652,100,100);
 					this.objects.push(object);
 				}
 				if(this.level1[i][j] === 2){
 					var object = new Obstacle();
-					object.set((100*j)-845,(100*i)-652,100,100,"circle");
-				//	object.gridPos=this.getGridPos((100*j)-845,(100*i)-652,100,100);
+					object.set((100*j)-845,(100*i)-652,150,150,"circle");
 					this.objects.push(object);
 				}
-					if(this.level1[i][j] === 9){
+				if(this.level1[i][j] === 3){
+					var object = new Obstacle();
+					object.set((100*j)-845,(100*i)-652,80,80,"rock");
+					this.objects.push(object);
+				}
+				if(this.level1[i][j] === 9){
 					var object = [];
 					object.push(((100*j)-845)-200);
 					object.push(((100*i)-652)-200);
@@ -102,7 +94,6 @@ LevelManager.prototype.mapSetup = function(){
 				}
 			}
 		}
-		console.log(lvlManager.objects.length);
 	}
 	else if(this.currentLevel ==="level2"){
 		for(var i = 0; i < 13; ++i){
@@ -119,6 +110,12 @@ LevelManager.prototype.mapSetup = function(){
 				//	object.gridPos=this.getGridPos((100*j)-845,(100*i)-652,100,100);
 					this.objects.push(object);
 				}
+				if(this.level2[i][j] === 3){
+					var object = new Obstacle();
+					object.set((100*j)-845,(100*i)-652,80,80,"rock");
+				//	object.gridPos=this.getGridPos((100*j)-845,(100*i)-652,100,100);
+					this.objects.push(object);
+				}
 				if(this.level2[i][j] === 9){
 					var object = [];
 					object.push((100*j)-845);
@@ -129,39 +126,7 @@ LevelManager.prototype.mapSetup = function(){
 		}
 	}
 }
-/*
-LevelManager.prototype.getGridPos = function(x,y,w,h){
-	var tempArr = [];
-	for(var i =0; i<this.numcells; ++i){
-		if((x < this.cellArray[i][0]+ this.cellWidth) &&
-	    (x + w > this.cellArray[i][0]) &&
-	    (y + h > this.cellArray[i][1]) &&
-	    (y < this.cellArray[i][1] + this.cellWidth)){
-			tempArr.push(i);
-	    }
-    }
-    return tempArr;
-}*/
 
-/*LevelManager.prototype.getGridPos = function(x,y){
-	var row=0, col=0;
-	var n = 0;
-
-	for(var i = 0; i < (2000/this.cellWidth); i++){		
-		for(var j = 0; j < (1300/this.cellHeight); j++){
-			//console.log(x,y, this.cellArray[n][0],this.cellArray[n][1],i,j);
-			if(x > this.cellArray[n][0] && x < this.cellArray[n][0]+this.cellWidth &&
-				y> this.cellArray[n][1] && y < this.cellArray[n][1]+this.cellHeight){
-				col = i;
-				row = j;
-				return [col,row];
-				break;
-			}
-			n++;
-		}
-	}
-	return [col,row];
-}*/
 
 LevelManager.prototype.tutorialController = function(){
 }

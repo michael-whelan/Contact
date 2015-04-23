@@ -254,10 +254,15 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 	for(var i =0; i < pickUps.length; ++i){
 		if(this.circleOnCircle(player.radius, player.x,player.y,pickUps[i].radius,pickUps[i].x,pickUps[i].y)&&
 			pickUps[i].alive){
-			soundManager.playSound(pickUpSndArr[this.currPickup]);
 			this.currPickup++;
-			if(this.currPickup>2){
+			if(this.currPickup>3){
 				this.currPickup=0;
+			}
+			if(pickUps.length===1){
+				this.currPickup=4;
+			}
+			if(allowSound){
+				soundManager.playSound(pickUpSndArr[this.currPickup]);
 			}
 			pickUps[i].alive = false;
 			if(pickUps[i].type ==="health"){
@@ -276,7 +281,6 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 				pickUps[i].alive = false;
 			}
 		}
-	//	console.log(pickUps[i]);
 	}
 	if(enemyManager.boss1.alive){
 		this.playerVsBoss(enemyManager,player);
