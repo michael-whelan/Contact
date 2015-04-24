@@ -35,3 +35,41 @@
 8.23698486178182,Error: Uncaught TypeError: Cannot read property 'x' of undefined Script: http://localhost:8000/js/CollisionManager.js Line: 218
 8.23698486178182,Error: Uncaught TypeError: Cannot read property 'x' of undefined Script: http://localhost:8000/js/CollisionManager.js Line: 218
 35.875369189772755,Error: TypeError: Value is not of type AudioBuffer Script: http://149.153.102.45:8000/js/SoundManager.js Line: 10
+31.741447316017002,Error: Uncaught TypeError: Failed to set the 'buffer' property on 'AudioBufferSourceNode': The provided value is not of type 'AudioBuffer'. Script: http://localhost:8000/js/SoundManager.js Line: 10
+6.577038239687681,Error: TypeError: Value is not of type AudioBuffer Script: http://149.153.102.45:8000/js/SoundManager.js Line: 10
+6.577038239687681,Error: TypeError: 'undefined' is not an object (evaluating 'enemyManager.enemy[j].x') Script: http://149.153.102.45:8000/js/CollisionManager.js Line: 218
+6.577038239687681,Error: TypeError: 'undefined' is not an object (evaluating 'enemyManager.enemy[j].x') Script: http://149.153.102.45:8000/js/CollisionManager.js Line: 218
+6.577038239687681,Error: TypeError: 'undefined' is not an object (evaluating 'enemyManager.enemy[j].x') Script: http://149.153.102.45:8000/js/CollisionManager.js Line: 218
+6.577038239687681,Error: TypeError: 'undefined' is not an object (evaluating 'enemyManager.enemy[j].x') Script: http://149.153.102.45:8000/js/CollisionManager.js Line: 218
+6.577038239687681,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+6.577038239687681,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+6.577038239687681,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+0,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+0,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+0,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+0,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+0,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+0,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+0,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+0,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: InvalidStateError: DOM Exception 11: An attempt was made to use an object that is not, or is no longer, usable. Script: http://149.153.102.45:8000/js/Client.js Line: 93
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530
+0,Error: InvalidStateError: DOM Exception 11: An attempt was made to use an object that is not, or is no longer, usable. Script: http://149.153.102.45:8000/js/Client.js Line: 93
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 530

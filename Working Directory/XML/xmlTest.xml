@@ -12,5 +12,9 @@
 <tutorialMsg2>of the screen to rotate and shoot</tutorialMsg2>
 <tutorialMsg3>Touch the bottom left</tutorialMsg3>
 <tutorialMsg4>of the screen to move</tutorialMsg4>
+<tutorialMsg1PC>Use the LEFT and RIGHT keys</tutorialMsg1PC>
+<tutorialMsg2PC>to rotate and SPACE to shoot</tutorialMsg2PC>
+<tutorialMsg3PC>Use the UP and DOWN keys</tutorialMsg3PC>
+<tutorialMsg4PC>to move</tutorialMsg4PC>
 <tutorialMsg5>and the R button to reload</tutorialMsg5>
 </xmlTest>

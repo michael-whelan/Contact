@@ -10,7 +10,7 @@ var TextManager=function(){
     var iAmmo;
     var strBoss1;
     var strBoss2;
-
+    this.device = "null";
     this.flashTimer =0;
     this.clicker=0;
     this.lowestFps = 100;
@@ -101,6 +101,11 @@ TextManager.prototype.loading = function(){
 TextManager.prototype.drawInstruc =function (){
 
 }
+
+TextManager.prototype.setDevice =function (){
+    this.device = "pc";
+}
+
 TextManager.prototype.end = function(txt){
     ctx.strokeStyle = "#003300";
     ctx.font = '40px san-serif';
@@ -222,17 +227,29 @@ TextManager.prototype.upTutorial = function(n){
 }
 
 TextManager.prototype.controlTutorial = function(player){
-    ctx.strokeStyle = "#0041a0";
+    ctx.strokeStyle = "#FF0000";
     ctx.font = '25px san-serif';
     if(this.tutorialMsgNum === 0){
-        ctx.strokeText(document.getElementById("tutorialMsg1").innerHTML, 200, 300);
-        ctx.strokeText(document.getElementById("tutorialMsg2").innerHTML, 200, 350);
-        ctx.drawImage(imgHighlight, canvas.width/2,canvas.height/2,canvas.width/2,canvas.height/2);
+        if(this.device ==="pc"){
+            ctx.strokeText(document.getElementById("tutorialMsg1PC").innerHTML, 200, 300);
+            ctx.strokeText(document.getElementById("tutorialMsg2PC").innerHTML, 200, 350);
+        }
+        else{
+            ctx.strokeText(document.getElementById("tutorialMsg1").innerHTML, 200, 300);
+            ctx.strokeText(document.getElementById("tutorialMsg2").innerHTML, 200, 350);
+            ctx.drawImage(imgHighlight, canvas.width/2,canvas.height/2,canvas.width/2,canvas.height/2);
+        }
     }
     else if(this.tutorialMsgNum === 1){
-        ctx.strokeText(document.getElementById("tutorialMsg3").innerHTML, 200, 300);
-        ctx.strokeText(document.getElementById("tutorialMsg4").innerHTML, 200, 350);
-        ctx.drawImage(imgHighlight, 0, canvas.height/2, canvas.width/2, canvas.height/2);
+        if(this.device ==="pc"){
+            ctx.strokeText(document.getElementById("tutorialMsg3PC").innerHTML, 200, 300);
+            ctx.strokeText(document.getElementById("tutorialMsg4PC").innerHTML, 200, 350);
+        }
+        else{
+            ctx.strokeText(document.getElementById("tutorialMsg3").innerHTML, 200, 300);
+            ctx.strokeText(document.getElementById("tutorialMsg4").innerHTML, 200, 350);
+            ctx.drawImage(imgHighlight, 0, canvas.height/2, canvas.width/2, canvas.height/2);
+        }
     }
     else if(this.tutorialMsgNum === 2){
         ctx.strokeText(document.getElementById("tutorialMsg5").innerHTML, 200, 300);
