@@ -65,14 +65,14 @@ EnemyManager.prototype.allEnemies = function(){
 }
 
 EnemyManager.prototype.setEnemyPos = function(arr){
-this.enemy=[];
+/*this.enemy=[];
 for(var i = 0; i< arr.length; i++){
 
 	var enemySingle = new Enemy("grunt",5);
 		//enemySingle.spawnEnemy(this.spawnPos[rand][0],this.spawnPos[rand][1]);
 		enemySingle.alive = true;
 		this.enemy.push(enemySingle);
-	}
+	}*/
 	for(var i = 0; i< arr.length; ++i){
 		try{
 			this.enemy[i].x = arr[i][0];
@@ -205,6 +205,19 @@ EnemyManager.prototype.possibleFear = function(){
 	}
 }
 
+EnemyManager.spawnSwarmSlave = function(num){
+	this.enemy=[];
+	for(var i = 0; i< numEnemiesNeeded; i++){
+		if(i===0){
+			var enemySingle = new Enemy("cmdr",5);
+		}else{
+			var enemySingle = new Enemy("grunt",1);
+		}
+		enemySingle.spawnEnemy(this.spawnPos[rand][0],this.spawnPos[rand][1]);
+		this.enemy.push(enemySingle);
+	}
+}
+
 EnemyManager.prototype.spawnSwarm = function(min,max,lvlMan){
 	//spawns a group of enemies.
 	var rand = Math.floor(Math.random()*(this.spawnPos.length-0) +0);
@@ -218,7 +231,7 @@ EnemyManager.prototype.spawnSwarm = function(min,max,lvlMan){
 		enemySingle.spawnEnemy(this.spawnPos[rand][0],this.spawnPos[rand][1]);
 		this.enemy.push(enemySingle);
 	}
-
+	client.spawnSlave(numEnemiesNeeded);
 //	this.setGrid(lvlMan);
 }
 

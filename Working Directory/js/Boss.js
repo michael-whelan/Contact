@@ -238,6 +238,9 @@ Boss.prototype.comeUp = function(){
 }
 
 Boss.prototype.draw = function(){
+	/*if(this.state=== "attack"){
+		ctx.drawImage(imgHealthBar,this.x-(this.health/2),this.y-60,this.health,10);
+	}*/
 	ctx.save();//save the state of canvas before rotation wrecks the place.
 	for(var i = 0; i <this.bullets.length; i++){
 		this.bullets[i].draw();

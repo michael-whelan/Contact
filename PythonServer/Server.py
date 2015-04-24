@@ -125,6 +125,8 @@ class MessageHandler:
 			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "worldUp":
 			self.sendToOtherPlayer(pid,type,data1)
+		elif type == "spawnSlave":
+			self.sendMessage(pid,type,data1)
 		elif type == "killEnemy":
 			self.sendToOtherPlayer(pid,type,data1)
 		elif type == "playerDeath":

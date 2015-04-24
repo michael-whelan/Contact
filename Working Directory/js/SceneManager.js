@@ -164,6 +164,8 @@ SceneManager.prototype.queueGameAssets = function(){
 	assetManager.queueLoadSnd("sounds/sfx/pickup3.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/pickup4.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/pickupLast.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/Shield_Spawn.mp3");
+	assetManager.queueLoadSnd("sounds/sfx/Shield_Damage.mp3");
 }
 
 
@@ -192,7 +194,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/char2.png");
 	assetManager.queueLoadImg("images/char3.png");
 
-	assetManager.queueLoadSnd("sounds/music/123.mp3");
+	assetManager.queueLoadSnd("sounds/music/Main_Menu.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/silence.mp3");
 	assetManager.queueLoadSnd("sounds/sfx/button.mp3");
 
@@ -200,6 +202,7 @@ SceneManager.prototype.queueTitleAssets = function(){
 	assetManager.queueLoadImg("images/selected.png");
 	assetManager.queueLoadImg("images/shopBtn.png");
 	assetManager.queueLoadImg("images/health.png");
+	assetManager.queueLoadImg("images/playerHealth.png");
 	assetManager.queueLoadImg("images/square.png");
 	assetManager.queueLoadImg("images/custBtn.png");
 }
@@ -248,7 +251,7 @@ SceneManager.prototype.setTitleImages = function(){
 	loadedImages=true;
 }
 SceneManager.prototype.setTitleSounds = function(){
-	titleMusic = assetManager.getAsset("sounds/music/123.mp3");
+	titleMusic = assetManager.getAsset("sounds/music/Main_Menu.mp3");
 	silence = assetManager.getAsset("sounds/sfx/silence.mp3");
 	buttonSnd = assetManager.getAsset("sounds/sfx/button.mp3");
 	loadedSounds=true;
@@ -284,6 +287,7 @@ SceneManager.prototype.setGameImages = function(){
 	imgHole =  assetManager.getAsset("images/hole.png");
 	imgTree1 =  assetManager.getAsset("images/tree1.png");
 	imgRock =  assetManager.getAsset("images/rock.png");
+	imgPlayerHealth =  assetManager.getAsset("images/playerHealth.png");
 	//temp images
 	imgRadarPUp = assetManager.getAsset("images/GoTo.png");
 	imgViewRad = assetManager.getAsset("images/ViewRange.png");
@@ -308,6 +312,8 @@ SceneManager.prototype.setGameSounds = function(){
 	pickUpSnd3 = assetManager.getAsset("sounds/sfx/pickup3.mp3");
 	pickUpSnd4 = assetManager.getAsset("sounds/sfx/pickup4.mp3");
 	pickUpSndLast = assetManager.getAsset("sounds/sfx/pickupLast.mp3");
+	sndShieldSpwn = assetManager.getAsset("sounds/sfx/Shield_Spawn.mp3");
+	sndShieldDmg = assetManager.getAsset("sounds/sfx/Shield_Damage.mp3");
 	loadedSounds = true;
 }
 

@@ -2,18 +2,15 @@ var imgPlayer= new Image();
 var imgPlayer1= new Image();
 var imgPlayer2= new Image();
 var imgPlayer3= new Image();
-
 var imgPlayerDead = new Image();
-
 var imgShield = new Image();
 
 var spawnSnd = null;
-
 var reloadSnd =null;
-
 var emptySnd = null;
-
 var loseHealthSnd = null;
+var sndShieldSpwn = null;
+var sndShieldDmg = null;
 
 var equipment = [-1,-1];
 
@@ -187,12 +184,6 @@ Player.prototype.setAssistPostitions = function(){
 
 Player.prototype.aimAssist = function(){
 	for (var i = 0; i<this.assistPositions.length; ++i){
-		
-		/*if(this.angle > this.getAngle(this.assistPositions[i][0],this.x,this.assistPositions[i][1],this.y)-0.6 && 
-			this.angle < this.getAngle(this.assistPositions[i][0],this.x,this.assistPositions[i][1],this.y)+0.6){
-			console.log("assist: "+ this.angle+" "+this.getAngle(this.assistPositions[i][0],this.x,this.assistPositions[i][1],this.y));
-			return this.getAngle(this.assistPositions[i][0],this.x,this.assistPositions[i][1],this.y);
-		}*/
 	var posDifferenceX = this.assistPositions[i][0] - this.x; // finds the vector for the difference in positions
 	var posDifferenceY = this.assistPositions[i][1] - this.y;
 	var rotation = Math.atan2(posDifferenceY, posDifferenceX);
@@ -250,19 +241,13 @@ Player.prototype.shoot = function(){
 			}
 		}
 		else if(this.numBullets<=0){
-			//emptySnd.play();
 			if(!this.playOnce&&allowSound){
 				this.playOnce = true;
 				soundManager.playSound(emptySnd);
 			}
-			//.play();
 			this.reload();
-		//	this.reload();
 		}
 	//}//end Space
-		/*if(this.numBullets<=0){
-			console.log("Press R To Reload");
-		}*/
 	for (var i = 0; i < this.bullets.length; ++i) {
     	if (!this.bullets[i].alive) {
     		var index = this.bullets.indexOf(i);
@@ -373,6 +358,9 @@ Player.prototype.setPickup = function(id){
 	}
 	else if(id === "shield"){
 		this.shieldStrength = this.maxShieldStrength;
+		if(allowSound){
+			soundManager.playSound(sndShieldSpwn);
+		}
 	}
 	else if(id === "bomb"){
 		if(this.bombNum<this.maxBombNum){
@@ -477,6 +465,9 @@ Player.prototype.takeDmg = function(i){
 	if(this.shieldStrength>0){
 		this.shieldStrength-=i;
 		tmp-=i;
+		if(allowSound){
+			soundManager.playSound(sndShieldDmg);
+		}
 	}
 	if(tmp>0){
 		this.health-=tmp;

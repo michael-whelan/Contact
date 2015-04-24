@@ -10,3 +10,28 @@
 0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 547
 0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 547
 0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 528
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 528
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 528
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 528
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 528
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 528
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 528
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 528
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 528
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 528
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 528
+0,Error: IndexSizeError: DOM Exception 1: Index or size was negative, or greater than the allowed value. Script: http://149.153.102.45:8000/js/Menu.js Line: 528
+18.21152386907488,Error: Uncaught TypeError: Failed to set the 'buffer' property on 'AudioBufferSourceNode': The provided value is not of type 'AudioBuffer'. Script: http://localhost:8000/js/SoundManager.js Line: 10
+3.128340287366882,Error: TypeError: Value is not of type AudioBuffer Script: http://149.153.102.45:8000/js/SoundManager.js Line: 10
+3.128340287366882,Error: TypeError: Not enough arguments Script: http://149.153.102.45:8000/js/SoundManager.js Line: 35
+12.4315679310821,Error: Uncaught TypeError: Failed to set the 'buffer' property on 'AudioBufferSourceNode': The provided value is not of type 'AudioBuffer'. Script: http://localhost:8000/js/SoundManager.js Line: 10
+23.770888204686344,Error: TypeError: Value is not of type AudioBuffer Script: http://149.153.102.45:8000/js/SoundManager.js Line: 10
+28.644569110590965,Error: Uncaught TypeError: Failed to set the 'buffer' property on 'AudioBufferSourceNode': The provided value is not of type 'AudioBuffer'. Script: http://localhost:8000/js/SoundManager.js Line: 10
+40.10714889294468,Error: TypeError: Value is not of type AudioBuffer Script: http://149.153.102.45:8000/js/SoundManager.js Line: 10
+22.518641446251422,Error: TypeError: Value is not of type AudioBuffer Script: http://149.153.102.45:8000/js/SoundManager.js Line: 10
+8.23698486178182,Error: Uncaught TypeError: Cannot read property 'x' of undefined Script: http://localhost:8000/js/CollisionManager.js Line: 218
+8.23698486178182,Error: Uncaught TypeError: Cannot read property 'x' of undefined Script: http://localhost:8000/js/CollisionManager.js Line: 218
+8.23698486178182,Error: Uncaught TypeError: Cannot read property 'x' of undefined Script: http://localhost:8000/js/CollisionManager.js Line: 218
+8.23698486178182,Error: Uncaught TypeError: Cannot read property 'x' of undefined Script: http://localhost:8000/js/CollisionManager.js Line: 218
+8.23698486178182,Error: Uncaught TypeError: Cannot read property 'x' of undefined Script: http://localhost:8000/js/CollisionManager.js Line: 218
+35.875369189772755,Error: TypeError: Value is not of type AudioBuffer Script: http://149.153.102.45:8000/js/SoundManager.js Line: 10

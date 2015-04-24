@@ -27,7 +27,7 @@ Shop.prototype.checkLvl =function(type){
 	}
 }
 
-Shop.prototype.update = function(mX,mY) {
+Shop.prototype.update = function(mX,mY){
 	if(mX >92 && mX<336 && mY >98 && mY < 345&&this.shieldLvl<5 && playerCash>= 100*(this.shieldLvl+1)){
 		this.shieldLvl++;
 		playerCash-= 100*this.shieldLvl;

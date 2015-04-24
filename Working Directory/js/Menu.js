@@ -191,7 +191,7 @@ Menu.prototype.mouseDown= function(e){
 			for(var i =0; i< this.titleBtnPos2.length; ++i){
 				if((mX > this.titleBtnPos2[i][0]-(this.titleBtnPos2[i][4]/2)) &&((this.titleBtnPos2[i][4]/2)+this.titleBtnPos2[i][0] >mX) &&
 					(mY>this.titleBtnPos2[i][1]-(this.titleBtnPos2[i][5]/2))&&((this.titleBtnPos2[i][5]/2)+this.titleBtnPos2[i][1] >mY)){
-					if(this.titleBtnPos2[i][2]==="login"){
+					if(this.titleBtnPos2[i][2]==="login" && !window.mobileAndTabletcheck()){
 						if(allowSound){
 							soundManager.playSound(buttonSnd);
 						}
@@ -517,8 +517,10 @@ Menu.prototype.draw = function(scene){
 				this.titleBtnPos[i][1] -this.titleBtnPos[i][5]/2 ,this.titleBtnPos[i][4],this.titleBtnPos[i][5]);
 		}
 		for(var i =0; i< this.titleBtnPos2.length; ++i){
-			ctx.drawImage(this.titleBtnPos2[i][3],this.titleBtnPos2[i][0]-this.titleBtnPos2[i][4]/2,
-				this.titleBtnPos2[i][1] -this.titleBtnPos2[i][5]/2 ,this.titleBtnPos2[i][4],this.titleBtnPos2[i][5]);
+			if(!(window.mobileAndTabletcheck()&&this.titleBtnPos2[i][2]==="login")){
+				ctx.drawImage(this.titleBtnPos2[i][3],this.titleBtnPos2[i][0]-this.titleBtnPos2[i][4]/2,
+					this.titleBtnPos2[i][1] -this.titleBtnPos2[i][5]/2 ,this.titleBtnPos2[i][4],this.titleBtnPos2[i][5]);
+			}
 		}
 		if(this.drawExit){
 			ctx.drawImage(imgExitPrompt, 0,0,1152,648);

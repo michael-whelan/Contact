@@ -195,14 +195,12 @@ CollisionManager.prototype.playerVsBoss = function(enemyManager,player){
 			this.bossCol(10);
     		enemyManager.boss1.hitAreas.splice(i, 1);
     		i--;
-    				
 		}
 	}
 	for(var i = 0; i<enemyManager.boss1.bullets.length; ++i){
 		if(this.circleOnCircle(enemyManager.boss1.bullets[i].radius,enemyManager.boss1.bullets[i].x,
 		enemyManager.boss1.bullets[i].y,player.radius,player.x,player.y) && enemyManager.boss1.bullets[i].alive&& player.flash === false){
-			player.health-=2;
-			//loseHealthSnd.play();
+			player.takeDmg(2);
 			player.lastHitTime = Date.now();
 			enemyManager.boss1.bullets[i].kill();
 		}
@@ -223,12 +221,12 @@ CollisionManager.prototype.killEnemy = function(j,bool){
 	}
 	
 	var killType =enemyManager.kill(j);
-	if(killType===1 ){//&& !pickUp.alive){
+	if(killType===1&& player.pickupAbility[0]!== "NULL"){//&& !pickUp.alive){
 		var pickUp = new Pickup();
 		pickUp.spawn(player.pickupAbility[0],x,y);
 		pickUps.push(pickUp);
 	}
-	else if(killType===2){//&& !pickUp.alive){
+	else if(killType===2&& player.pickupAbility[1]!== "NULL"){//&& !pickUp.alive){
 		var pickUp = new Pickup();
 		pickUp.spawn(player.pickupAbility[1],x,y);
 		pickUps.push(pickUp);
@@ -239,7 +237,6 @@ CollisionManager.prototype.killEnemy = function(j,bool){
 		pickUps.push(pickUp);
 	}
 	else{
-		
 		var pickUp = new Pickup();
 		pickUp.spawn("coin",x,y);
 		pickUps.push(pickUp);
@@ -269,7 +266,7 @@ CollisionManager.prototype.collisionCall = function(enemyManager,player,lvlManag
 				player.health+=20;
 			}
 			else if(pickUps[i].type ==="coin"){
-				playerCash+=100;
+				tempCoins+=100;
 			}
 			else{
 				player.setPickup(pickUps[i].type);

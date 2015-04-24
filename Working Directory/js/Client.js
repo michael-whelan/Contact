@@ -132,6 +132,13 @@ Client.prototype.worldUpdate = function(arr){
 }
 
 
+Client.prototype.spawnSlave = function(num){
+	message.type = "spawnSlave";
+	message.data = num;
+	var mess = JSON.stringify(message);
+	this.ws.send(mess);
+}
+
 Client.prototype.bossState = function(effect){
 	message.type = effect;
 	message.data = "junk";
@@ -227,6 +234,10 @@ Client.prototype.handleMessage = function(evt){
 	else if(mess.type === "worldUp"){
 		var messA = mess.data;
 		enemyManager.setEnemyPos(messA);
+	}
+	else if(mess.type === "spawnSlave"){
+		enemyManager.spawnSwarmSlave(mess.data);
+		//document.getElementById("regText") = "Username already taken.";
 	}
 	else if(mess.type === "killEnemy"){
 		collisionManager.killEnemy(mess.data,false);

@@ -22,6 +22,9 @@ var Pickup=function (){
 
 
 Pickup.prototype.spawn = function(id,x,y){
+	if(typeof id === "undefined"){
+		id = "coin";
+	}
 	this.type =id; 
 	this.x = x;
 	this.y = y;

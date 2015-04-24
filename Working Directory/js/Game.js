@@ -39,6 +39,7 @@ var pause= false;
 var debugDrawer = false;
 var timer =0;
 var pauseTimer;
+var tempCoins=0;
 
 function Game (){
 	player = new Player("player1");
@@ -63,6 +64,7 @@ function Game (){
 
 
 Game.prototype.reset = function(lvl){
+	tempCoins=0;
 	player.reset();
 	player2.reset();
 	pickUps = [];
@@ -200,10 +202,6 @@ Game.prototype.updateOverlay = function(e){
 			if(allowSound){
 				soundManager.playSound(buttonSnd);
 			}
-			if(allowSound){
-				soundManager.stopSound("gameBack");
-			}
-			alert("reset");
 			this.reset(this.currentLvl);
 		}
 		else if(touchX> 600 && touchX < 670 && touchY >260&&touchY <320){
@@ -387,6 +385,7 @@ Game.prototype.update = function(lvl){
 		}
 		if(levelWin){
 			pause = true;
+			playerCash +=tempCoins;
 			this.overlayType = "win";
 			var temp = account.getVals();
 			client.updateProfile(temp[0],temp[1],temp[2],temp[3],temp[4],temp[5],temp[6],temp[7],temp[8]);
@@ -478,7 +477,7 @@ Game.prototype.update = function(lvl){
 	if(this.goMenu){
 		//backTrack.pause();
 		//backTrack.currentTime=0;
-		if(!window.mobileAndTabletcheck()&&allowSound){
+		if(allowSound){
 			soundManager.stopSound("gameBack");
 		}
 		multiplayer = false;
